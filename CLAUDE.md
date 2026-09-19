@@ -70,6 +70,12 @@ site/                       ΠΑΡΑΓΟΜΕΝΟ. Μην το επεξεργάζ
 
 ## Γνωστά σημεία προσοχής
 
+- **Το αρχείο λέγεται `requirements-docs.txt`, ΟΧΙ `requirements.txt` — μη το
+  μετονομάσεις.** Αν υπάρχει `requirements.txt` στη ρίζα, το Vercel νομίζει ότι
+  το project είναι εφαρμογή Python, ψάχνει για entrypoint (`app.py`, `wsgi.py`
+  κλπ) και το build αποτυγχάνει με «No python entrypoint found». Το ίδιο ισχύει
+  για `pyproject.toml`, `Pipfile`, `setup.py` στη ρίζα.
+
 - **Δεν υπάρχει ελληνικός stemmer** στη lunr. Το `search: lang: en` είναι
   σκόπιμο. Τα ελληνικά ευρετηριάζονται κανονικά (επιβεβαιωμένο), αλλά το
   «μεταβλητή» δεν ταυτίζεται αυτόματα με «μεταβλητές».
