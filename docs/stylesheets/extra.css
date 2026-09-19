@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Python Club — χρώματα και τυπογραφία από τα έντυπα φυλλάδια
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&display=swap');
+
+:root {
+  --pc-ink:    #10294A;
+  --pc-navy:   #143A6B;
+  --pc-blue:   #2B6CD9;
+  --pc-sky:    #7FB5F5;
+  --pc-mist:   #EDF4FF;
+  --pc-mist-2: #DCE9FC;
+  --pc-edge:   #C5DAF7;
+  --pc-marker: #BFDCFF;
+}
+
+/* ---------- φωτεινό θέμα ---------- */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        var(--pc-navy);
+  --md-primary-fg-color--light: var(--pc-blue);
+  --md-primary-fg-color--dark:  #0E2A4F;
+  --md-accent-fg-color:         var(--pc-blue);
+  --md-typeset-a-color:         var(--pc-blue);
+  --md-default-fg-color--light: var(--pc-ink);
+
+  --pc-surface: var(--pc-mist);
+  --pc-border:  var(--pc-edge);
+  --pc-heading: var(--pc-navy);
+}
+
+/* ---------- σκοτεινό θέμα ---------- */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:        #0E2A4F;
+  --md-primary-fg-color--light: var(--pc-sky);
+  --md-primary-fg-color--dark:  #08182F;
+  --md-accent-fg-color:         var(--pc-sky);
+  --md-typeset-a-color:         var(--pc-sky);
+
+  --pc-surface: #16263D;
+  --pc-border:  #2E4B73;
+  --pc-heading: #CFE3FF;
+  --pc-marker:  #2E5A97;
+}
+
+/* ---------- επικεφαλίδες: Comfortaa, όπως στα φυλλάδια ---------- */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-header__topic,
+.md-nav__title {
+  font-family: "Comfortaa", "Nunito", sans-serif;
+  font-weight: 700;
+}
+
+.md-typeset h1 {
+  color: var(--pc-heading);
+  letter-spacing: -0.01em;
+}
+
+/* h2 = η "κάρτα" του φυλλαδίου: μπλε μπάρα στα αριστερά */
+.md-typeset h2 {
+  color: var(--pc-heading);
+  border-left: 5px solid var(--md-accent-fg-color);
+  padding-left: 0.6rem;
+  margin-top: 2.2rem;
+}
+
+.md-typeset h3 {
+  color: var(--pc-heading);
+}
+
+/* ---------- μπλοκ κώδικα: διακεκομμένο περίγραμμα, όπως το .codebox ---------- */
+.md-typeset pre > code {
+  border: 1.4px dashed var(--pc-sky);
+  border-radius: 12px;
+}
+
+.md-typeset .highlight {
+  border-radius: 12px;
+}
+
+/* ---------- μαρκαδόρος ---------- */
+.md-typeset mark {
+  background: var(--pc-marker);
+  color: inherit;
+  font-weight: 700;
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
+/* ---------- κουτάκια σημειώσεων ---------- */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 6px 14px 14px 6px;
+  border: 1.4px solid var(--pc-border);
+  border-left: 5px solid var(--md-accent-fg-color);
+  box-shadow: none;
+  background: var(--pc-surface);
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-family: "Comfortaa", "Nunito", sans-serif;
+  font-weight: 700;
+  background: transparent;
+}
+
+/* ---------- πίνακες ---------- */
+.md-typeset table:not([class]) {
+  border: 1.4px solid var(--pc-border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.76rem;
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--pc-surface);
+  font-family: "Comfortaa", "Nunito", sans-serif;
+  color: var(--pc-heading);
+}
+
+/* ---------- κουμπί PDF ----------
+   Γεμάτο κουμπί (όχι μόνο περίγραμμα) ώστε να ξεχωρίζει και στα δύο θέματα. */
+.md-typeset .md-button {
+  border-radius: 10px;
+  font-family: "Comfortaa", "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  background: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+  color: #FFFFFF;
+}
+
+.md-typeset .md-button:hover,
+.md-typeset .md-button:focus {
+  background: var(--pc-navy);
+  border-color: var(--pc-navy);
+  color: #FFFFFF;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button {
+  background: var(--pc-sky);
+  border-color: var(--pc-sky);
+  color: #0E2A4F;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .md-button:hover,
+[data-md-color-scheme="slate"] .md-typeset .md-button:focus {
+  background: #A9CEFA;
+  border-color: #A9CEFA;
+  color: #0E2A4F;
+}
+
+/* ---------- πλαϊνή στήλη: πιο συμπαγής ----------
+   Οι ομάδες «Θεωρία» / «Ασκήσεις» πλησιάζουν μεταξύ τους, ώστε με πολλά
+   μαθήματα να χωράνε περισσότερα ταυτόχρονα στην οθόνη. */
+.md-nav--primary .md-nav__link {
+  margin-top: 0.3em;
+}
+
+.md-nav--primary .md-nav__item--section {
+  margin: 0.9em 0 0;
+}
+
+.md-nav--primary .md-nav__item--section > .md-nav__link {
+  font-family: "Comfortaa", "Nunito", sans-serif;
+  color: var(--pc-heading);
+}

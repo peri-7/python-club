@@ -1,0 +1,121 @@
+﻿# ---------------------------------------------------------------------------
+# Python Club — ρυθμίσεις ιστοσελίδας
+#
+# ΓΙΑ ΝΑ ΑΛΛΑΞΕΙΣ ΤΑ ΟΝΟΜΑΤΑ ΤΩΝ ΔΥΟ ΤΜΗΜΑΤΩΝ: άλλαξε μόνο τις δύο
+# σημειωμένες γραμμές στο `nav:` παρακάτω. Είναι ονόματα εμφάνισης —
+# οι φάκελοι και οι σύνδεσμοι μένουν ίδιοι.
+# ---------------------------------------------------------------------------
+
+site_name: Python Club
+site_description: Υλικό μαθημάτων για τον όμιλο Python
+site_author: ''
+
+# Όταν ανέβει σε GitHub Pages, βάλε εδώ τη διεύθυνση, π.χ.
+# site_url: https://to-onoma-sou.github.io/python-club/
+site_url: ''
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: el
+  font:
+    text: Nunito
+    code: JetBrains Mono
+  features:
+    - navigation.tabs          # τα δύο τμήματα ως καρτέλες στην κορυφή
+    - navigation.tabs.sticky   # οι καρτέλες μένουν ορατές στο scroll
+    - navigation.sections      # Θεωρία / Ασκήσεις ως ομάδες στο πλάι
+    - navigation.indexes       # το index.md μιας ενότητας είναι η σελίδα της
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy        # κουμπί αντιγραφής σε κάθε μπλοκ κώδικα
+    - toc.follow
+  # Χωρίς `media:`, η πρώτη επιλογή είναι η προεπιλεγμένη — δηλαδή πάντα
+  # φωτεινό θέμα στην αρχή, ανεξάρτητα από τις ρυθμίσεις του υπολογιστή.
+  # Ο μαθητής μπορεί να αλλάξει σε σκοτεινό με το κουμπί στην κορυφή.
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Σκοτεινό θέμα
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Φωτεινό θέμα
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  # Η lunr (η μηχανή αναζήτησης) δεν έχει ελληνικό stemmer, οπότε δηλώνουμε 'en'.
+  # Τα ελληνικά ευρετηριάζονται κανονικά — απλώς δεν γίνεται αναγωγή σε θέμα
+  # λέξης (π.χ. «μεταβλητές» δεν ταυτίζεται αυτόματα με «μεταβλητή»).
+  - search:
+      lang: en
+
+markdown_extensions:
+  - abbr
+  - admonition            # τα κουτάκια "Σημείωση" / "Προσοχή"
+  - attr_list             # μετατρέπει έναν σύνδεσμο σε κουμπί
+  - md_in_html
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details      # πτυσσόμενα κουτιά — για τις λύσεις των ασκήσεων
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.caret
+  - pymdownx.mark         # ==υπογράμμιση με μαρκαδόρο==
+  - pymdownx.tilde
+  - pymdownx.keys         # ++enter++ → εμφανίζει το πλήκτρο
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# ---------------------------------------------------------------------------
+# ΠΛΟΗΓΗΣΗ
+#
+# Κάθε νέο μάθημα = μία γραμμή κάτω από τη σωστή ενότητα.
+# Η σειρά εδώ είναι η σειρά που εμφανίζεται στο πλάι.
+# ---------------------------------------------------------------------------
+#
+# Δεν υπάρχει καρτέλα «Αρχική»: η ρίζα του site ανακατευθύνει στους Αρχάριους
+# (δες docs/index.md). Γι' αυτό το index.md δηλώνεται στο `not_in_nav`.
+# ---------------------------------------------------------------------------
+not_in_nav: |
+  index.md
+
+nav:
+  # Τα «Θεωρία» / «Ασκήσεις» είναι απλές ετικέτες ομάδας — δεν έχουν δική τους
+  # σελίδα, γιατί η ίδια η λίστα από κάτω είναι το περιεχόμενό τους.
+  # Οι ετικέτες κρατιούνται σύντομες («Μάθημα 1») ώστε να μην αναδιπλώνονται
+  # στην πλαϊνή στήλη· ο πλήρης τίτλος είναι ο τίτλος της σελίδας.
+
+  - Αρχάριοι:                                  # <-- ΟΝΟΜΑ ΚΑΡΤΕΛΑΣ 1
+      - beginners/index.md
+      - Θεωρία:
+          - 'Μάθημα 1': beginners/theory/lesson-01.md
+      - Ασκήσεις:
+          - 'Μάθημα 1': beginners/exercises/lesson-01.md
+
+  - Προχωρημένοι:                              # <-- ΟΝΟΜΑ ΚΑΡΤΕΛΑΣ 2
+      - advanced/index.md
+      - Θεωρία:
+          - 'Cheatsheet': advanced/theory/cheatsheet.md
+      - Ασκήσεις:
+          - 'Μάθημα 1': advanced/exercises/lesson-01.md
