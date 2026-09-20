@@ -110,6 +110,7 @@ nav:
       - beginners/index.md
       - Θεωρία:
           - 'Μάθημα 1': beginners/theory/lesson-01.md
+          - 'Μάθημα 2': beginners/theory/lesson-02.md
       - Ασκήσεις:
           - 'Μάθημα 1': beginners/exercises/lesson-01.md
 
