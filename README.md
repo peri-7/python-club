@@ -1,4 +1,4 @@
-# Python Club — ιστοσελίδα μαθημάτων
+# Python Club — ιστοσελίδα μαθημάτων 
 
 Στατική ιστοσελίδα με το υλικό του ομίλου, φτιαγμένη με
 [MkDocs](https://www.mkdocs.org/) + [Material](https://squidfunk.github.io/mkdocs-material/).
