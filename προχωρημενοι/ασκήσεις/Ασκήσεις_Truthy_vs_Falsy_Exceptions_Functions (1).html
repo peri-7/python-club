@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Ασκήσεις: Truthy vs Falsy, Exceptions, Functions</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"><style>:root{--navy:#1c4170;--blue:#2b6cd9;--soft:#d0dff7;--muted:#8a93a3;--text:#2a2f36;--bg:#fff;--card:#fff;--out:#2323cc;--in:#222;--line:#cfd5de}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.html{--navy:#9cc0f5;--blue:#5b92ea;--soft:#2a3a55;--muted:#8f99aa;--text:#e3e7ee;--bg:#15181d;--card:#1c2027;--out:#8fa7ff;--in:#e8e8e8;--line:#3a414c}}
+:root[data-theme="dark"] body.html{--navy:#9cc0f5;--blue:#5b92ea;--soft:#2a3a55;--muted:#8f99aa;--text:#e3e7ee;--bg:#15181d;--card:#1c2027;--out:#8fa7ff;--in:#e8e8e8;--line:#3a414c}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Open Sans","Segoe UI",Arial,sans-serif;font-size:10.5pt;line-height:1.5}
+.sheet{max-width:820px;margin:0 auto}
+body.html .sheet{padding:32px 20px 48px}
+h1{font-family:Comfortaa,"Open Sans",sans-serif;font-weight:400;color:var(--navy);font-size:17pt;line-height:1.35;margin:0 0 4px}
+.rule{width:54px;height:3px;background:var(--blue);margin-bottom:22px}
+.ex{margin:0 0 14px;break-inside:avoid}
+.ex-head{display:flex;gap:10px;align-items:flex-start}
+.badge{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:9pt;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ex-text{margin:0}
+.ex-body{padding-left:32px}
+.lbl{color:var(--muted);font-size:8.5pt;margin:1px 0 4px}
+.out{border:1px solid var(--soft);border-left:4px solid var(--blue);border-radius:0 8px 8px 0;background:var(--card);padding:8px 16px;overflow-x:auto;max-width:100%}
+.out img{display:block;max-width:100%}
+.out pre{margin:0;font-family:"Courier New",Courier,"DejaVu Sans Mono",monospace;font-size:11.5pt;line-height:1.45;letter-spacing:.03em}
+.pr{color:var(--out)}.in{color:var(--in)}
+.tip{border:1.5px solid var(--blue);padding:14px 18px 16px;margin:18px 0 20px;break-inside:avoid;background:var(--card)}
+.tip-title{font-family:Comfortaa,"Open Sans",sans-serif;font-weight:700;color:var(--blue);font-size:10pt;margin-bottom:8px}
+.tip p{margin:0 0 12px}
+.tbl-wrap{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:rgba(43,108,217,.08);color:var(--navy);font-weight:600}
+.codeimg{display:block;max-width:100%}
+pre.code{margin:0;font-family:Menlo,Consolas,"DejaVu Sans Mono",monospace;font-size:11pt;line-height:1.5;white-space:pre}
+.c-var{color:#3a4a5a}.c-op{color:#d6337f}.c-num{color:#a7702a}.c-str{color:#d6337f}.c-bi{color:#a7702a}.c-fn{color:#2a8fd0}.c-p{color:#d6337f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.html .c-var{color:#c9d3de}}
+@media print{body{font-size:10pt}}
+body.pdf .sheet{max-width:none}
+h2{font-family:Comfortaa,"Open Sans",sans-serif;font-weight:400;color:var(--blue);font-size:12pt;margin:18px 0 10px;break-after:avoid}
+.req{color:#e03131}
+</style></head><body class="html"><main class="sheet"><h1>Ασκήσεις: Truthy vs Falsy, Exceptions, Functions</h1><div class="rule"></div><h2>Truthy vs Falsy</h2><section class="ex"><div class="ex-head"><span class="badge">1</span><p class="ex-text">Γράψτε ένα πρόγραμμα που ζητάει από τον χρήστη έναν αριθμό. Χρησιμοποιώντας τον ίδιο τον αριθμό ως συνθήκη ελέγχου, πείτε στον χρήστη αν λάβατε ως είσοδο τον αριθμό 0.</p></div></section><section class="ex"><div class="ex-head"><span class="badge">2</span><p class="ex-text">Γράψτε ένα πρόγραμμα που ζητάει από τον χρήστη ένα κείμενο. Χρησιμοποιώντας τον ίδιο το κείμενο ως συνθήκη ελέγχου, πείτε στον χρήστη αν λάβατε ως είσοδο την κενή συμβολοσειρά.</p></div></section><h2>Exceptions</h2><section class="ex"><div class="ex-head"><span class="badge">3</span><p class="ex-text">Στην 5η άσκηση του φυλλαδίου “Επαναληπτικές ασκήσεις σε ροές ελέγχου και βρόχους” σας ζητείται να φτιάξετε ένα κομπιουτεράκι. Τι θα γίνει όμως αν ο χρήστης του προγράμματος σας εισάγει κάποια τιμή που δεν αποτελεί αριθμό ή Χ; Αν διαιρέσει με το 0;<br>Καλείστε να αλλάξετε τον κώδικά σας ώστε να προστατεύεται από τις “χαζομάρες” που μπορεί να κάνει ο χρήστης στις παραπάνω περιπτώσεις. Πρέπει να εμφανίζει αντίστοιχο μήνυμα στον χρήστη και να μην τερματίζει απότομα το πρόγραμμα. Χρησιμοποιήστε τον μηχανισμό των εξαιρέσεων.</p></div></section><section class="ex"><div class="ex-head"><span class="badge">4</span><p class="ex-text"><span class="req">(!Χρειάζεται εμπειρία με λίστες)</span> Ζητήστε από τον χρήστη να σας δώσει τα στοιχεία μιας λίστας, χωρισμένα με κενά. Έπειτα ζητήστε του έναν αριθμό. Χρησιμοποιήστε αυτόν τον αριθμό ως δείκτη στη λίστα και εκτυπώστε το αντίστοιχο στοιχείο. Εάν ο δείκτης είναι εκτός ορίων, πρέπει να εμφανίζετε μήνυμα “εκτός ορίων”, αφού διαχειριστείτε το σφάλμα με τον μηχανισμό των εξαιρέσεων.</p></div></section><h2>Functions</h2><section class="ex"><div class="ex-head"><span class="badge">5</span><p class="ex-text">Φτιάξτε μια συνάρτηση που τυπώνει το μήνυμα “I love functions” όταν καλείται. Καλέστε τη και δείτε το μήνυμα να εκτυπώνεται.</p></div></section><section class="ex"><div class="ex-head"><span class="badge">6</span><p class="ex-text">Φτιάξτε μια συνάρτηση που δέχεται ως παράμετρο έναν αριθμό και εμφανίζει το άθροισμα του με το 2. Καλέστε την στο πρόγραμμα σας για τρεις διαφορετικές τιμές.</p></div></section><section class="ex"><div class="ex-head"><span class="badge">7</span><p class="ex-text">Φτιάξτε μια συνάρτηση που δέχεται ως παράμετρο έναν αριθμό και επιστρέφει το άθροισμα του με το 2. Καλέστε την στο πρόγραμμα σας, προσθέστε 4 στην τιμή που επιστρέφει και εμφανίστε το τελικό αποτέλεσμα.</p></div></section><section class="ex"><div class="ex-head"><span class="badge">8</span><p class="ex-text">Φτιάξτε μια συνάρτηση με όνομα safe_add που παράγει το άθροισμα δύο τιμών. Αν αυτές οι τιμές δε μπορούν να αθροιστούν (π.χ είναι string και float), πρέπει να επιστρέφει μήνυμα “Η συγκεκριμένη πράξη δεν είναι δυνατή” με τον μηχανισμό των εξαιρέσεων. Καλέστε την 3 φορές. Τις δύο πρώτες φορές πρέπει οι παράμετροι να είναι τέτοιες ώστε να εκτελεί κανονικά την πράξη. Την τρίτη φορά πρέπει να ενεργοποιείται ο μηχανισμός της εξαίρεσης.</p></div></section><section class="ex"><div class="ex-head"><span class="badge">9</span><p class="ex-text"><span class="req">(!Χρειάζεται εμπειρία με λίστες)</span> Φτιάξτε μια συνάρτηση η οποία δέχεται ως παράμετρο μια λίστα και προσθέτει στο τέλος της το string “I love lists”. Καλέστε τη για ένα παράδειγμα λίστας και εκτυπώστε το πριν και το μετά.</p></div></section><aside class="tip"><div class="tip-title">Hint:</div><p>H προσθήκη στοιχείου στο τέλος μιας λίστας my_list γίνεται με την εντολή<br>my_list.append(“στοιχείο”)</p></aside></main></body></html>

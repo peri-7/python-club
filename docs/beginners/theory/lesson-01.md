@@ -93,7 +93,7 @@ name = "Peter Parker"
 print(name, "is spiderman")
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 Peter Parker is spiderman
 ```
 
@@ -103,7 +103,7 @@ Peter Parker is spiderman
 print("6*7 =", 6*7)
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 6*7 = 42
 ```
 
@@ -113,7 +113,7 @@ print("6*7 =", 6*7)
 print(6+7)
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 13
 ```
 
@@ -121,7 +121,7 @@ print(6+7)
 print("spider"+"man")
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 spiderman
 ```
 

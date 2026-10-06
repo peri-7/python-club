@@ -273,7 +273,7 @@ for x in range(6):
     print(x)
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 0
 1
 2
@@ -302,7 +302,7 @@ for x in range(2, 6):
     print(x)
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 2
 3
 4
@@ -323,7 +323,7 @@ for x in range(2, 30, 3):
     print(x)
 ```
 
-```title="Αποτέλεσμα"
+```screen title="Αποτέλεσμα"
 2
 5
 8

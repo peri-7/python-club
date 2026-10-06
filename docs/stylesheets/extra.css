@@ -167,3 +167,25 @@
   font-family: "Comfortaa", "Nunito", sans-serif;
   color: var(--pc-heading);
 }
+
+/* ---------- παραδείγματα εξόδου (```screen) ----------
+   Ό,τι τυπώνει ο υπολογιστής: μπλε, όπως στα φυλλάδια.
+   Ό,τι πληκτρολογεί ο χρήστης ({{ }} στο Markdown → .screen-in): σκούρο και έντονο.
+   Η διαφορά είναι και στο πάχος, όχι μόνο στο χρώμα, για όσους δεν ξεχωρίζουν χρώματα.
+   Δες hooks/screen_examples.py. */
+.md-typeset .screen code {
+  color: var(--pc-blue);
+}
+
+.md-typeset .screen .screen-in {
+  color: var(--pc-ink);
+  font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .screen code {
+  color: var(--pc-sky);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .screen .screen-in {
+  color: #FFFFFF;
+}
