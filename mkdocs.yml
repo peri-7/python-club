@@ -113,6 +113,7 @@ nav:
           - 'Μάθημα 2': beginners/theory/lesson-02.md
       - Ασκήσεις:
           - 'Μάθημα 1': beginners/exercises/lesson-01.md
+          - 'Μάθημα 2': beginners/exercises/lesson-02.md
 
   - Προχωρημένοι:                              # <-- ΟΝΟΜΑ ΚΑΡΤΕΛΑΣ 2
       - advanced/index.md

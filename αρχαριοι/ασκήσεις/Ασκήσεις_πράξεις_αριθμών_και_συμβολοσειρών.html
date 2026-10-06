@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="el"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ασκήσεις σε πράξεις αριθμών και συμβολοσειρών</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>:root{--navy:#1c4170;--blue:#2b6cd9;--soft:#d0dff7;--muted:#8a93a3;--text:#2a2f36;--bg:#fff;--card:#fff;--out:#2323cc;--in:#222;--line:#cfd5de}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.html{--navy:#9cc0f5;--blue:#5b92ea;--soft:#2a3a55;--muted:#8f99aa;--text:#e3e7ee;--bg:#15181d;--card:#1c2027;--out:#8fa7ff;--in:#e8e8e8;--line:#3a414c}}
+:root[data-theme="dark"] body.html{--navy:#9cc0f5;--blue:#5b92ea;--soft:#2a3a55;--muted:#8f99aa;--text:#e3e7ee;--bg:#15181d;--card:#1c2027;--out:#8fa7ff;--in:#e8e8e8;--line:#3a414c}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Open Sans","Segoe UI",Arial,sans-serif;font-size:10.5pt;line-height:1.5}
+.sheet{max-width:820px;margin:0 auto}
+body.html .sheet{padding:32px 20px 48px}
+h1{font-family:Comfortaa,"Open Sans",sans-serif;font-weight:400;color:var(--navy);font-size:17pt;line-height:1.35;margin:0 0 4px}
+.rule{width:54px;height:3px;background:var(--blue);margin-bottom:22px}
+.ex{margin:0 0 14px;break-inside:avoid}
+.ex-head{display:flex;gap:10px;align-items:flex-start}
+.badge{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:9pt;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ex-text{margin:0}
+.ex-body{padding-left:32px}
+.lbl{color:var(--muted);font-size:8.5pt;margin:1px 0 4px}
+.out{border:1px solid var(--soft);border-left:4px solid var(--blue);border-radius:0 8px 8px 0;background:var(--card);padding:8px 16px;overflow-x:auto;max-width:100%}
+.out img{display:block;max-width:100%}
+.out pre{margin:0;font-family:"Courier New",Courier,"DejaVu Sans Mono",monospace;font-size:11.5pt;line-height:1.45;letter-spacing:.03em}
+.pr{color:var(--out)}.in{color:var(--in)}
+.tip{border:1.5px solid var(--blue);padding:14px 18px 16px;margin:18px 0 20px;break-inside:avoid;background:var(--card)}
+.tip-title{font-family:Comfortaa,"Open Sans",sans-serif;font-weight:700;color:var(--blue);font-size:10pt;margin-bottom:8px}
+.tip p{margin:0 0 12px}
+.tbl-wrap{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:rgba(43,108,217,.08);color:var(--navy);font-weight:600}
+.codeimg{display:block;max-width:100%}
+pre.code{margin:0;font-family:Menlo,Consolas,"DejaVu Sans Mono",monospace;font-size:11pt;line-height:1.5;white-space:pre}
+.c-var{color:#3a4a5a}.c-op{color:#d6337f}.c-num{color:#a7702a}.c-str{color:#d6337f}.c-bi{color:#a7702a}.c-fn{color:#2a8fd0}.c-p{color:#d6337f}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.html .c-var{color:#c9d3de}}
+@media print{body{font-size:10pt}}
+body.pdf .sheet{max-width:none}
+</style></head>
+<body class="html"><main class="sheet">
+<h1>Ασκήσεις σε πράξεις αριθμών και συμβολοσειρών</h1>
+<div class="rule"></div>
+
+<section class="ex">
+  <div class="ex-head"><span class="badge">1</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη 3 αριθμούς και εμφανίζει τον μέσο όρο τους.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">πρώτος αριθμός;</span><span class="in">6</span></div><div><span class="pr">δεύτερος αριθμός;</span><span class="in">7</span></div><div><span class="pr">τρίτος αριθμός;</span><span class="in">20</span></div><div><span class="pr">Ο μέσος όρος τους είναι 11.0</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">2</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη αριθμό λεπτών και εμφανίζει σε πόσες ώρες και πόσα λεπτά αντιστοιχεί .</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">λεπτά;</span><span class="in">75</span></div><div><span class="pr">1 : 15</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<aside class="tip">
+  <div class="tip-title">Extra tip!</div>
+  <p>Αλλαγή τύπου δεδομένων:<br>Μπορούμε να αλλάξουμε τον τύπο δεδομένων μιας τιμής, όπως φαίνεται στον παρακάτω πίνακα:</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>εντολή</th><th>λειτουργία</th><th>παράδειγμα χρήσης</th><th>αποτέλεσμα</th></tr></thead>
+    <tbody><tr><td>str()</td><td>μετατροπή σε string<br>(συμβολοσειρά)</td><td><pre class="code"><span class="c-var">a</span> <span class="c-op">=</span> <span class="c-num">24</span>
+<span class="c-var">b</span> <span class="c-op">=</span> <span class="c-str">&quot;hrs&quot;</span>
+<span class="c-var">a</span> <span class="c-op">=</span> <span class="c-bi">str</span><span class="c-p">(</span><span class="c-var">a</span><span class="c-p">)</span> <span class="c-op">+</span> <span class="c-var">b</span></pre></td><td>a = “24hrs”</td></tr><tr><td>int()</td><td>μετατροπή σε int<br>(ακέραιο αριθμό)</td><td><pre class="code"><span class="c-var">a</span> <span class="c-op">=</span> <span class="c-num">6.7</span>
+<span class="c-fn">print</span><span class="c-p">(</span><span class="c-bi">int</span><span class="c-p">(</span><span class="c-var">a</span><span class="c-p">))</span></pre></td><td>6</td></tr><tr><td>float()</td><td>μετατροπή σε float<br>(δεκαδικό αριθμό)</td><td><pre class="code"><span class="c-var">a</span> <span class="c-op">=</span> <span class="c-num">5</span>
+<span class="c-var">a</span> <span class="c-op">=</span> <span class="c-bi">float</span><span class="c-p">(</span><span class="c-var">a</span><span class="c-p">)</span></pre></td><td>5.0</td></tr></tbody>
+  </table></div>
+</aside>
+<section class="ex">
+  <div class="ex-head"><span class="badge">3</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη ένα ποσό σε ευρώ (με δεκαδικά) και εμφανίζει σε πόσα λεπτά του ευρώ αντιστοιχεί.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">ευρώ;</span><span class="in">4.20</span></div><div><span class="pr">420 λεπτά</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">4</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη το μήκος της πλευράς ενός τετραγώνου και εμφανίζει το εμβαδόν του. Λύστε αυτή την άσκηση με δύο τρόπους.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">πλευρά τετραγώνου;</span><span class="in">9</span></div><div><span class="pr">Το εμβαδόν του τετραγώνου είναι 81</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">5</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη δύο αριθμούς, μία βάση και έναν εκθέτη. Το πρόγραμμα εμφανίζει το αποτέλεσμα όταν υψώνεται ο πρώτος στη δύναμη του δεύτερου.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">βάση:</span><span class="in">2</span></div><div><span class="pr">εκθέτης:</span><span class="in">3</span></div><div><span class="pr">Ο αριθμός 2 στη δύναμη 3 δίνει 8</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">6</span><p class="ex-text">Οι δυνάμεις του Sauron έχουν φτάσει έξω από τα τείχη της Gondor! Τα ορκ είναι παραταγμένα σε δωδεκάδες, τα τρολ είναι παραταγμένα σε εικοσιτετράδες και οι άνθρωποι που έχουν συμμαχήσει με τον Sauron είναι παραταγμένοι σε σαραντάδες. Ο Legolas σας ζητάει να φτιάξετε ένα πρόγραμμα που υπολογίζει τον αριθμό των ορκ, των τρολ, των ανθρώπων αλλά και τον συνολικό αριθμό των εχθρών, αφού σας πει πόσες γραμμές κάθε φυλής βλέπει.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">σειρές ορκ:</span><span class="in">2</span></div><div><span class="pr">σειρές τρολ:</span><span class="in">3</span></div><div><span class="pr">σειρές ανθρώπων:</span><span class="in">5</span></div><div><span class="pr">24 ορκ</span><span class="in"></span></div><div><span class="pr">72 τρολ</span><span class="in"></span></div><div><span class="pr">200 ανθρωποι</span><span class="in"></span></div><div><span class="pr">296 εχθροί συνολικά</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">7</span><p class="ex-text">Βοηθήστε τη Barbie να φτιάξει το χρονοδιάγραμμα της καριέρας της, αφού μάθετε πόσα επαγγέλματα ονειρεύεται να ασκήσει. Εάν η Barbie σκοπεύει να αφιερώσει δύο εβδομάδες σε κάθε επάγγελμα, υπολογίστε σε πόσα έτη και πόσες ημέρες θα πάρει σύνταξη.<br><br>Fun fact: H Barbie έχει ασκήσει πάνω από 250 επαγγέλματα 🙂</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">επαγγέλματα:</span><span class="in">250</span></div><div><span class="pr">9 χρόνια και 215 ημέρες μέχρι τη σύνταξη</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">8</span><p class="ex-text">Ένα κατάστημα ζητά τη βοήθεια σας για να φτιάξει τον τιμοκατάλογο των εκπτώσεων. Σας δίνει την αρχική τιμή ενός προϊόντος και την έκπτωση (ποσοστό στα εκατό : %) . Εσείς πρέπει να εμφανίζετε τη νέα τιμή.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">τιμή:</span><span class="in">37</span></div><div><span class="pr">έκπτωση:</span><span class="in">26</span></div><div><span class="pr">νέα τιμή: 27.38</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<aside class="tip">
+  <div class="tip-title">Extra tip:</div>
+  <p>H εντολή round(αριθμός, αριθμός δεκαδικών ψηφιών) στρογγυλοποιεί μια τιμή στον πλησιέστερο αριθμό με τον ζητούμενο αριθμό δεκαδικών ψηφίων.<br>Αν δεν γράψουμε αριθμό δεκαδικών ψηφίων, η round() επιλέγει αυτόματα 0 δεκαδικά ψηφία.</p>
+  <div class="tbl-wrap"><table class="two">
+    <thead><tr><th>Παράδειγμα χρήσης</th><th>Έξοδος</th></tr></thead>
+    <tbody>
+      <tr><td><pre class="code"><span class="c-var">a</span> <span class="c-op">=</span> <span class="c-num">8.78</span>
+<span class="c-var">a</span> <span class="c-op">=</span> <span class="c-fn">round</span><span class="c-p">(</span><span class="c-var">a</span><span class="c-p">)</span>
+<span class="c-fn">print</span><span class="c-p">(</span><span class="c-var">a</span><span class="c-p">)</span></pre></td><td>9</td></tr>
+      <tr><td><pre class="code"><span class="c-var">a</span> <span class="c-op">=</span> <span class="c-num">9.8878787878</span>
+<span class="c-fn">print</span><span class="c-p">(</span><span class="c-fn">round</span><span class="c-p">(</span><span class="c-var">a</span><span class="c-p">,</span> <span class="c-num">2</span><span class="c-p">))</span></pre></td><td>9.89</td></tr>
+    </tbody>
+  </table></div>
+</aside>
+<section class="ex">
+  <div class="ex-head"><span class="badge">9</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη ένα ποσό σε ευρώ και εμφανίζει πόσα 50ευρα, 20ευρα, 10ευρα, 5ευρα και 1ευρα χρειάζονται για να φτιαχτεί το ποσό αυτό, αν θέλουμε να χρησιμοποιήσουμε όσο το δυνατόν περισσότερα χαρτονομίσματα μεγάλης αξίας. (Δηλαδή αν η είσοδος 200 ευρώ, μην πείτε 200 1ευρα…)</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">πόσα ευρώ;</span><span class="in">257</span></div><div><span class="pr">5 50ευρα</span><span class="in"></span></div><div><span class="pr">0 20ευρα</span><span class="in"></span></div><div><span class="pr">0 10ευρα</span><span class="in"></span></div><div><span class="pr">1 5ευρα</span><span class="in"></span></div><div><span class="pr">2 1ευρα</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">10</span><p class="ex-text">Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη την απόσταση ενός ταξιδιού (σε km) και την ταχύτητα (σε km/h) και υπολογίζει πόση ώρα θα χρειαστεί για να ολοκληρωθεί το ταξίδι (Εμφάνισε ώρες και λεπτά).</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">απόσταση (km):</span><span class="in">5</span></div><div><span class="pr">ταχύτητα (km/h):</span><span class="in">30</span></div><div><span class="pr">0:10</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">11</span><p class="ex-text">Σε ένα σενάριο αποκάλυψης, ένα ζόμπι δαγκώνει και μολύνει ακριβώς 3 ανθρώπους κάθε μέρα. Γράψε ένα πρόγραμμα που ζητάει από τον χρήστη τον αριθμό των ημερών που έχουν περάσει από το πρώτο κρούσμα και υπολογίζει πόσα ζόμπι έχουν δημιουργηθεί συνολικά μέχρι τότε.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">days:</span><span class="in">4</span></div><div><span class="pr">256 zombies</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+<section class="ex">
+  <div class="ex-head"><span class="badge">12</span><p class="ex-text">Σε ένα τραπεζικό σύστημα, κάθε χρήστης δημιουργεί έναν αριθμητικό κωδικό ασφαλείας για τον λογαριασμό του, δηλαδή έναν συνδυασμό ψηφίων από το 0 έως το 9 π.χ 1234.<br>Γράψτε ένα πρόγραμμα που, με είσοδο το μήκος του κωδικού ενός χρήστη, εμφανίζει τον αριθμό των πιθανών κωδικών, δηλαδή όλων των πιθανών συνδυασμών που μπορούμε να φτιάξουμε με τον συγκεκριμένο αριθμό ψηφίων.<br>Πρέπει επίσης να εμφανίζει πόσες ώρες, λεπτά και δευτερόλεπτα χρειάζεται το πολύ ένας χάκερ για να χακάρει τον συγκεκριμένο κωδικό, αν ο υπολογιστής του μπορεί να δοκιμάζει 1000 κωδικούς το δευτερόλεπτο.</p></div>
+  <div class="ex-body">
+    <div class="lbl">Παράδειγμα εξόδου:</div>
+    <div class="out"><pre><div><span class="pr">ψηφία:</span><span class="in">4</span></div><div><span class="pr">10000 πιθανά passwords</span><span class="in"></span></div><div><span class="pr">Ο κωδικός θα χακαριστεί το πολύ σε 0:0:10</span><span class="in"></span></div></pre></div>
+  </div>
+</section>
+</main></body></html>
