@@ -61,7 +61,7 @@
 Εμφανίστε ένα έλατο στην οθόνη. Το ύψος του πρέπει να το καθορίζει ο χρήστης.
 
 ```screen title="Επιθυμητή έξοδος"
-πόσο ψηλό θες να είναι το έλατο;6
+πόσο ψηλό θες να είναι το έλατο;{{6}}
 
     *
    ***
@@ -83,15 +83,15 @@
 ως πρώτο αριθμό το `X`. Σε αυτή την περίπτωση, εμφανίζει το μήνυμα `Exit`.
 
 ```screen title="Επιθυμητή έξοδος"
-πρώτος αριθμός:7
-τελεστής:+
-δεύτερος αριθμός:77
+πρώτος αριθμός:{{7}}
+τελεστής:{{+}}
+δεύτερος αριθμός:{{77}}
 84
-πρώτος αριθμός:8
-τελεστής:@
-δεύτερος αριθμός:6
+πρώτος αριθμός:{{8}}
+τελεστής:{{@}}
+δεύτερος αριθμός:{{6}}
 Άκυρος τελεστής
-πρώτος αριθμός:X
+πρώτος αριθμός:{{X}}
 Exit
 ```
 
@@ -127,11 +127,11 @@ Exit
 αμέσως να τερματίζει, εμφανίζοντας το μήνυμα `Exit`.
 
 ```screen title="Επιθυμητή έξοδος"
-A:True
-B:False
+A:{{True}}
+B:{{False}}
 True
-A:False
-B:aaaaaaaaaa
+A:{{False}}
+B:{{aaaaaaaaaa}}
 Exit
 ```
 
@@ -153,26 +153,26 @@ Exit
 διαθέσιμα σπίρτα.
 
 ```screen title="Επιθυμητή έξοδος"
-How many matches will you take?5
+How many matches will you take?{{5}}
 You can only take 1, 2 or 3 and no more than 21
-How many matches will you take?3
+How many matches will you take?{{3}}
 I will take 1
 17 matches remain
-How many matches will you take?2
+How many matches will you take?{{2}}
 I will take 2
 13 matches remain
-How many matches will you take?1
+How many matches will you take?{{1}}
 I will take 3
 9 matches remain
-How many matches will you take?3
+How many matches will you take?{{3}}
 I will take 1
 5 matches remain
-How many matches will you take?2
+How many matches will you take?{{2}}
 I will take 2
 1 matches remain
-How many matches will you take?2
+How many matches will you take?{{2}}
 You can only take 1, 2 or 3 and no more than 1
-How many matches will you take?1
+How many matches will you take?{{1}}
 You lost
 ```
 

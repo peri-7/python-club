@@ -12,7 +12,11 @@
   1. ελέγχει το Markdown και βγάζει warning (άρα το `mkdocs build --strict` αποτυγχάνει) όταν
      - ένα μπλοκ εξόδου (title με «έξοδ»/«εξόδ»/«Αποτέλεσμα») δεν είναι ```screen,
      - ένα ```screen έχει ασύζευκτα {{ / }},
-     - ένα «Παράδειγμα εξόδου» δεν έχει καμία είσοδο χρήστη σημειωμένη·
+     - ένα ```screen δεν έχει κανένα {{ }}, ενώ θα έπρεπε. «Θα έπρεπε» σημαίνει:
+       αν ακολουθεί αμέσως ένα ```python, ο κώδικας εκείνος καλεί input(·
+       αλλιώς, ο τίτλος του ή το κείμενο της ενότητας (από την τελευταία
+       επικεφαλίδα) μιλάει για χρήστη/είσοδο.
+       Αν ένα τέτοιο μπλοκ πράγματι δεν έχει είσοδο, γράψε ```screen no-input.
   2. στο HTML μετατρέπει το {{...}} σε <span class="screen-in">...</span>.
 """
 
@@ -24,7 +28,8 @@ log = logging.getLogger("mkdocs.hooks.screen_examples")
 FENCE = re.compile(r"^(?P<indent>[ \t]*)```(?P<info>[^`\n]*)$")
 TITLE = re.compile(r'title="([^"]*)"')
 OUTPUT_TITLE = re.compile(r"έξοδ|εξόδ|Αποτέλεσμα", re.IGNORECASE)
-NEEDS_INPUT_TITLE = re.compile(r"Παράδειγμα εξόδου|χρήστης")
+NEEDS_INPUT = re.compile(r"Παράδειγμα εξόδου|χρήστ|είσοδ|input\(", re.IGNORECASE)
+HEADING = re.compile(r"^#{1,6} ")
 
 # Το Pygments δεν ξέρει γλώσσα «screen», οπότε θα έχανε την κλάση. Γι' αυτό το
 # ```screen title="..." γίνεται ```{.text .screen title="..."} πριν το Markdown.
@@ -36,10 +41,17 @@ INPUT = re.compile(r"\{\{(.*?)\}\}")
 
 
 def _blocks(markdown):
-    """Δίνει (γραμμή, info, περιεχόμενο) για κάθε fenced μπλοκ."""
+    """Δίνει (γραμμή, info, περιεχόμενο, κείμενο ενότητας, προηγούμενο μπλοκ) για
+    κάθε fenced μπλοκ. Το προηγούμενο μπλοκ είναι (info, περιεχόμενο) αν απέχει
+    μόνο κενές γραμμές, αλλιώς None."""
+    prev, prev_end = None, -2
     lines = markdown.split("\n")
+    section = []
     i = 0
     while i < len(lines):
+        if HEADING.match(lines[i]):
+            section = []
+        section.append(lines[i])
         m = FENCE.match(lines[i])
         if m and m.group("info").strip():
             start, indent, info = i, m.group("indent"), m.group("info").strip()
@@ -48,13 +60,15 @@ def _blocks(markdown):
             while i < len(lines) and lines[i].strip() != "```":
                 body.append(lines[i][len(indent):])
                 i += 1
-            yield start + 1, info, "\n".join(body)
+            adjacent = prev if all(not l.strip() for l in lines[prev_end + 1:start]) else None
+            yield start + 1, info, "\n".join(body), "\n".join(section[:-1]), adjacent
+            prev, prev_end = (info, "\n".join(body)), i
         i += 1
 
 
 def on_page_markdown(markdown, page, **kwargs):
     src = page.file.src_uri
-    for line, info, body in _blocks(markdown):
+    for line, info, body, section, prev in _blocks(markdown):
         lang = info.split()[0] if not info.startswith("title=") else ""
         tm = TITLE.search(info)
         title = tm.group(1) if tm else ""
@@ -69,14 +83,23 @@ def on_page_markdown(markdown, page, **kwargs):
 
         if body.count("{{") != body.count("}}"):
             log.warning(f"{src}:{line}: ```screen με ασύζευκτα {{{{ / }}}}")
-        if NEEDS_INPUT_TITLE.search(title) and "{{" not in body:
+        if prev and prev[0].split()[0] == "python":
+            needs_input = "input(" in prev[1]
+        else:
+            needs_input = bool(NEEDS_INPUT.search(title + "\n" + section))
+        if "{{" not in body and "no-input" not in info.split() and needs_input:
             log.warning(
-                f'{src}:{line}: "{title}" χωρίς είσοδο χρήστη — σημείωσε ό,τι '
-                "πληκτρολογεί ο χρήστης με {{ }}"
+                f'{src}:{line}: "{title}" χωρίς είσοδο χρήστη, ενώ η ενότητα μιλάει '
+                "για χρήστη/είσοδο — σημείωσε ό,τι πληκτρολογεί ο χρήστης με {{ }} "
+                "(ή γράψε ```screen no-input αν πράγματι δεν υπάρχει)"
             )
     return SCREEN_FENCE.sub(
-        lambda m: f"{m.group(1)}```{{.text .screen {m.group(2) or ''}}}", markdown
+        lambda m: f"{m.group(1)}```{{.text .screen {_attrs(m.group(2))}}}", markdown
     )
+
+
+def _attrs(info):
+    return " ".join(w for w in (info or "").split(" ") if w != "no-input")
 
 
 def on_page_content(html, **kwargs):
