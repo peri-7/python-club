@@ -189,3 +189,10 @@
 [data-md-color-scheme="slate"] .md-typeset .screen .screen-in {
   color: #FFFFFF;
 }
+
+/* ---------- λογότυπο: κίτρινο φίδι ----------
+   Κίτρινο ώστε να ξεχωρίζει πάνω στη σκούρα μπλε κεφαλίδα και στα δύο θέματα.
+   Το ίδιο χρώμα έχει και το docs/images/favicon.svg. */
+.md-logo svg {
+  fill: #FACC15;
+}

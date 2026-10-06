@@ -20,6 +20,9 @@ site_dir: site
 theme:
   name: material
   language: el
+  icon:
+    logo: material/snake     # κίτρινο φίδι — το χρώμα είναι στο extra.css
+  favicon: images/favicon.svg  # το ίδιο φίδι, κίτρινο, για την καρτέλα του browser
   font:
     text: Nunito
     code: JetBrains Mono
