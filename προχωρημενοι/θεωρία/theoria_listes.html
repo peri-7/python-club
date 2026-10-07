@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Θεωρία: Λίστες στην Python</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+    --marker:#BFDCFF;
+    --kw:#B5179E;
+    --str:#C0392B;
+    --num:#C2410C;
+    --com:#6B7F99;
+  }
+
+  @page{
+    size:A4;
+    margin:14mm 14mm 13mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa",sans-serif;font-size:8.5pt;color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;color:var(--ink);
+    font-family:"Nunito","Open Sans",sans-serif;
+    font-size:10.2pt;line-height:1.48;
+  }
+
+  h1{
+    font-family:"Comfortaa",sans-serif;font-weight:700;
+    font-size:15pt;line-height:1.3;color:var(--navy);margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 14px;}
+
+  /* cards */
+  .card{
+    background:#ffffff;
+    border:1.6pt solid var(--edge);
+    border-radius:16px;
+    padding:11px 15px 13px;
+    margin:0 0 11px;
+  }
+  .card-head{display:table;width:100%;margin:0 0 8px;break-after:avoid;page-break-after:avoid;}
+  .card-head .badge{display:table-cell;width:34px;vertical-align:middle;}
+  .card-head .badge div{width:30px;height:30px;border-radius:10px;background:var(--blue);text-align:center;}
+  .card-head .badge img{width:18px;height:18px;margin-top:6px;}
+  .card-head h2{
+    display:table-cell;vertical-align:middle;
+    font-family:"Comfortaa",sans-serif;font-weight:700;font-size:12.6pt;
+    color:var(--navy);margin:0;line-height:1.25;padding-left:6px;
+  }
+
+  h3{
+    font-family:"Comfortaa",sans-serif;font-weight:700;font-size:10.4pt;
+    color:var(--blue);margin:11px 0 4px;
+    break-after:avoid;page-break-after:avoid;
+  }
+
+  p{margin:0 0 6px;}
+  p:last-child{margin-bottom:0;}
+  b,strong{font-weight:700;color:var(--navy);}
+  mark{background:var(--marker);color:var(--navy);font-weight:700;padding:0 2px;border-radius:3px;}
+
+  /* lists */
+  ul{list-style:none;margin:0 0 6px;padding:0;}
+  ul li{position:relative;padding-left:16px;margin:0 0 3px;}
+  ul.dash li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:2px;border-radius:1px;background:var(--sky);}
+  ul.dot li::before{content:"";position:absolute;left:1px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--blue);}
+  ul.tick li::before{content:"✓";position:absolute;left:0;top:0;color:var(--blue);font-weight:700;font-size:9.4pt;}
+  ul li .key{
+    font-family:"JetBrains Mono","DejaVu Sans Mono",monospace;
+    font-weight:700;color:var(--blue);
+  }
+
+  .caption{
+    font-family:"Comfortaa",sans-serif;font-size:8.6pt;color:var(--muted);
+    margin:8px 0 3px;break-after:avoid;page-break-after:avoid;
+  }
+
+  /* code + output */
+  .code{
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--blue);
+    border-radius:4px 10px 10px 4px;
+    padding:7px 11px;margin:0 0 6px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .out{
+    background:#FFFFFF;
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--sky);
+    border-radius:4px 10px 10px 4px;
+    padding:7px 11px;margin:0 0 7px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .out .lbl{
+    font-family:"Comfortaa",sans-serif;font-weight:700;font-size:8.4pt;
+    color:var(--muted);margin:0 0 3px;
+  }
+  pre{
+    font-family:"JetBrains Mono","DejaVu Sans Mono",monospace;
+    font-size:8.9pt;line-height:1.5;margin:0;white-space:pre-wrap;
+    color:#23405F;
+  }
+  .ann{
+    font-family:"JetBrains Mono","DejaVu Sans Mono",monospace;
+    font-size:8.4pt;color:var(--blue);font-weight:700;margin:0 0 1px;
+    white-space:pre-wrap;
+  }
+  .k{color:var(--kw);font-weight:700;}
+  .f{color:var(--blue);}
+  .s{color:var(--str);}
+  .n{color:var(--num);}
+  .c{color:var(--com);font-style:italic;}
+
+  /* syntax panel */
+  .syntax{
+    border:0.9pt solid var(--edge);border-radius:10px;overflow:hidden;
+    margin:4px 0 8px;break-inside:avoid;page-break-inside:avoid;
+  }
+  .syntax .head{
+    background:var(--mist-2);text-align:center;padding:2px 6px;
+    font-family:"Comfortaa",sans-serif;font-weight:700;font-size:8.8pt;color:var(--navy);
+  }
+  .syntax .body{background:var(--mist);padding:7px 11px;text-align:center;}
+  .syntax pre{text-align:center;font-size:9.6pt;}
+
+  /* index maps */
+  .idx{margin:4px 0 7px;break-inside:avoid;page-break-inside:avoid;}
+  .idx table{border-collapse:collapse;margin:0 auto 3px;}
+  .idx td{
+    padding:1px 9px;text-align:center;
+    font-family:"JetBrains Mono","DejaVu Sans Mono",monospace;font-size:8.8pt;
+  }
+  .idx tr.ix td{color:var(--blue);font-weight:700;font-size:8.4pt;}
+  .idx tr.it td{color:#23405F;border:0.9pt solid var(--edge);background:var(--mist);border-radius:4px;}
+  .idx .lbl{
+    font-family:"Comfortaa",sans-serif;font-weight:700;font-size:8pt;
+    color:var(--muted);text-align:center;margin:0 0 2px;
+  }
+  .idx .name{
+    font-family:"JetBrains Mono","DejaVu Sans Mono",monospace;font-size:8.6pt;
+    color:var(--muted);text-align:center;margin:2px 0 0;
+  }
+
+  /* tables */
+  table.t{
+    width:100%;border-collapse:collapse;margin:4px 0 7px;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  table.t th,table.t td{
+    border:0.9pt solid var(--edge);padding:5px 9px;text-align:left;vertical-align:top;
+  }
+  table.t th{
+    background:var(--mist-2);
+    font-family:"Comfortaa",sans-serif;font-weight:700;font-size:9.2pt;color:var(--navy);
+  }
+  table.t td.codecell{width:58%;background:#FBFDFF;}
+  table.t td.mono{
+    font-family:"JetBrains Mono","DejaVu Sans Mono",monospace;
+    font-size:8.9pt;color:var(--navy);white-space:pre-wrap;
+  }
+  table.t td pre{font-size:8.6pt;}
+
+  /* note */
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;margin:8px 0;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+  .note p + p{margin-top:5px;}
+
+</style>
+</head>
+<body>
+<h1>Θεωρία: Λίστες στην Python</h1>
+<div class="rule"></div>
+
+<!-- 1 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik04IDRINmEyIDIgMCAwIDAtMiAydjEyYTIgMiAwIDAgMCAyIDJoMiIvPjxwYXRoIGQ9Ik0xNiA0aDJhMiAyIDAgMCAxIDIgMnYxMmEyIDIgMCAwIDEtMiAyaC0yIi8+PHBhdGggZD0iTTkgMTJoNiIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Εισαγωγή στις Λίστες</h2>
+  </div>
+
+  <p>Οι λίστες αποτελούν τύπο δεδομένων της Python.</p>
+  <p>Αντιστοιχίζουν μια σειρά δεδομένων σε μια μεταβλητή.</p>
+  <p>Όταν ορίζουμε μια λίστα, βάζουμε τα δεδομένα σε αγκύλες και τα χωρίζουμε με κόμματα.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>my_list = [<span class="s">&quot;yes&quot;</span>, <span class="s">&quot;no&quot;</span>, <span class="s">&quot;maybe&quot;</span>]</pre></div>
+
+  <p>Τα δεδομένα εντός μιας λίστας μπορεί να ανήκουν σε οποιοδήποτε τύπο.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>random_list = [<span class="s">&quot;pancakes&quot;</span>, <span class="n">8988676767</span>, <span class="n">9.44</span>, <span class="k">False</span>]</pre></div>
+
+  <ul class="dash">
+    <li>Ορίζουμε μια κενή λίστα, δηλαδή μια λίστα που δεν περιέχει στοιχεία, με αγκύλες [ ].</li>
+  </ul>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>my_empty_list = []</pre></div>
+</section>
+
+<!-- 2 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjIiIHk9IjgiIHdpZHRoPSIyMCIgaGVpZ2h0PSI4IiByeD0iMiIvPjxwYXRoIGQ9Ik03IDh2M00xMiA4djRNMTcgOHYzIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Μέγεθος της λίστας – length</h2>
+  </div>
+
+  <p>Ο αριθμός των στοιχείων μίας λίστας είναι το μέγεθός της. Μπορούμε να υπολογίσουμε αυτόν τον αριθμό χρησιμοποιώντας τη συνάρτηση <b>len()</b>.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+<span class="f">print</span>(<span class="f">len</span>(fruit_basket))</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>3</pre></div>
+</section>
+
+<!-- 3 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDloMTZNNCAxNWgxNiIvPjxwYXRoIGQ9Ik0xMCAzTDggMjFNMTYgM2wtMiAxOCIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Προσπέλαση στοιχείων - Indexing</h2>
+  </div>
+
+  <p>Μπορούμε να έχουμε πρόσβαση στα στοιχεία μίας λίστας χρησιμοποιώντας δείκτες (indexes) μαζί με το όνομα της λίστας.</p>
+  <p>Οι δείκτες είναι απλά ένα νούμερο που μας δείχνει την θέση του στοιχείου στη λίστα, η αρίθμηση αυτή ξεκινάει από το 0, όχι από το 1. Ας δούμε αναλυτικά για το προηγούμενο παράδειγμα λίστας που δημιουργήσαμε:</p>
+
+  <div class="idx">
+    <p class="lbl">Indexes</p>
+    <table>
+      <tr class="ix"><td>0</td><td>1</td><td>2</td></tr>
+      <tr class="it"><td>"apple"</td><td>"banana"</td><td>"cherry"</td></tr>
+    </table>
+    <p class="name">fruit_basket = ["apple", "banana", "cherry"]</p>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>ΠΡΟΣΟΧΗ:</b> Η αρίθμηση ξεκινά από το μηδέν!</p></div>
+  </div>
+
+  <p>Προσοχή, βλέπουμε ότι οι δείκτες ξεκινάνε από το 0 άρα αυτό που βλέπουμε ως δεύτερο στοιχείο στην λίστα θα έχει index 1, το τρίτο 2 κλπ, δηλαδή ένα μικρότερο από αυτό που αυθόρμητα θα σκεφτόμασταν.</p>
+
+  <p>Άρα για να έχουμε πρόσβαση στα στοιχεία της λίστας “apple”, “banana”, “cherry” χρειάζεται να χρησιμοποιήσουμε τους δείκτες τους μέσα στην λίστα:</p>
+  <ul class="dot">
+    <li>“apple” <span class="key">fruit_basket[0]</span></li>
+    <li>“banana” <span class="key">fruit_basket[1]</span></li>
+    <li>“cherry” <span class="key">fruit_basket[2]</span></li>
+  </ul>
+
+  <ul class="dash">
+    <li>Τα δεδομένα είναι αριθμημένα. Μπορούμε να αποκτήσουμε πρόσβαση σε αυτά μέσω του αριθμητικού τους “δείκτη”, γράφοντας το όνομα της λίστας και τον αριθμό του στοιχείου</li>
+  </ul>
+
+  <table class="t">
+    <tr><th>Πρόγραμμα</th><th>Έξοδος</th></tr>
+    <tr>
+      <td class="codecell"><pre><span class="f">print</span>(random_list)</pre></td>
+      <td class="mono">['pancakes', 8988676767, 9.44, False]</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre><span class="f">print</span>(random_list[<span class="n">0</span>])</pre></td>
+      <td class="mono">pancakes</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre>my_favorite_number = random_list[<span class="n">2</span>]
+<span class="f">print</span>(my_favorite_number)</pre></td>
+      <td class="mono">9.44</td>
+    </tr>
+  </table>
+
+  <h3>Αρνητικοί δείκτες</h3>
+  <p>Μπορούμε να χρησιμοποιήσουμε αρνητικούς δείκτες για να προσπελάσουμε τα στοιχεία της λίστας από το τέλος της λίστας:</p>
+
+  <div class="idx">
+    <p class="lbl">Indexes</p>
+    <table>
+      <tr class="ix"><td>-3</td><td>-2</td><td>-1</td></tr>
+      <tr class="it"><td>"apple"</td><td>"banana"</td><td>"cherry"</td></tr>
+    </table>
+    <p class="name">fruit_basket = ["apple", "banana", "cherry"]</p>
+  </div>
+
+  <ul class="dot">
+    <li>“cherry” <span class="key">fruit_basket[-1]</span> // 1ο στοιχείο από το τέλος</li>
+    <li>“banana” <span class="key">fruit_basket[-2]</span> // 2ο στοιχείο από το τέλος</li>
+    <li>“apple” <span class="key">fruit_basket[-3]</span> // 3ο στοιχείο από το τέλος</li>
+  </ul>
+
+  <ul class="dash">
+    <li>Τα στοιχεία αριθμούνται και από το τέλος προς την αρχή.</li>
+  </ul>
+
+  <table class="t">
+    <tr><th>Πρόγραμμα</th><th>Έξοδος</th></tr>
+    <tr>
+      <td class="codecell"><pre><span class="f">print</span>(random_list[-<span class="n">2</span>])</pre></td>
+      <td class="mono">9.44</td>
+    </tr>
+  </table>
+</section>
+
+<!-- 4 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSIyLjQiLz48Y2lyY2xlIGN4PSI2IiBjeT0iMTgiIHI9IjIuNCIvPjxwYXRoIGQ9Ik04IDcuNUwyMCAxOCIvPjxwYXRoIGQ9Ik04IDE2LjVMMjAgNiIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Προσπέλαση στοιχείων - Slicing</h2>
+  </div>
+
+  <p>Μπορούμε να έχουμε πρόσβαση σε ολόκληρο τμήμα της λίστας χρησιμοποιώντας τους δείκτες.</p>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>my_list[start:end:step]</pre></div>
+  </div>
+
+  <ul class="dash">
+    <li><span class="key">start</span>: από ποια θέση ξεκινάμε</li>
+    <li><span class="key">end</span>: έως ποια θέση (δεν συμπεριλαμβάνεται στην υπολίστα που επιστρέφεται!)</li>
+    <li><span class="key">step</span>: πόσα βήματα να κάνουμε για το επόμενο στοιχείο</li>
+  </ul>
+
+  <p>Αν παραλείψεις κάποιο από αυτά, παίρνει προεπιλεγμένη τιμή.</p>
+  <ul class="tick">
+    <li>Αν αφήσουμε το start κενό → ξεκινάει από την αρχή της λίστας</li>
+    <li>Αν αφήσουμε το end κενό → φτάνει έως το τέλος</li>
+    <li>Αν αφήσουμε και τα δύο κενά: my_list[:] → παίρνουμε ολόκληρη τη λίστα.</li>
+    <li>Αν αφήσουμε το step κενό → παίρνει την τιμή 1, δηλαδή επιστρέφει συνεχόμενα στοιχεία</li>
+    <li>Μπορούμε επίσης να χρησιμοποιούμε αρνητικούς δείκτες (π.χ. -1, -2) για να μετράμε από το τέλος.</li>
+  </ul>
+
+  <h3>Παραδείγματα</h3>
+
+  <div class="idx">
+    <p class="lbl">Indexes</p>
+    <table>
+      <tr class="ix"><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+      <tr class="it"><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+    </table>
+    <p class="name">nums = [1, 2, 3, 4, 5, 6]</p>
+  </div>
+
+  <h3>Παράδειγμα 1 — Από θέση start έως end:</h3>
+  <div class="code"><pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="f">print</span>(nums[<span class="n">2</span>:<span class="n">5</span>])    <span class="c"># από το στοιχείο στην θέση 2 έως πριν τη θέση 5 (2 : 5 : _)</span></pre></div>
+  <div class="out"><p class="lbl">Output:</p><p class="ann">2   3   4</p><pre>[3, 4, 5]</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Εδώ βλέπουμε πως ενώ επιλέξαμε end=5 το στοιχείο στη θέση 5 (nums[5]-&gt; 6) δεν επιστρέφεται, το τελευταίο στοιχείο που επιστρέφεται είναι αυτό στη θέση 4 (nums[4]-&gt; 5), γιατί το end έως ποια θέση, αυτή η θέση δεν επιστέφεται, φτάνουμε μέχρι την προηγούμενη.</p></div>
+  </div>
+
+  <h3>Παράδειγμα 2 — Από την αρχή έως θέση end:</h3>
+  <div class="code"><pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="f">print</span>(nums[:<span class="n">4</span>])    <span class="c"># παραλείψαμε αρχή και step (_ : 4 : _)</span></pre></div>
+  <div class="out"><p class="lbl">Output:</p><p class="ann">0   1   2   3</p><pre>[1, 2, 3, 4]    <span class="c"># επιστέφουμε από θέση 0 έως και την θέση 3</span></pre></div>
+
+  <h3>Παράδειγμα 3 — Από θέση start έως το τέλος:</h3>
+  <div class="code"><pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="f">print</span>(nums[<span class="n">3</span>:])    <span class="c"># παραλείψαμε τέλος και step  (3:_:_)</span></pre></div>
+  <div class="out"><p class="lbl">Output:</p><p class="ann">3   4   5</p><pre>[4, 5, 6]</pre></div>
+
+  <h3>Παράδειγμα 4 — Χρήση step (βήμα):</h3>
+  <div class="code"><pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="f">print</span>(nums[::<span class="n">2</span>])    <span class="c"># από αρχή έως τέλος παίρνω κάθε 2ο στοιχείο</span></pre></div>
+  <div class="out"><p class="lbl">Output:</p><p class="ann">0   2   4</p><pre>[1, 3, 5]</pre></div>
+
+  <h3>Παράδειγμα 5 — Αρνητικοί δείκτες:</h3>
+  <div class="code"><pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="f">print</span>(nums[-<span class="n">3</span>:-<span class="n">1</span>])    <span class="c"># από τέλος έως τρίτο στοιχείο από το τέλος</span></pre></div>
+  <div class="out"><p class="lbl">Output:</p><p class="ann">-3   -2</p><pre>[4, 5]</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Εδώ βλέπουμε πως και για τους αρνητικούς δείκτες, δεν επιστρέφουμε την θέση -1 (τελευταίο στοιχείο) αλλά μια θέση πριν από αυτήν (-2).</p></div>
+  </div>
+
+  <h3>Παράδειγμα 6 — Αντιστροφή λίστας με slicing:</h3>
+  <div class="code"><pre>nums = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>, <span class="n">6</span>]
+<span class="f">print</span>(nums[::-<span class="n">1</span>])    <span class="c"># (_:_:-1)</span></pre></div>
+  <div class="out"><p class="lbl">Output:</p><p class="ann">-1 -2 -3 -4 -5 -6</p><pre>[6, 5, 4, 3, 2, 1]</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Όταν χρησιμοποιούμε αρνητικό step χρησιμοποιούμε το αντίστοιχο θετικό step (π.χ. 1) απλά ξεκινώντας από το τέλος της λίστας.</p></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjYiLz48cGF0aCBkPSJNMjAgMjBsLTQuNS00LjUiLz48L3N2Zz4=" alt=""></div></div>
+    <h2>Έλεγχος αν ένα στοιχείο υπάρχει στη λίστα</h2>
+  </div>
+
+  <p>Μπορούμε να χρησιμοποιήσουμε το keyword <b>in</b> για να ελέγξουμε εάν κάποιο συγκεκριμένο στοιχείο περιέχεται σε μια λίστα.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+<span class="k">if</span> <span class="s">&quot;apple&quot;</span> <span class="k">in</span> fruit_basket:
+  <span class="f">print</span>(<span class="s">&quot;Yes, &#x27;apple&#x27; is in the fruits list&quot;</span>)</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Με το keyword in δημιουργούμε μια συνθήκη που μπορούμε να τοποθετήσουμε μέσα στο if statement.</p></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDIwaDRsMTEtMTFhMi4xIDIuMSAwIDAgMC0zLTNMNSAxN3oiLz48cGF0aCBkPSJNMTQuNSA2LjVsMyAzIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Αλλαγή στοιχείων μιας λίστας</h2>
+  </div>
+
+  <p>Στις λίστες μπορούμε να τροποποιήσουμε στοιχεία, χρησιμοποιώντας το index του στοιχείου και τον τελεστή της ανάθεσης (=).</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket[<span class="n">1</span>] = <span class="s">&quot;strawberry&quot;</span>    <span class="c"># αλλαγή του στοιχείου στη θέση 1 σε “strawberry”</span>
+                                  <span class="c"># “banana” 🔄 “strawberry”</span>
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'strawberry', 'cherry']</pre></div>
+
+  <p>Μπορούμε επίσης να αλλάξουμε περισσότερα από ένα στοιχεία ταυτόχρονα, χρησιμοποιώντας slicing.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="idx">
+    <p class="lbl">Indexes</p>
+    <table>
+      <tr class="ix"><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+      <tr class="it"><td>"apple"</td><td>"banana"</td><td>"cherry"</td><td>"orange"</td><td>"kiwi"</td><td>"mango"</td></tr>
+    </table>
+  </div>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>, <span class="s">&quot;orange&quot;</span>, <span class="s">&quot;kiwi&quot;</span>, <span class="s">&quot;mango&quot;</span>]
+fruit_basket[<span class="n">1</span>:<span class="n">3</span>] = [<span class="s">&quot;strawberry&quot;</span>, <span class="s">&quot;watermelon&quot;</span>]    <span class="c"># αλλαγή των στοιχείων 1 έως 3 (1,2)</span>
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'strawberry', 'watermelon', 'orange', 'kiwi', 'mango']</pre></div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p>Προσοχή, τα νέα στοιχεία “strawberry” και “watermelon” τα δίνουμε σε μορφή λίστας: [“strawberry”, “watermelon”]</p></div>
+  </div>
+
+  <h3>Εάν το διάστημα της λίστας που ορίσαμε είναι μικρότερο από τα στοιχεία που δίνουμε:</h3>
+  <div class="idx">
+    <p class="lbl">Indexes</p>
+    <table>
+      <tr class="ix"><td>0</td><td>1</td><td>2</td></tr>
+      <tr class="it"><td>"apple"</td><td>"banana"</td><td>"cherry"</td></tr>
+    </table>
+  </div>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket[<span class="n">1</span>:<span class="n">2</span>] = [<span class="s">&quot;strawberry&quot;</span>, <span class="s">&quot;watermelon&quot;</span>]
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'strawberry', 'watermelon', 'cherry']</pre></div>
+
+  <p>Δίνουμε διάστημα ενός στοιχείου στην λίστα (θέση 1) και 2 νέα στοιχεία. Η Python στη θέση που ορίσαμε (θέση1) θα κάνει τις αλλαγές “banana”   “strawberry” και ύστερα θα προσθέσει τα περισσευούμενα στοιχεία “watermelon” . Τα στοιχεία που ήταν εκτός του διαστήματος αλλαγής θα μετακινηθούν αντίστοιχα αλλά δεν θα αλλάξουν.</p>
+
+  <div class="out"><pre>['apple', 'strawberry', 'watermelon', 'cherry']</pre><p class="ann">  Θέση 0           νέο!       θέση 3</p></div>
+
+  <h3>Εάν το διάστημα της λίστας που ορίσαμε είναι μεγαλύτερο από τα στοιχεία που δίνουμε:</h3>
+  <div class="idx">
+    <p class="lbl">Indexes</p>
+    <table>
+      <tr class="ix"><td>0</td><td>1</td><td>2</td></tr>
+      <tr class="it"><td>"apple"</td><td>"banana"</td><td>"cherry"</td></tr>
+    </table>
+  </div>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket[<span class="n">1</span>:<span class="n">3</span>] = [<span class="s">&quot;watermelon&quot;</span>]
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'watermelon']</pre></div>
+
+  <p>Δίνουμε διάστημα δύο στοιχείων στην λίστα (θέση 1 και 2) και 1 νέο στοιχείο. Η Python θα διαγράψει τα στοιχεία για τα οποία δεν έχουμε ορίσει την νέα τιμή. Συγκεκριμένα, στη θέση1 θα κάνει την αλλαγή “banana”   “watermelon”, αφού υπάρχει η νέα τιμή, και ύστερα θα διαγράψει τη λέξη στη θέση 2 για την οποία δεν έχουμε νέα τιμή.</p>
+
+  <div class="out"><pre>['apple', 'banana', 'cherry']   ➡   ['apple', 'watermelon']</pre></div>
+</section>
+
+<!-- 7 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjguNSIvPjxwYXRoIGQ9Ik0xMiA4djhNOCAxMmg4Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Εισαγωγή νέων στοιχείων σε λίστα</h2>
+  </div>
+
+  <h3>Append()</h3>
+  <p>Χρησιμοποιείται για να προσθέσουμε ένα νέο στοιχείο στο τέλος της λίστας.</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>fruit_basket. <span class="f">append</span>(new_item)</pre></div>
+  </div>
+  <p>Μέσα στην παρένθεση βάζουμε το νέο στοιχείο που θέλουμε να προστεθεί.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket.<span class="f">append</span>(<span class="s">&quot;orange&quot;</span>)
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'banana', 'cherry', 'orange']</pre></div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p>Δεν μπορούμε να χρησιμοποιήσουμε την συνάρτηση append() για να προσθέσουμε παραπάνω από ένα στοιχείο στην λίστα: <span class="key">fruit_basket.append("orange", “lemon”)</span></p></div>
+  </div>
+
+  <h3>Insert()</h3>
+  <p>Χρησιμοποιείται για να προσθέσουμε ένα νέο στοιχείο σε συγκεκριμένη θέση (index).</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>fruit_basket. <span class="f">insert</span>(<span class="f">index</span>, new_item)</pre></div>
+  </div>
+  <p>Μέσα στην παρένθεση δίνουμε δύο ορίσματα, πρώτο το index στο οποίο θα προστεθεί το νέο στοιχείο και δεύτερο το νέο στοιχείο που θέλουμε να προστεθεί.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket.<span class="f">insert</span>(<span class="n">1</span>, <span class="s">&quot;orange&quot;</span>)
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><p class="ann">  0         1          2          3</p><pre>['apple', 'orange', 'banana', 'cherry']</pre></div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p>Δεν μπορούμε να χρησιμοποιήσουμε την συνάρτηση insert() για να προσθέσουμε παραπάνω από ένα στοιχείο στην λίστα: <span class="key">fruit_basket.insert(1, "orange", “lemon”)</span></p></div>
+  </div>
+
+  <h3>Extend()</h3>
+  <p>Η συνάρτηση extend() χρησιμοποιείται όταν θέλουμε να προσθέσουμε πολλά στοιχεία σε μια λίστα με μία μόνο κίνηση.</p>
+  <p>Πρακτικά, κάνει append κάθε στοιχείο από μια άλλη λίστα</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>fruit_basket. <span class="f">extend</span>(new_list)</pre></div>
+  </div>
+  <p>Μέσα στην παρένθεση βάζουμε το νέα λίστα που θέλουμε να προστεθεί.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+newlist = [<span class="s">&quot;mango&quot;</span>, <span class="s">&quot;pineapple&quot;</span>, <span class="s">&quot;papaya&quot;</span>]
+fruit_basket.<span class="f">extend</span>(newlist)
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'banana', 'cherry', 'mango', 'pineapple', 'papaya']</pre></div>
+
+  <p>Το ίδιο ακριβώς μπορούμε να κάνουμε χρησιμοποιώντας τον τελεστή ‘+’, για να προσθέσουμε δύο λίστες.</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+newlist = [<span class="s">&quot;mango&quot;</span>, <span class="s">&quot;pineapple&quot;</span>, <span class="s">&quot;papaya&quot;</span>]
+updatedlist = fruit_basket + newlist
+
+<span class="f">print</span>(updatedlist)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'banana', 'cherry', 'mango', 'pineapple', 'papaya']</pre></div>
+</section>
+
+<!-- 8 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDdoMTYiLz48cGF0aCBkPSJNOSA3VjVoNnYyIi8+PHBhdGggZD0iTTYgN2wxIDEzaDEwbDEtMTMiLz48cGF0aCBkPSJNMTAgMTF2Nk0xNCAxMXY2Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Διαγραφή στοιχείων από λίστα</h2>
+  </div>
+
+  <h3>remove()</h3>
+  <p>Η μέθοδος remove() αφαιρεί το πρώτο στοιχείο της λίστας που έχει την τιμή που της δίνουμε.</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>fruit_basket. <span class="f">remove</span>(item)</pre></div>
+  </div>
+  <p>Μέσα στην παρένθεση βάζουμε το στοιχείο που θέλουμε να διαγραφεί.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket.<span class="f">remove</span>(<span class="s">“banana”</span>)
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'cherry']</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Αν υπάρχουν πολλαπλές εμφανίσεις του ίδιου στοιχείου, η remove() αφαιρεί μόνο την πρώτη.</p></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;kiwi&quot;</span>]
+fruit_basket.<span class="f">remove</span>(<span class="s">&quot;banana&quot;</span>)
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'cherry', 'banana', 'kiwi']</pre></div>
+  <p>Το 2ο στοιχείο “banana”  παρέμεινε στην τελική λίστα.</p>
+
+  <h3>pop()</h3>
+  <p>Η μέθοδος pop() αφαιρεί το στοιχείο στη θέση (index) που της δίνουμε.</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>fruit_basket. <span class="f">pop</span>(<span class="f">index</span>)</pre></div>
+  </div>
+  <p>Μέσα στην παρένθεση βάζουμε το index του στοιχείου που θέλουμε να διαγραφεί.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket.<span class="f">pop</span>(<span class="n">1</span>)    <span class="c"># διαγραφή του fruit_basket[1]</span>
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'cherry']</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Αν δεν δώσουμε index, η pop() αφαιρεί το τελευταίο στοιχείο της λίστας.</p></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket.<span class="f">pop</span>()
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'banana']</pre></div>
+
+  <h3>del</h3>
+  <p>Το keyword del μπορεί να χρησιμοποιηθεί για να διαγράψει ένα στοιχείο σε συγκεκριμένη θέση ή ακόμη και ολόκληρη τη λίστα.</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">del</span> fruit_basket[<span class="f">index</span>]    <span class="c"># διαγραφή ενός στοιχείου της λίστας</span>
+<span class="k">del</span> fruit_basket           <span class="c"># διαγραφή όλης της λίστας</span></pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+<span class="k">del</span> fruit_basket[<span class="n">0</span>]    <span class="c"># διαγραφή του fruit_basket[0]</span>
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['banana', 'cherry']</pre></div>
+
+  <h3>clear()</h3>
+  <p>Η μέθοδος clear() αδειάζει τη λίστα, αφήνοντάς την κενή, αλλά χωρίς να τη διαγράψει. Δηλαδή, σε α;ντίθεση με την εντολή del, μετά το  clear μπορώ να προσθέσω νέα στοιχεία στην λίστα (π.χ. με append() ).</p>
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>fruit_basket.<span class="f">clear</span>()</pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket.<span class="f">clear</span>()
+
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>[]</pre></div>
+  <p>Η λίστα εξακολουθεί να υπάρχει, αλλά δεν έχει πια περιεχόμενο.</p>
+</section>
+
+<!-- 9 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgcng9IjIiLz48cGF0aCBkPSJNMTYgOFY2YTIgMiAwIDAgMC0yLTJINmEyIDIgMCAwIDAtMiAydjhhMiAyIDAgMCAwIDIgMmgyIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Αντιγραφή λίστας</h2>
+  </div>
+
+  <p>Δεν μπορούμε να αντιγράψουμε το περιεχόμενο της λίστας fruit_basket στην fruit_basket2 γράφοντας:</p>
+  <div class="code"><pre>fruit_basket2 = fruit_basket</pre></div>
+
+  <p>Με αυτή τη γραμμή δεν δημιουργούμε νέα λίστα. Αντίθετα, δημιουργούμε ένα δεύτερο όνομα (reference) που δείχνει στην ίδια λίστα στη μνήμη.</p>
+  <p>Αυτό σημαίνει ότι:</p>
+  <ul class="tick">
+    <li>οι δύο μεταβλητές δείχνουν στο ίδιο αντικείμενο</li>
+    <li>οποιαδήποτε αλλαγή κάνουμε στη μία λίστα θα εμφανιστεί και στην άλλη</li>
+    <li>οι λίστες δεν είναι πλέον ανεξάρτητες μεταξύ τους</li>
+  </ul>
+  <p>Αυτό συνήθως δεν είναι επιθυμητό, γιατί θέλουμε η κάθε λίστα να μπορεί να αλλάζει χωρίς να επηρεάζει την άλλη.</p>
+  <p>Για να αντιγράψουμε το περιεχόμενο μιας λίστας χρησιμοποιούμε την συνάρτηση copy().</p>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>newlist = oldlist.<span class="f">copy</span>()</pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+fruit_basket2 = fruit_basket.<span class="f">copy</span>()
+<span class="f">print</span>(fruit_basket2)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'banana', 'cherry']</pre></div>
+</section>
+
+<!-- 10 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDEyYTggOCAwIDAgMSA4LTggOCA4IDAgMCAxIDcgNCIvPjxwYXRoIGQ9Ik0yMCAxMmE4IDggMCAwIDEtOCA4IDggOCAwIDAgMS03LTQiLz48cGF0aCBkPSJNMTkgNHY0aC00Ii8+PHBhdGggZD0iTTUgMjB2LTRoNCIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Επανάληψη (Loop) μέσα από μια λίστα</h2>
+  </div>
+
+  <p>Η επανάληψη είναι πολύ χρήσιμη όταν θέλουμε να επεξεργαστούμε ή να εμφανίσουμε κάθε στοιχείο της λίστας.</p>
+
+  <h3>Loop με for – Εμφάνιση στοιχείων ένα προς ένα</h3>
+  <p>Μπορούμε να χρησιμοποιήσουμε for loop για να προσπελάσουμε τα στοιχεία μια λίστας.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+<span class="k">for</span> x <span class="k">in</span> fruit_basket:
+    <span class="f">print</span>(x)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>apple
+banana
+cherry</pre></div>
+
+  <p>Αυτό, όπως βλέπουμε, θα εμφανίσει κάθε στοιχείο της λίστας σε ξεχωριστή γραμμή.</p>
+  <p>Μπορούμε την παραπάνω εντολή να την γράψουμε σε μια γραμμή ως εξής:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+[<span class="f">print</span>(x) <span class="k">for</span> x <span class="k">in</span> fruit_basket]</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>apple
+banana
+cherry</pre></div>
+
+  <h3>Loop με δείκτες (index numbers)</h3>
+  <p>Μπορούμε να κάνουμε το ίδιο πράγμα χρησιμοποιώντας τα indexes της λίστας για να προσπελάσουμε τα στοιχεία της. Θα χρησιμοποιήσουμε τις συναρτήσεις range() και len().</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+<span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(<span class="f">len</span>(fruit_basket)):
+    <span class="f">print</span>(fruit_basket[i])</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>apple
+banana
+cherry</pre></div>
+
+  <p>Στην ουσία εδώ κάνουμε μια προσπέλαση με indexes π.χ., print(fruit_basket[0]) και για να βρούμε τον αριθμό των επαναλήψεων που θα εκτελέσουμε και θα τοποθετήσουμε μέσα στο range χρησιμοποιούμε την συνάρτηση len(). Άρα το range(len(fruit_basket)) θα επιστρέψει τιμές από το 0 έως και το len(fruit_basket)-1 που είναι όλα τα Indexes της λίστας άρα θα την προσπελάσει ολόκληρη.</p>
+
+  <h3>Loop με while</h3>
+  <p>Αντίστοιχα, για την προσπέλαση μια λίστας μέσω indexes μπορούμε να χρησιμοποιήσουμε while loop.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;apple&quot;</span>, <span class="s">&quot;banana&quot;</span>, <span class="s">&quot;cherry&quot;</span>]
+i = <span class="n">0</span>
+<span class="k">while</span> i &lt; <span class="f">len</span>(fruit_basket):
+    <span class="f">print</span>(fruit_basket[i])
+    i = i + <span class="n">1</span>   <span class="c"># αύξηση του index, αλλιώς θα έχουμε infinite loop</span></pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>apple
+banana
+cherry</pre></div>
+
+  <p>Το while σε αυτή την περίπτωση κάνει το ίδιο πράγμα με το for, αλλά μας δίνει περισσότερο έλεγχο.</p>
+</section>
+
+<!-- 11 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik03IDIwVjUiLz48cGF0aCBkPSJNNCA4bDMtMyAzIDMiLz48cGF0aCBkPSJNMTcgNHYxNSIvPjxwYXRoIGQ9Ik0xNCAxNmwzIDMgMy0zIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Ταξινόμηση λίστας</h2>
+  </div>
+
+  <p>Η Python μας επιτρέπει να ταξινομούμε (να βάζουμε σε σειρά) τα στοιχεία μιας λίστας πολύ εύκολα χρησιμοποιώντας τη μέθοδο sort().</p>
+  <p>Η ταξινόμηση γίνεται αλφαβητικά για λέξεις (strings) και αριθμητικά για αριθμούς.</p>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2">
+      <p><b>Υπενθύμιση:</b></p>
+      <p><b>Αύξουσα σειρά ταξινόμησης:</b> Τα στοιχεία διατάσσονται από το μικρότερο στο μεγαλύτερο, δηλαδή κάθε επόμενο στοιχείο είναι μεγαλύτερο ή ίσο από το προηγούμενό του.</p>
+      <p class="ann">item1 &lt; item2 &lt; item3 &lt; item4 &lt; item5 &lt; item6</p>
+      <p>π.χ.   2   3   6   9   17   22   33</p>
+      <p><b>Φθίνουσα σειρά ταξινόμησης:</b> Τα στοιχεία διατάσσονται από το μεγαλύτερο στο μικρότερο, δηλαδή κάθε επόμενο στοιχείο είναι μικρότερο ή ίσο από το προηγούμενό του.</p>
+      <p class="ann">item1 &gt; item2 &gt; item3 &gt; item4 &gt; item5 &gt; item6</p>
+      <p>π.χ.   33   22   17   9   6   3   2</p>
+    </div>
+  </div>
+
+  <h3>sort() – Αύξουσα σειρά (default)</h3>
+  <p>Η μέθοδος sort() ταξινομεί τη λίστα από το μικρότερο προς το μεγαλύτερο (ή αλφαβητικά από το Α → Ω).</p>
+
+  <p class="caption">Παράδειγμα – Αλφαβητική ταξινόμηση</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;orange&quot;</span>, <span class="s">&quot;mango&quot;</span>, <span class="s">&quot;kiwi&quot;</span>, <span class="s">&quot;pineapple&quot;</span>, <span class="s">&quot;banana&quot;</span>]
+fruit_basket.<span class="f">sort</span>()
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['banana', 'kiwi', 'mango', 'orange', 'pineapple']</pre></div>
+
+  <p class="caption">Παράδειγμα – Αριθμητική ταξινόμηση</p>
+  <div class="code"><pre>mylist = [<span class="n">100</span>, <span class="n">50</span>, <span class="n">65</span>, <span class="n">82</span>, <span class="n">23</span>]
+mylist.<span class="f">sort</span>()
+<span class="f">print</span>(mylist)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>[23, 50, 65, 82, 100]</pre></div>
+
+  <h3>sort(reverse = True) – Φθίνουσα σειρά</h3>
+  <p>Για να ταξινομήσουμε τη λίστα αντίστροφα (μεγαλύτερο → μικρότερο), χρησιμοποιούμε το όρισμα:  sort(reverse = True)</p>
+
+  <p class="caption">Παράδειγμα – αλφαβητικά</p>
+  <div class="code"><pre>fruit_basket = [<span class="s">&quot;orange&quot;</span>, <span class="s">&quot;mango&quot;</span>, <span class="s">&quot;kiwi&quot;</span>, <span class="s">&quot;pineapple&quot;</span>, <span class="s">&quot;banana&quot;</span>]
+fruit_basket.<span class="f">sort</span>(<span class="f">reverse</span> = <span class="k">True</span>)
+<span class="f">print</span>(fruit_basket)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['pineapple', 'orange', 'mango', 'kiwi', 'banana']</pre></div>
+
+  <p class="caption">Παράδειγμα – αριθμητικά</p>
+  <div class="code"><pre>mylist = [<span class="n">100</span>, <span class="n">50</span>, <span class="n">65</span>, <span class="n">82</span>, <span class="n">23</span>]
+mylist.<span class="f">sort</span>(<span class="f">reverse</span> = <span class="k">True</span>)
+<span class="f">print</span>(mylist)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>[100, 82, 65, 50, 23]</pre></div>
+</section>
+
+<!-- 12 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDdWNWgxNnYyIi8+PHBhdGggZD0iTTEyIDV2MTQiLz48cGF0aCBkPSJNOSAxOWg2Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Μπορούμε να χειριζόμαστε strings ως λίστες!</h2>
+  </div>
+
+  <table class="t">
+    <tr><th>Κώδικας</th><th>Αποτέλεσμα</th></tr>
+    <tr>
+      <td class="codecell"><pre>word = <span class="s">&quot;PYTHON&quot;</span>
+
+<span class="f">print</span>(word[<span class="n">0</span>])</pre></td>
+      <td class="mono">P</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre><span class="f">print</span>(word[-<span class="n">1</span>])</pre></td>
+      <td class="mono">N</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre>word_length=
+<span class="f">len</span>(word)</pre></td>
+      <td class="mono">word_length =
+6.</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre><span class="f">print</span>(word[<span class="n">0</span>:<span class="n">2</span>])</pre></td>
+      <td class="mono">PY</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre><span class="k">for</span> letter <span class="k">in</span> word:
+
+    <span class="f">print</span>(gramma)</pre></td>
+      <td class="mono">P
+Y
+T
+H
+O
+N</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre><span class="k">for</span> i <span class="k">in</span>
+<span class="f">range</span>(<span class="f">len</span>(word)):
+
+    <span class="f">print</span>(word[i])</pre></td>
+      <td class="mono">P
+Y
+T
+H
+O
+N</td>
+    </tr>
+    <tr>
+      <td class="codecell"><pre>lexi[<span class="n">0</span>] = <span class="s">&quot;C&quot;</span></pre></td>
+      <td><b>Δεν επιτρέπεται να αλλάξουμε γράμμα.</b> Πρέπει να φτιάξουμε νέο string.</td>
+    </tr>
+  </table>
+</section>
+
+<!-- 13 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjIiIHk9IjYiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxMiIgcng9IjIiLz48cGF0aCBkPSJNNiAxMGguMDFNMTAgMTBoLjAxTTE0IDEwaC4wMU0xOCAxMGguMDFNOCAxNGg4Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Extras -  πως τοποθετώ input σε λίστα</h2>
+  </div>
+
+  <p>Πολύ συχνά θέλουμε ο χρήστης να δώσει πολλά στοιχεία (αριθμούς ή λέξεις) μέσα σε μία γραμμή, χωρισμένα με κενά.</p>
+  <p>Η Python μας επιτρέπει να τα μετατρέψουμε εύκολα σε λίστα χρησιμοποιώντας την εντολή split().</p>
+
+  <h3>1. Διάβασμα λίστας από τον χρήστη (λέξεις ή strings)</h3>
+  <p>Αν ο χρήστης γράψει:</p>
+  <div class="out"><pre>apple banana cherry</pre></div>
+  <div class="code"><pre>fruits = <span class="f">input</span>(<span class="s">&quot;Δώσε φρούτα χωρισμένα με κενό: &quot;</span>).<span class="f">split</span>()
+<span class="f">print</span>(fruits)</pre></div>
+  <div class="out"><p class="lbl">Output</p><pre>['apple', 'banana', 'cherry']</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Η μέθοδος split() «σπάει» το κείμενο σε λίστα χρησιμοποιώντας τα κενά.</p></div>
+  </div>
+
+  <h3>2. Διάβασμα λίστας αριθμών</h3>
+  <p>Όταν θέλουμε αριθμούς, πρέπει πρώτα να τους «σπάσουμε» με split() και μετά να τους μετατρέψουμε σε ακέραιους (int):</p>
+  <div class="code"><pre>numbers = <span class="f">input</span>(<span class="s">&quot;Δώσε αριθμούς χωρισμένους με κενό: &quot;</span>).<span class="f">split</span>()
+numbers = [<span class="f">int</span>(x) <span class="k">for</span> x <span class="k">in</span> numbers]</pre></div>
+
+  <p>Τι κάνει αυτή η γραμμή;</p>
+  <div class="code"><pre>[<span class="f">int</span>(x) <span class="k">for</span> x <span class="k">in</span> numbers]</pre></div>
+  <ul class="dot">
+    <li>περνάει κάθε στοιχείο x της λίστας</li>
+    <li>το μετατρέπει σε αριθμό int</li>
+    <li>και φτιάχνει νέα λίστα με τους αριθμούς</li>
+  </ul>
+
+  <h3>Γενικός κανόνας</h3>
+  <p>Για λέξεις:</p>
+  <div class="code"><pre>mylist = <span class="f">input</span>(<span class="s">&quot;Δώσε στοιχεία: &quot;</span>).<span class="f">split</span>()</pre></div>
+  <p>Για αριθμούς:</p>
+  <div class="code"><pre>mylist = <span class="f">input</span>(<span class="s">&quot;Δώσε αριθμούς: &quot;</span>).<span class="f">split</span>()
+mylist = [<span class="f">int</span>(x) <span class="k">for</span> x <span class="k">in</span> mylist]</pre></div>
+</section>
+
+</body>
+</html>
