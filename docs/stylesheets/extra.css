@@ -202,3 +202,120 @@
 .md-header__topic:first-child .md-ellipsis {
   color: #FACC15;
 }
+
+/* ==========================================================================
+   Αρχική σελίδα (docs/index.md): τίτλος, φίδι στη μέση, δύο ροζ πόρτες
+   ========================================================================== */
+
+:root {
+  --pc-pink:      #E8559A;
+  --pc-pink-soft: #F7A1C4;
+  --pc-pink-deep: #C23A7B;
+}
+
+.pc-welcome {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.md-typeset .pc-welcome__title .headerlink {
+  display: none;
+}
+
+.md-typeset .pc-welcome__title {
+  color: var(--pc-pink);
+  font-size: 2.6rem;
+  margin: 0 0 1.5rem;
+}
+
+.pc-welcome__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.pc-welcome__row > p {
+  margin: 0;
+}
+
+.md-typeset .pc-welcome__snake {
+  width: 22rem;
+  max-width: 100%;
+  border-radius: 1.5rem;
+}
+
+/* η πόρτα: τοξωτή κορυφή, ροζ ταμπλάδες, πόμολο */
+.md-typeset a.pc-door {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10.5rem;
+  height: 16rem;
+  padding: 0 .6rem;
+  border-radius: 5.25rem 5.25rem .4rem .4rem;
+  white-space: nowrap;
+  background: linear-gradient(160deg, var(--pc-pink-soft), var(--pc-pink));
+  border: .3rem solid var(--pc-pink-deep);
+  box-shadow: inset 0 0 0 .5rem rgba(255, 255, 255, .25),
+              0 .4rem 1rem rgba(194, 58, 123, .3);
+  color: #fff;
+  font-family: "Comfortaa", "Nunito", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* πόμολο */
+.md-typeset a.pc-door::after {
+  content: "";
+  position: absolute;
+  top: 62%;
+  width: .8rem;
+  height: .8rem;
+  border-radius: 50%;
+  background: #FFE27A;
+  border: .15rem solid var(--pc-pink-deep);
+}
+.md-typeset a.pc-door--left::after  { right: .9rem; }
+.md-typeset a.pc-door--right::after { left: .9rem; }
+
+/* στο hover η πόρτα «μισανοίγει» */
+.md-typeset a.pc-door:hover,
+.md-typeset a.pc-door:focus {
+  color: #fff;
+  box-shadow: inset 0 0 0 .5rem rgba(255, 255, 255, .35),
+              0 .6rem 1.4rem rgba(194, 58, 123, .45);
+}
+.md-typeset a.pc-door--left:hover,
+.md-typeset a.pc-door--left:focus {
+  transform: perspective(40rem) rotateY(18deg);
+  transform-origin: left center;
+}
+.md-typeset a.pc-door--right:hover,
+.md-typeset a.pc-door--right:focus {
+  transform: perspective(40rem) rotateY(-18deg);
+  transform-origin: right center;
+}
+
+/* κινητό: το φίδι πάνω, οι δύο πόρτες από κάτω */
+@media screen and (max-width: 44em) {
+  .pc-welcome__row {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .pc-welcome__row > p:has(.pc-welcome__snake) {
+    order: -1;
+    flex-basis: 100%;
+  }
+  .md-typeset .pc-welcome__title {
+    font-size: 1.8rem;
+  }
+  .md-typeset a.pc-door {
+    width: 8.5rem;
+    height: 13rem;
+    font-size: .8rem;
+  }
+}
