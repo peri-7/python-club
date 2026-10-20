@@ -11,3 +11,4 @@ hide:
 |---|--------|----------|
 | 1 | [output, μεταβλητές, πράξεις, input](theory/lesson-01.md) | [είσοδος, έξοδος, μεταβλητές, πράξεις](exercises/lesson-01.md) |
 | 2 | [αριθμητικές πράξεις, πράξεις με strings](theory/lesson-02.md) | [πράξεις αριθμών και συμβολοσειρών](exercises/lesson-02.md) |
+| 3 | [booleans, τελεστές, if / elif / else, match](theory/lesson-03.md) | — |

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Θεωρία: Booleans, Τελεστές, if / elif / else, match</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+    --marker:#BFDCFF;
+    --kw:#B5179E;
+    --str:#C0392B;
+    --num:#C2410C;
+    --com:#6B7F99;
+  }
+
+  @page{
+    size:A4;
+    margin:14mm 14mm 13mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;font-size:8.5pt;color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10pt;line-height:1.45;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:15pt;line-height:1.3;color:var(--navy);margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 14px;}
+
+  /* cards */
+  .card{
+    background:#ffffff;
+    border:1.6pt solid var(--edge);
+    border-radius:16px;
+    padding:10px 14px 11px;
+    margin:0 0 9px;
+  }
+  .card-head{display:table;width:100%;margin:0 0 8px;break-after:avoid;page-break-after:avoid;}
+  .card-head .badge{display:table-cell;width:34px;vertical-align:middle;}
+  .card-head .badge div{width:30px;height:30px;border-radius:10px;background:var(--blue);text-align:center;}
+  .card-head .badge img{width:18px;height:18px;margin-top:6px;}
+  .card-head h2{
+    display:table-cell;vertical-align:middle;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:12.6pt;
+    color:var(--navy);margin:0;line-height:1.25;padding-left:6px;
+  }
+
+  h3{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:10.4pt;
+    color:var(--blue);margin:9px 0 4px;
+    break-after:avoid;page-break-after:avoid;
+  }
+
+  p{margin:0 0 6px;}
+  p:last-child{margin-bottom:0;}
+  b,strong{font-weight:700;color:var(--navy);}
+  mark{background:var(--marker);color:var(--navy);font-weight:700;padding:0 2px;border-radius:3px;}
+
+  /* lists */
+  ul{list-style:none;margin:0 0 6px;padding:0;}
+  ul li{position:relative;padding-left:16px;margin:0 0 3px;}
+  ul.dash li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:2px;border-radius:1px;background:var(--sky);}
+  ul.dot li::before{content:"";position:absolute;left:1px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--blue);}
+  ul.tick li::before{content:"✓";position:absolute;left:0;top:0;color:var(--blue);font-weight:700;font-size:9.4pt;}
+  ul li .key{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-weight:700;color:var(--blue);
+  }
+
+  .caption{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-size:8.6pt;color:var(--muted);
+    margin:8px 0 3px;break-after:avoid;page-break-after:avoid;
+  }
+
+  /* code + output */
+  .code{
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--blue);
+    border-radius:4px 10px 10px 4px;
+    padding:7px 11px;margin:0 0 6px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .out{
+    background:#FFFFFF;
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--sky);
+    border-radius:4px 10px 10px 4px;
+    padding:7px 11px;margin:0 0 7px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .out .lbl{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8.4pt;
+    color:var(--muted);margin:0 0 3px;
+  }
+  pre{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.9pt;line-height:1.5;margin:0;white-space:pre-wrap;
+    color:#23405F;
+  }
+  .ann{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.4pt;color:var(--blue);font-weight:700;margin:0 0 1px;
+    white-space:pre-wrap;
+  }
+  .k{color:var(--kw);font-weight:700;}
+  .f{color:var(--blue);}
+  .s{color:var(--str);}
+  .n{color:var(--num);}
+  .c{color:var(--com);font-style:italic;}
+
+  /* syntax panel */
+  .syntax{
+    border:0.9pt solid var(--edge);border-radius:10px;overflow:hidden;
+    margin:4px 0 8px;break-inside:avoid;page-break-inside:avoid;
+  }
+  .syntax .head{
+    background:var(--mist-2);text-align:center;padding:2px 6px;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8.8pt;color:var(--navy);
+  }
+  .syntax .body{background:var(--mist);padding:7px 13px;text-align:left;}
+  .syntax pre{text-align:left;font-size:9.4pt;}
+  .syntax.c .body{text-align:center;}
+  .syntax.c pre{text-align:center;font-size:9.6pt;}
+
+  /* index maps */
+  .idx{margin:4px 0 7px;break-inside:avoid;page-break-inside:avoid;}
+  .idx table{border-collapse:collapse;margin:0 auto 3px;}
+  .idx td{
+    padding:1px 9px;text-align:center;
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;font-size:8.8pt;
+  }
+  .idx tr.ix td{color:var(--blue);font-weight:700;font-size:8.4pt;}
+  .idx tr.it td{color:#23405F;border:0.9pt solid var(--edge);background:var(--mist);border-radius:4px;}
+  .idx .lbl{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8pt;
+    color:var(--muted);text-align:center;margin:0 0 2px;
+  }
+  .idx .name{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;font-size:8.6pt;
+    color:var(--muted);text-align:center;margin:2px 0 0;
+  }
+
+  /* tables */
+  table.t{
+    width:100%;border-collapse:collapse;margin:4px 0 7px;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  table.t th,table.t td{
+    border:0.9pt solid var(--edge);padding:5px 9px;text-align:left;vertical-align:top;
+  }
+  table.t th{
+    background:var(--mist-2);
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:9.2pt;color:var(--navy);
+  }
+  table.t td.codecell{width:58%;background:#FBFDFF;}
+  table.t td.mono{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.9pt;color:var(--navy);white-space:pre-wrap;
+  }
+  table.t td pre{font-size:8.6pt;}
+
+  /* note */
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;margin:8px 0;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+  .note p + p{margin-top:5px;}
+
+  /* ---------- truth tables ---------- */
+  .pair{display:table;width:100%;margin:4px 0 8px;break-inside:avoid;page-break-inside:avoid;}
+  .pair .tcell{display:table-cell;width:48%;vertical-align:top;}
+  .pair .dcell{display:table-cell;vertical-align:middle;padding-left:14px;}
+  .pair .dcell p{margin:0 0 5px;}
+  .pair .dcell p:last-child{margin-bottom:0;}
+
+  table.truth{
+    width:100%;border-collapse:collapse;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  table.truth th,table.truth td{
+    border:0.9pt solid var(--edge);padding:3px 8px;text-align:left;
+    font-size:9.4pt;
+  }
+  table.truth th{
+    background:var(--mist-2);
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8.8pt;color:var(--navy);
+  }
+  table.truth td.a{font-weight:700;color:var(--navy);background:var(--mist);}
+  table.truth td.r{white-space:nowrap;}
+  table.truth td.r img{width:11px;height:11px;vertical-align:-1px;margin-right:4px;}
+
+  /* ---------- right / wrong side by side ---------- */
+  .rw{display:table;width:100%;border-spacing:9px 0;margin:4px -9px 8px;break-inside:avoid;page-break-inside:avoid;}
+  .rw .col{display:table-cell;width:50%;vertical-align:top;}
+  .rw .lbl{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8.8pt;
+    margin:0 0 4px;
+  }
+  .rw .lbl img{width:11px;height:11px;vertical-align:-1px;margin-right:4px;}
+  .rw .good .lbl{color:#1E8E5A;}
+  .rw .bad .lbl{color:#C0392B;}
+  .rw .code{margin:0;}
+  .rw .bad .code{border-left-color:#C0392B;background:#FDF3F2;}
+
+  /* error output */
+  .out.err{border-left-color:#C0392B;}
+  .out.err pre{color:#C0392B;font-weight:700;}
+
+  /* thought cloud */
+  .cloud-wrap{margin:10px 0 10px;break-inside:avoid;page-break-inside:avoid;}
+  .cloud{
+    display:table;
+    background:var(--mist);
+    border:1.4pt solid var(--sky);
+    border-radius:24px;
+    padding:8px 18px;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:10pt;color:var(--navy);line-height:1.35;
+  }
+  .tail{margin:0 0 0 24px;}
+  .tail i{display:block;border-radius:50%;background:var(--mist);border:1.2pt solid var(--sky);}
+  .tail i.a{width:9px;height:9px;margin:3px 0 0 7px;}
+  .tail i.b{width:5px;height:5px;margin:3px 0 0 0;}
+
+  /* wide reference tables */
+  table.t td.op{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-weight:700;color:var(--blue);white-space:nowrap;
+  }
+  table.t td.res{font-weight:700;color:var(--navy);}
+
+</style>
+</head>
+<body>
+<h1>Φυλλάδιο θεωρίας  -   Booleans, Τελεστές Σύγκρισης, Λογικοί Τελεστές, οι Εντολές if, elif, else, match.</h1>
+<div class="rule"></div>
+
+<!-- 1. BOOLEANS -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjIiIHk9IjciIHdpZHRoPSIyMCIgaGVpZ2h0PSIxMCIgcng9IjUiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjEyIiByPSIzIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Boolean μεταβλητές</h2>
+  </div>
+
+  <h3>Τι είναι τα Boolean;</h3>
+  <p>Στον προγραμματισμό, πολλές φορές θέλουμε ο υπολογιστής να παίρνει αποφάσεις:</p>
+  <p>Αν κάτι είναι αληθινό ➜ κάνε Α<br>αλλιώς, αν είναι ψεύτικο ➜ κάνε Β.</p>
+  <p>Για να μπορέσουμε να εκφράσουμε αυτή τη διαφορά ανάμεσα στο αληθινό και το ψεύτικο, η Python χρησιμοποιεί έναν ειδικό τύπο δεδομένων που ονομάζεται Boolean.</p>
+
+  <h3>Ο τύπος δεδομένων bool</h3>
+  <p>Ένας Boolean μπορεί να έχει μόνο δύο τιμές:</p>
+  <div class="code"><pre><span class="k">True</span>     <span class="c"># Αληθές</span>
+<span class="k">False</span>    <span class="c"># Ψευδές</span></pre></div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>Προσοχή!</b> Πρέπει το πρώτο γράμμα να είναι κεφαλαίο.</p></div>
+  </div>
+
+  <p>Μπορούμε να θέσουμε λοιπόν μια Boolean μεταβλητή την τιμη True ή False</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>is_sunny = <span class="k">True</span>
+is_rainy = <span class="k">False</span></pre></div>
+
+  <div class="cloud-wrap">
+    <div class="cloud">Σκέψου το Boolean ως έναν «ανιχνευτή αλήθειας»:</div>
+    <div class="tail"><i class="a"></i><i class="b"></i></div>
+  </div>
+
+  <ul class="tick">
+    <li>Αν κάτι συμβαίνει, η Python λέει True.</li>
+    <li>Αν δεν συμβαίνει, λέει False.</li>
+  </ul>
+</section>
+
+<!-- 2. COMPARISON OPERATORS -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDdMNCAxMmw1IDUiLz48cGF0aCBkPSJNMTUgN2w1IDUtNSA1Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Τελεστές Σύγκρισης (Comparison operators)</h2>
+  </div>
+
+  <p>Οι συγκριτικοί τελεστές είναι σύμβολα που χρησιμοποιούμε στην Python για να συγκρίνουμε δύο τιμές (αριθμούς, μεταβλητές, ή ακόμα και λέξεις).</p>
+  <p>Το αποτέλεσμα της σύγκρισης είναι πάντα Boolean, δηλαδή True ή False.</p>
+
+  <h3>Οι βασικοί συγκριτικοί τελεστές</h3>
+  <table class="t">
+    <tr><th>Τελεστής</th><th>Ανάγνωση στα ελληνικά</th><th>Παράδειγμα</th><th>Αποτέλεσμα</th></tr>
+    <tr><td class="op">==</td><td>ίσο με</td><td class="mono">5 == 5</td><td class="res">True</td></tr>
+    <tr><td class="op">!=</td><td>διάφορο από</td><td class="mono">5 != 3</td><td class="res">True</td></tr>
+    <tr><td class="op">&gt;</td><td>μεγαλύτερο από</td><td class="mono">10 &gt; 7</td><td class="res">True</td></tr>
+    <tr><td class="op">&lt;</td><td>μικρότερο από</td><td class="mono">3 &lt; 2</td><td class="res">False</td></tr>
+    <tr><td class="op">&gt;=</td><td>μεγαλύτερο ή ίσο από</td><td class="mono">4 &gt;= 4</td><td class="res">True</td></tr>
+    <tr><td class="op">&lt;=</td><td>μικρότερο ή ίσο από</td><td class="mono">2 &lt;= 5</td><td class="res">True</td></tr>
+  </table>
+
+  <p class="caption">Παραδείγματα:</p>
+  <div class="code"><pre>a = <span class="n">10</span>
+b = <span class="n">5</span>
+<span class="f">print</span>(a &gt; b)
+<span class="f">print</span>(a == b)
+<span class="f">print</span>(a != b)
+<span class="f">print</span>(a &lt;= <span class="n">10</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>True
+False
+True
+True</pre></div>
+
+  <h3>Ειδική σημείωση για κείμενα (strings)</h3>
+  <p>Στην Python χρησιμοποιώντας αυτούς τους τελεστές μπορούμε να συγκρίνουμε και λέξεις (strings).Η Python τότε θα συγκρίνει τα γράμματα αλφαβητικά (λεξικογραφικά, ποιο γράμμα εμφανίζεται πρώτο στην αλφάβητο).</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre><span class="f">print</span>(<span class="s">&quot;apple&quot;</span> == <span class="s">&quot;apple&quot;</span>)
+<span class="f">print</span>(<span class="s">&quot;apple&quot;</span> &lt; <span class="s">&quot;bowl&quot;</span>)
+<span class="f">print</span>(<span class="s">&quot;bowl&quot;</span> &gt; <span class="s">&quot;candy&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>True
+True
+False</pre></div>
+
+  <p>Δηλαδή «apple» &lt; «bowl» επειδή το “a” προηγείται του “b” στο αλφάβητο, ενώ ο τελεστής “==” θα συγκρίνει αν οι δύο λέξεις είναι ίδιες.</p>
+
+  <h3>Chaining Comparison Operators (Αλυσιδωτές Συγκρίσεις)</h3>
+  <p>Μπορούμε επίσης στην Python να ελέγχουμε εάν μια μεταβλητή βρίσκεται μέσα σε ένα διάστημα χρησιμοποιώντας αλυσιδωτές συγκρίσεις.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>x = <span class="n">5</span>
+
+<span class="f">print</span>(<span class="n">1</span> &lt; x &lt; <span class="n">10</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>True</pre></div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p>Είναι σαν να ελέγχουμε εάν δύο συγκρίσεις ισχύουν ταυτόχρονα, x&gt;1 ΚΑΙ x&lt;10, δηλαδή αν το x ανήκει στο διάστημα ενδιάμεσα στο 1 και το 10, όπως κάνουμε στα μαθηματικά.</p></div>
+  </div>
+</section>
+
+<!-- 3. LOGICAL OPERATORS -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDdoNWE1IDUgMCAwIDEgMCAxMEg0eiIvPjxwYXRoIGQ9Ik0xNCAxMmg2Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMC4xIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Λογικοί Τελεστές (Logical Operators)</h2>
+  </div>
+
+  <p>Οι <b>λογικοί τελεστές</b> χρησιμοποιούνται για να <b>συνδυάζουμε</b> ή να <b>αντιστρέφουμε</b> συνθήκες (δηλαδή εκφράσεις που δίνουν True ή False).</p>
+  <p>Με αυτούς μπορούμε να ελέγξουμε <b>πολλά πράγματα ταυτόχρονα</b> και να πάρουμε μία τελική απάντηση, όταν χρειάζεται να ελέγξουμε πιο περίπλοκες συνθήκες.</p>
+
+  <h3>Οι βασικοί λογικοί τελεστές στην Python:</h3>
+  <table class="t">
+    <tr><th>Τελεστής</th><th>Ανάγνωση</th><th>Περιγραφή</th><th>Παράδειγμα</th><th>Αποτέλεσμα</th></tr>
+    <tr>
+      <td class="op">and</td><td>και</td>
+      <td>Επιστρέφει True μόνο αν και οι δύο συνθήκες είναι True</td>
+      <td class="mono">x &lt; 10 and x &gt; 0</td>
+      <td>True αν το x είναι μεταξύ 0 και 10</td>
+    </tr>
+    <tr>
+      <td class="op">or</td><td>ή</td>
+      <td>Επιστρέφει True αν τουλάχιστον μία συνθήκη είναι True</td>
+      <td class="mono">x &lt; 0 or x &gt; 100</td>
+      <td>True αν το x είναι έξω από 0–100</td>
+    </tr>
+    <tr>
+      <td class="op">not</td><td>όχι</td>
+      <td>Αντιστρέφει το αποτέλεσμα:<br>True γίνεται False,<br> False γίνεται True</td>
+      <td class="mono">not(x &gt; 5)</td>
+      <td>True αν το x δεν είναι πάνω από 5</td>
+    </tr>
+  </table>
+
+  <p class="caption">Παραδείγματα:</p>
+  <div class="code"><pre>x = <span class="n">5</span>
+
+<span class="f">print</span>(x &gt; <span class="n">2</span> <span class="k">and</span> x &lt; <span class="n">10</span>)
+<span class="f">print</span>(x &gt; <span class="n">2</span> <span class="k">or</span> x &gt; <span class="n">10</span>)
+<span class="f">print</span>(<span class="k">not</span>(x &gt; <span class="n">2</span> <span class="k">and</span> x &lt; <span class="n">10</span>))</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>True
+True
+False</pre></div>
+
+  <p>Οι λογικοί τελεστές λειτουργούν όπως η <b>κοινή λογική</b> που χρησιμοποιούμε καθημερινά.</p>
+
+  <table class="t">
+    <tr><th>Κατάσταση στην καθημερινή ζωή</th><th>Παράδειγμα στην Python</th></tr>
+    <tr>
+      <td>Αν <b>έχω λεφτά</b> και <b>είναι ανοιχτό το μαγαζί</b>, θα αγοράσω τσίχλες.</td>
+      <td class="mono">if have_money and shop_open:</td>
+    </tr>
+    <tr>
+      <td>Αν <b>είναι Σάββατο</b> ή <b>είναι Κυριακή</b>, δεν έχω σχολείο.</td>
+      <td class="mono">if day == "Saturday" or day == "Sunday":</td>
+    </tr>
+    <tr>
+      <td>Αν <b>δεν</b> είμαι άρρωστος, θα πάω στη συναυλία.</td>
+      <td class="mono">if not sick:</td>
+    </tr>
+  </table>
+
+  <p>Με αυτόν τον τρόπο μπορούμε να εισάγουμε λογική στα προγράμματά μας.</p>
+
+  <h3>Ας δούμε τους τρεις τελεστές λίγο πιο αναλυτικά:</h3>
+
+  <p class="caption">Ο τελεστής and</p>
+  <div class="pair">
+    <div class="tcell">
+      <table class="truth">
+        <tr><th>Συνθήκη Α</th><th>Συνθήκη Β</th><th>Α and Β</th></tr>
+        <tr><td class="a">True</td><td>True</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRThFNUEiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxMi41bDUgNSAxMS0xMSIvPjwvc3ZnPg==" alt="">True</td></tr>
+        <tr><td class="a">True</td><td>False</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNiA2bDEyIDEyTTE4IDZMNiAxOCIvPjwvc3ZnPg==" alt="">False</td></tr>
+        <tr><td class="a">False</td><td>True</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNiA2bDEyIDEyTTE4IDZMNiAxOCIvPjwvc3ZnPg==" alt="">False</td></tr>
+        <tr><td class="a">False</td><td>False</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNiA2bDEyIDEyTTE4IDZMNiAxOCIvPjwvc3ZnPg==" alt="">False</td></tr>
+      </table>
+    </div>
+    <div class="dcell">
+      <p>Επιστρέφει True <b>μόνο</b> αν και οι δύο συνθήκες είναι True.</p>
+      <p>Αν έστω μία είναι False, το αποτέλεσμα είναι False.</p>
+    </div>
+  </div>
+
+  <p class="caption">Ο τελεστής or</p>
+  <div class="pair">
+    <div class="tcell">
+      <table class="truth">
+        <tr><th>Συνθήκη Α</th><th>Συνθήκη Β</th><th>Α or Β</th></tr>
+        <tr><td class="a">True</td><td>True</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRThFNUEiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxMi41bDUgNSAxMS0xMSIvPjwvc3ZnPg==" alt="">True</td></tr>
+        <tr><td class="a">True</td><td>False</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRThFNUEiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxMi41bDUgNSAxMS0xMSIvPjwvc3ZnPg==" alt="">True</td></tr>
+        <tr><td class="a">False</td><td>True</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRThFNUEiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxMi41bDUgNSAxMS0xMSIvPjwvc3ZnPg==" alt="">True</td></tr>
+        <tr><td class="a">False</td><td>False</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNiA2bDEyIDEyTTE4IDZMNiAxOCIvPjwvc3ZnPg==" alt="">False</td></tr>
+      </table>
+    </div>
+    <div class="dcell">
+      <p>Επιστρέφει True αν <b>τουλάχιστον μία</b> συνθήκη είναι True.</p>
+      <p>Μόνο αν <b>όλες</b> είναι False, τότε το αποτέλεσμα είναι False.</p>
+    </div>
+  </div>
+
+  <p class="caption">Ο τελεστής not</p>
+  <div class="pair">
+    <div class="tcell">
+      <table class="truth">
+        <tr><th>Συνθήκη Α</th><th>not Α</th></tr>
+        <tr><td class="a">True</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNiA2bDEyIDEyTTE4IDZMNiAxOCIvPjwvc3ZnPg==" alt="">False</td></tr>
+        <tr><td class="a">False</td><td class="r"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRThFNUEiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxMi41bDUgNSAxMS0xMSIvPjwvc3ZnPg==" alt="">True</td></tr>
+      </table>
+    </div>
+    <div class="dcell">
+      <p>Αντιστρέφει το αποτέλεσμα μιας συνθήκης.</p>
+      <p>not True → False<br>not False → True</p>
+    </div>
+  </div>
+
+  <h3>Συνδυασμός λογικών τελεστών</h3>
+  <p>Μπορούμε να συνδυάσουμε περισσότερους από έναν λογικούς τελεστές μέσα στην ίδια συνθήκη.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>age = <span class="n">14</span>
+has_ticket = <span class="k">True</span>
+<span class="f">print</span>( (age &gt;= <span class="n">12</span> <span class="k">and</span> age &lt;= <span class="n">17</span>) <span class="k">and</span> has_ticket)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>True</pre></div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>day = <span class="s">&quot;Saturday&quot;</span>
+good_weather = <span class="k">True</span>
+
+<span class="f">print</span>( (day == <span class="s">&quot;Saturday&quot;</span> <span class="k">or</span> day == <span class="s">&quot;Sunday&quot;</span>) <span class="k">and</span>  good_weather)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>True</pre></div>
+</section>
+
+<!-- 4. IF / ELIF / ELSE -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDN2NmE0IDQgMCAwIDAgNCA0aDgiLz48cGF0aCBkPSJNMTUgMTBsMyAzLTMgMyIvPjxwYXRoIGQ9Ik02IDEzdjgiLz48L3N2Zz4=" alt=""></div></div>
+    <h2>Εντολές If, Elif, Else</h2>
+  </div>
+
+  <p>Η Python μας επιτρέπει να παίρνουμε αποφάσεις με τις εντολές if, elif και else. Αυτές ελέγχουν συνθήκες (που δίνουν True ή False) και εκτελούν διαφορετικό κώδικα ανάλογα με το αποτέλεσμα.</p>
+
+  <h3>Η εντολή if</h3>
+  <p>Η εντολή if εκτελεί ένα μπλοκ εντολών μόνο αν μια συνθήκη είναι αληθής (True). Αν η συνθήκη είναι ψευδής (False), ο υπολογιστής απλώς προσπερνά αυτό το μπλοκ.</p>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">if</span> &lt;συνθήκη&gt;:
+      <span class="c"># εντολές που θα εκτελεστούν αν η συνθήκη είναι True</span></pre></div>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>Προσοχή στην εσοχή (indentation):</b> Όλες οι εντολές που ανήκουν στο if πρέπει να γράφονται πιο μέσα.</p></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>a = <span class="n">3</span>
+b = <span class="n">200</span>
+<span class="k">if</span> b &gt; a:
+    <span class="f">print</span>(<span class="s">&quot;b είναι μεγαλύτερο από a&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>b είναι μεγαλύτερο από a</pre></div>
+
+  <p>Εδώ η συνθήκη b &gt; a είναι True, οπότε η Python εκτελεί την print(). Αν δεν ήταν, θα αγνοούσε το μπλοκ του if και δεν θα εμφανιζόταν τίποτα στο output.</p>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>Προσοχή:</b> Εάν δεν είχαμε κρατήσει την εσοχή στο print κάτω από το if θα παίρναμε σφάλμα, καθώς δεν θα υπήρχε κώδικας να εκτελεστεί αν η συνθήκη είναι True.</p></div>
+  </div>
+
+  <div class="code"><pre>a = <span class="n">3</span>
+b = <span class="n">200</span>
+<span class="k">if</span> b &gt; a:
+<span class="f">print</span>(<span class="s">&quot;b είναι μεγαλύτερο από a&quot;</span>)</pre></div>
+  <div class="out err"><pre>ERROR!</pre></div>
+
+  <p>Εάν θέλουμε να εκτελεστούν πολλές εντολές αν μία συνθήκη είναι αληθής θα πρέπει να προσέξουμε να κρατήσουμε την ίδια εσοχή για όλες τις εντολές.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="rw">
+    <div class="col good">
+      <p class="lbl"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxRThFNUEiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNCAxMi41bDUgNSAxMS0xMSIvPjwvc3ZnPg==" alt="">Σωστή σύνταξη:</p>
+      <div class="code"><pre>age = <span class="n">20</span>
+<span class="k">if</span> age &gt;= <span class="n">18</span>:
+  <span class="f">print</span>(<span class="s">&quot;Είσαι ενήλικας&quot;</span>)
+  <span class="f">print</span>(<span class="s">&quot;Μπορείς να ψηφίσεις&quot;</span>)</pre></div>
+    </div>
+    <div class="col bad">
+      <p class="lbl"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMDM5MkIiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNiA2bDEyIDEyTTE4IDZMNiAxOCIvPjwvc3ZnPg==" alt="">Λανθασμένη σύνταξη:</p>
+      <div class="code"><pre>age = <span class="n">20</span>
+<span class="k">if</span> age &gt;= <span class="n">18</span>:
+  <span class="f">print</span>(<span class="s">&quot;Είσαι ενήλικας&quot;</span>)
+<span class="f">print</span>(<span class="s">&quot;Μπορείς να ψηφίσεις&quot;</span>)</pre></div>
+    </div>
+  </div>
+
+  <p>Στην δεύτερη περίπτωση μέσα στην συνθήκη του if ανήκει μόνο το πρώτο print!</p>
+
+  <h3>Η εντολή elif</h3>
+  <p>Αν θέλουμε να ελέγξουμε περισσότερες από μία συνθήκες, μπορούμε να χρησιμοποιήσουμε elif (προέρχεται από το else if).</p>
+  <p>Η Python θα ελέγξει τις συνθήκες μία προς μία, από πάνω προς τα κάτω:</p>
+  <ul class="dot">
+    <li>Μόλις βρει μία που είναι True,</li>
+    <li>Εκτελεί το αντίστοιχο μπλοκ,</li>
+    <li>Και αγνοεί τα υπόλοιπα.</li>
+  </ul>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">if</span> &lt;συνθήκη1&gt; :
+    <span class="c"># εντολές αν η συνθήκη1 είναι True</span>
+<span class="k">elif</span> &lt;συνθήκη2&gt; :
+    <span class="c"># εντολές αν η συνθήκη2 είναι True</span>
+<span class="k">elif</span> &lt;συνθήκη3&gt; :
+    <span class="c"># εντολές αν η συνθήκη3 είναι True</span>
+…</pre></div>
+  </div>
+
+  <p>Μπορούμε να βάζουμε όσες elif  συνθήκες χρειάζεται η εφαρμογή μας, κρατώντας αυτή τη σύνταξη.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>a = <span class="n">33</span>
+b = <span class="n">33</span>
+
+<span class="k">if</span> b &gt; a:
+    <span class="f">print</span>(<span class="s">&quot;b είναι μεγαλύτερο από a&quot;</span>)
+<span class="k">elif</span> a == b:
+    <span class="f">print</span>(<span class="s">&quot;a και b είναι ίσα&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>a και b είναι ίσα</pre></div>
+
+  <p>Η πρώτη συνθήκη b &gt; a είναι False, οπότε η Python ελέγχει τη δεύτερη (a == b), που είναι True. Αμέσως εκτελεί το print() και σταματάει τον έλεγχο.</p>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>Προσοχή:</b> Εάν παραπάνω συνθήκες από μία είναι True τότε η Python θα εκτελέσει κώδικα για την πρώτη συνθήκη που θα συναντήσει True κοιτώντας από πάνω προς τα κάτω.</p></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>x = <span class="n">10</span>
+
+<span class="k">if</span> x&gt;<span class="n">1</span>:
+     <span class="f">print</span>(<span class="s">“hello1”</span>)
+<span class="k">elif</span> x&gt;<span class="n">2</span>:
+     <span class="f">print</span>(<span class="s">“hello2”</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>hello1</pre></div>
+
+  <p>Όπως βλέπουμε στον παραπάνω κώδικα παρότι και η δεύτερη συνθήκη x&gt;2 είναι True ο κώδικάς της θα προσπεραστεί και δεν θα εκτελεστεί ποτέ. Για να εκτελεστεί θα έπρεπε να χρησιμοποιήσουμε δύο if συνθήκες.</p>
+
+  <p>Χρησιμοποιούμε elif όταν ελέγχουμε αμοιβαία αποκλειόμενα γεγονότα, οπότε είναι True μία συνθήκη!</p>
+
+  <h3>Η εντολή else</h3>
+  <p>Η else εκτελείται όταν καμία από τις προηγούμενες συνθήκες δεν είναι True.</p>
+  <p>Είναι το «όλα τα υπόλοιπα» ή «σε κάθε άλλη περίπτωση».</p>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">if</span> &lt;συνθήκη1&gt;:
+    <span class="c"># εντολές αν η συνθήκη1 είναι True</span>
+<span class="k">elif</span> &lt;συνθήκη2&gt;:
+    <span class="c"># εντολές αν η συνθήκη2 είναι True</span>
+<span class="k">else</span>:
+    <span class="c"># εντολές αν όλες οι παραπάνω είναι False</span></pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>a = <span class="n">200</span>
+b = <span class="n">33</span>
+
+<span class="k">if</span> b &gt; a:
+    <span class="f">print</span>(<span class="s">&quot;b είναι μεγαλύτερο από a&quot;</span>)
+<span class="k">elif</span> a == b:
+    <span class="f">print</span>(<span class="s">&quot;a και b είναι ίσα&quot;</span>)
+<span class="k">else</span>:
+    <span class="f">print</span>(<span class="s">&quot;a είναι μεγαλύτερο από b&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>a είναι μεγαλύτερο από b</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Εδώ καμία από τις δύο πρώτες συνθήκες δεν είναι αληθής, οπότε η Python φτάνει στο else και εκτελεί τις εντολές του.</p></div>
+  </div>
+
+  <p>Μπορούμε να μην χρησιμοποιήσουμε την ενδιάμεση elif συνθήκη αν δεν το χρειαζόμαστε.</p>
+</section>
+
+<!-- 5. SHORT HAND -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMyAyTDUgMTRoNmwtMSA4IDgtMTJoLTZ6Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Σύντομη μορφή if (Short Hand If)</h2>
+  </div>
+
+  <p>Αν η εντολή που θέλουμε να εκτελέσουμε είναι μία μόνο γραμμή, μπορούμε να γράψουμε το if σε μία γραμμή.</p>
+
+  <div class="syntax c">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">if</span> &lt;συνθήκη&gt; : &lt;εντολή&gt;</pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>a = <span class="n">200</span>
+b = <span class="n">33</span>
+<span class="k">if</span> a &gt; b: <span class="f">print</span>(<span class="s">&quot;a είναι μεγαλύτερο από b&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>a είναι μεγαλύτερο από b</pre></div>
+
+  <h3>Σύντομη μορφή if...else (Short Hand If...Else)</h3>
+  <p>Μπορούμε επίσης να γράψουμε if και else στην ίδια γραμμή, όταν είναι απλές εντολές.</p>
+
+  <div class="syntax c">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre>&lt;εντολή-<span class="k">if</span>&gt; <span class="k">if</span> &lt;συνθήκη&gt; <span class="k">else</span> &lt;εντολή-<span class="k">else</span>&gt;</pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>a = <span class="n">2</span>
+b = <span class="n">330</span>
+<span class="f">print</span>(<span class="s">&quot;A&quot;</span>) <span class="k">if</span> a &gt; b <span class="k">else</span> <span class="f">print</span>(<span class="s">&quot;B&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>B</pre></div>
+
+  <p>Αυτός ο τρόπος λέγεται conditional expression και είναι χρήσιμος για απλά “ναι ή όχι” αποτελέσματα.</p>
+</section>
+
+<!-- 6. NESTED IF -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjMiLz48cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMiIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Εμφωλευμένα if (Nested if)</h2>
+  </div>
+
+  <p>Μπορούμε να βάλουμε ένα if μέσα σε ένα άλλο if. Αυτό λέγεται εμφωλευμένο if (nested if) και μας επιτρέπει πιο σύνθετες αποφάσεις.</p>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">if</span> &lt;συνθήκη1&gt; :
+        &lt;εντολή1&gt;
+        <span class="k">if</span> &lt;συνθήκη2&gt;:
+               &lt;εντολή2&gt;</pre></div>
+  </div>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre>x = <span class="n">41</span>
+
+<span class="k">if</span> x &gt; <span class="n">10</span>:
+    <span class="f">print</span>(<span class="s">&quot;Πάνω από 10&quot;</span>)
+    <span class="k">if</span> x &gt; <span class="n">20</span>:
+        <span class="f">print</span>(<span class="s">&quot;Επίσης πάνω από 20!&quot;</span>)
+    <span class="k">else</span>:
+        <span class="f">print</span>(<span class="s">&quot;Αλλά όχι πάνω από 20.&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>Πάνω από 10
+Επίσης πάνω από 20!</pre></div>
+
+  <p>Εδώ έχουμε ένα if μέσα σε ένα άλλο. Η Python πρώτα ελέγχει αν x &gt; 10, και μέσα σε αυτό το μπλοκ ελέγχει αν x &gt; 20.</p>
+</section>
+
+<!-- 7. SUMMARY TABLE -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjQiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxNiIgcng9IjIiLz48cGF0aCBkPSJNMyAxMGgxOCIvPjxwYXRoIGQ9Ik0xMCAxMHYxMCIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Συνοπτικός Πίνακας με όσα είδαμε ως τώρα:</h2>
+  </div>
+
+  <table class="t">
+    <tr><th>Εντολή</th><th>Ρόλος</th><th>Εκτελείται όταν...</th></tr>
+    <tr><td class="op">if</td><td>Αρχικός έλεγχος</td><td>Η συνθήκη είναι True</td></tr>
+    <tr><td class="op">elif</td><td>Εναλλακτικός έλεγχος</td><td>Η προηγούμενη ήταν False και αυτή είναι True</td></tr>
+    <tr><td class="op">else</td><td>Τελική περίπτωση</td><td>Όλες οι προηγούμενες ήταν False</td></tr>
+    <tr><td class="op">nested if</td><td>Εμφωλευμένος έλεγχος</td><td>Μια δεύτερη απόφαση μέσα σε άλλη</td></tr>
+    <tr><td class="op">short hand</td><td>Σύντομη μορφή</td><td>Όταν έχουμε μικρές, μονογραμμικές εντολές</td></tr>
+  </table>
+</section>
+
+<!-- 8. MATCH -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjQiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxNiIgcng9IjIiLz48cGF0aCBkPSJNNyA5aDRNNyAxM2g0TTcgMTdoNCIvPjxwYXRoIGQ9Ik0xNSA5aDJNMTUgMTNoMk0xNSAxN2gyIi8+PC9zdmc+" alt=""></div></div>
+    <h2>H εντολή Match</h2>
+  </div>
+
+  <p>Η εντολή match στην Python χρησιμοποιείται για να επιλέξουμε ποια από πολλές επιλογές θα εκτελεστεί, με βάση την τιμή μιας έκφρασης.</p>
+  <p>Αντί να γράφουμε πολλές if…elif…else, μπορούμε να χρησιμοποιήσουμε match για πιο καθαρό και οργανωμένο κώδικα.</p>
+
+  <div class="syntax">
+    <div class="head">Σύνταξη</div>
+    <div class="body"><pre><span class="k">match</span> &lt;έκφραση&gt;:
+    <span class="k">case</span> &lt;τιμή1&gt;:
+        <span class="c"># μπλοκ εντολών αν έκφραση == τιμή1</span>
+    <span class="k">case</span> &lt;τιμή2&gt;:
+        <span class="c"># μπλοκ εντολών αν έκφραση == τιμή2</span>
+    <span class="k">case</span> _:
+        <span class="c"># μπλοκ εντολών αν καμία από τις παραπάνω δεν ταιριάζει</span></pre></div>
+  </div>
+
+  <p>Η _  χρησιμοποιείται ως «προεπιλεγμένη περίπτωση» (default) αν δεν γίνει κανένα match.</p>
+
+  <h3>Παραδείγματα:</h3>
+
+  <p class="caption">Πράδειγμα1:</p>
+  <div class="code"><pre>day = <span class="n">4</span>
+<span class="k">match</span> day:
+    <span class="k">case</span> <span class="n">1</span>:
+        <span class="f">print</span>(<span class="s">&quot;Monday&quot;</span>)
+    <span class="k">case</span> <span class="n">2</span>:
+        <span class="f">print</span>(<span class="s">&quot;Tuesday&quot;</span>)
+    <span class="k">case</span> <span class="n">3</span>:
+        <span class="f">print</span>(<span class="s">&quot;Wednesday&quot;</span>)
+    <span class="k">case</span> <span class="n">4</span>:
+        <span class="f">print</span>(<span class="s">&quot;Thursday&quot;</span>)
+    <span class="k">case</span> <span class="n">5</span>:
+        <span class="f">print</span>(<span class="s">&quot;Friday&quot;</span>)
+    <span class="k">case</span> <span class="n">6</span>:
+        <span class="f">print</span>(<span class="s">&quot;Saturday&quot;</span>)
+    <span class="k">case</span> <span class="n">7</span>:
+        <span class="f">print</span>(<span class="s">&quot;Sunday&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Οutput:</p><pre>Thursday</pre></div>
+
+  <p class="caption">Παράδειγμα 2 (συνδυασμός τιμών):</p>
+  <div class="code"><pre>day = <span class="n">4</span>
+<span class="k">match</span> day:
+    <span class="k">case</span> <span class="n">1</span> | <span class="n">2</span> | <span class="n">3</span> | <span class="n">4</span> | <span class="n">5</span>:
+        <span class="f">print</span>(<span class="s">&quot;Today is a weekday&quot;</span>)
+    <span class="k">case</span> <span class="n">6</span> | <span class="n">7</span>:
+        <span class="f">print</span>(<span class="s">&quot;I love weekends!&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>Today is a weekday</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Εδώ ο τελεστής “|” είναι σαν τον τελεστή or.</p></div>
+  </div>
+
+  <p class="caption">Παράδειγμα 3 (guard στο case):</p>
+  <div class="code"><pre>month = <span class="n">5</span>
+day = <span class="n">4</span>
+<span class="k">match</span> day:
+    <span class="k">case</span> <span class="n">1</span> | <span class="n">2</span> | <span class="n">3</span> | <span class="n">4</span> | <span class="n">5</span> <span class="k">if</span> month == <span class="n">4</span>:
+        <span class="f">print</span>(<span class="s">&quot;A weekday in April&quot;</span>)
+    <span class="k">case</span> <span class="n">1</span> | <span class="n">2</span> | <span class="n">3</span> | <span class="n">4</span> | <span class="n">5</span> <span class="k">if</span> month == <span class="n">5</span>:
+        <span class="f">print</span>(<span class="s">&quot;A weekday in May&quot;</span>)
+    <span class="k">case</span> _:
+        <span class="f">print</span>(<span class="s">&quot;No match&quot;</span>)</pre></div>
+  <div class="out"><p class="lbl">Output:</p><pre>A weekday in May</pre></div>
+
+  <div class="note">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>Προσοχή:</b> Όπως είπαμε ήδη για τα elif, μόλις βρεθεί το πρώτο match θα εκτελεστεί και οι υπόλοιπες περιπτώσεις θα προσπεραστούν! Χρειάζεται λοιπόν προσοχή στην σειρά που τοποθετούμε τις συνθήκες.</p></div>
+  </div>
+
+  <div class="cloud-wrap">
+    <div class="cloud">Σκέψου την εντολή match σαν ένα μεγάλο διακόπτη επιλογών: ελέγχει την τιμή της<br>έκφρασης μία φορά και «πηδάει» κατευθείαν στην κατάλληλη επιλογή.</div>
+    <div class="tail"><i class="a"></i><i class="b"></i></div>
+  </div>
+</section>
+
+</body>
+</html>

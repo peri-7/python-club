@@ -119,6 +119,7 @@ nav:
       - Θεωρία:
           - 'Μάθημα 1': beginners/theory/lesson-01.md
           - 'Μάθημα 2': beginners/theory/lesson-02.md
+          - 'Μάθημα 3': beginners/theory/lesson-03.md
       - Ασκήσεις:
           - 'Μάθημα 1': beginners/exercises/lesson-01.md
           - 'Μάθημα 2': beginners/exercises/lesson-02.md
