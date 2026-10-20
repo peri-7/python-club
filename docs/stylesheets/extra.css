@@ -211,6 +211,9 @@
   --pc-pink:      #E8559A;
   --pc-pink-soft: #F7A1C4;
   --pc-pink-deep: #C23A7B;
+  --pc-yellow:      #F9D649;
+  --pc-yellow-soft: #FFF3A6;
+  --pc-yellow-deep: #D9A514;
 }
 
 .pc-welcome {
@@ -223,7 +226,11 @@
 }
 
 .md-typeset .pc-welcome__title {
-  color: var(--pc-pink);
+  color: var(--pc-yellow);
+  /* κίτρινα γράμματα με χρυσό περίγραμμα, όπως οι πόρτες — αλλιώς χάνονται στο λευκό */
+  -webkit-text-stroke: .1rem var(--pc-yellow-deep);
+  paint-order: stroke fill;
+  text-shadow: 0 .2rem .6rem rgba(217, 165, 20, .35);
   font-size: 2.6rem;
   margin: 0 0 1.5rem;
 }
@@ -245,7 +252,7 @@
   border-radius: 1.5rem;
 }
 
-/* η πόρτα: τοξωτή κορυφή, ροζ ταμπλάδες, πόμολο */
+/* η πόρτα: τοξωτή κορυφή, κίτρινη, ροζ πόμολο */
 .md-typeset a.pc-door {
   position: relative;
   display: flex;
@@ -256,11 +263,11 @@
   padding: 0 .6rem;
   border-radius: 5.25rem 5.25rem .4rem .4rem;
   white-space: nowrap;
-  background: linear-gradient(160deg, var(--pc-pink-soft), var(--pc-pink));
-  border: .3rem solid var(--pc-pink-deep);
-  box-shadow: inset 0 0 0 .5rem rgba(255, 255, 255, .25),
-              0 .4rem 1rem rgba(194, 58, 123, .3);
-  color: #fff;
+  background: linear-gradient(160deg, var(--pc-yellow-soft), var(--pc-yellow));
+  border: .3rem solid var(--pc-yellow-deep);
+  box-shadow: inset 0 0 0 .5rem rgba(255, 255, 255, .35),
+              0 .4rem 1rem rgba(217, 165, 20, .35);
+  color: var(--pc-pink-deep);
   font-family: "Comfortaa", "Nunito", sans-serif;
   font-weight: 700;
   font-size: 1rem;
@@ -276,7 +283,7 @@
   width: .8rem;
   height: .8rem;
   border-radius: 50%;
-  background: #FFE27A;
+  background: var(--pc-pink);
   border: .15rem solid var(--pc-pink-deep);
 }
 .md-typeset a.pc-door--left::after  { right: .9rem; }
@@ -285,9 +292,9 @@
 /* στο hover η πόρτα «μισανοίγει» */
 .md-typeset a.pc-door:hover,
 .md-typeset a.pc-door:focus {
-  color: #fff;
-  box-shadow: inset 0 0 0 .5rem rgba(255, 255, 255, .35),
-              0 .6rem 1.4rem rgba(194, 58, 123, .45);
+  color: var(--pc-pink-deep);
+  box-shadow: inset 0 0 0 .5rem rgba(255, 255, 255, .45),
+              0 .6rem 1.4rem rgba(217, 165, 20, .5);
 }
 .md-typeset a.pc-door--left:hover,
 .md-typeset a.pc-door--left:focus {
