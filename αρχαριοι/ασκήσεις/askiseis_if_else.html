@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Ασκήσεις if / else</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+    --user:#B45309;        /* τι πληκτρολογεί ο χρήστης */
+    --screen:#1E3756;      /* τι τυπώνει ο υπολογιστής */
+  }
+
+  @page{
+    size:A4;
+    margin:15mm 15mm 14mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;
+      font-size:8.5pt;
+      color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10.2pt;
+    line-height:1.46;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:14pt;
+    line-height:1.3;
+    color:var(--navy);
+    margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 12px;}
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:table;
+    width:100%;
+    border:0.9pt solid var(--edge);
+    border-radius:10px;
+    background:var(--mist);
+    padding:7px 12px;
+    margin:0 0 16px;
+  }
+  .legend .k{
+    display:table-cell;
+    width:50%;
+    vertical-align:middle;
+    font-size:9.2pt;
+  }
+  .legend .sw{
+    display:inline-block;
+    width:9px;height:9px;border-radius:3px;
+    margin-right:6px;vertical-align:0;
+  }
+  .legend .sw.s{background:var(--screen);}
+  .legend .sw.u{background:var(--user);}
+  .legend b{font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;font-size:8.8pt;}
+
+  /* ---------- exercises ---------- */
+  .ex{
+    display:table;
+    width:100%;
+    margin:0 0 12px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .ex .no{display:table-cell;width:34px;vertical-align:top;}
+  .ex .no div{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#ffffff;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:9.6pt;
+    line-height:24px;
+    text-align:center;
+  }
+  .ex .body{display:table-cell;vertical-align:top;}
+  .ex p{margin:0;}
+  .ex p + p{margin-top:6px;}
+
+  ul.dash{list-style:none;margin:6px 0 0;padding:0;}
+  ul.dash li{position:relative;padding-left:16px;margin:0 0 3px;}
+  ul.dash li::before{
+    content:"";position:absolute;left:0;top:8px;
+    width:8px;height:2px;border-radius:1px;background:var(--sky);
+  }
+
+  .caption{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-size:8.8pt;
+    color:var(--muted);
+    margin:8px 0 3px !important;
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+
+  /* ---------- terminal box ---------- */
+  .term{
+    border:0.9pt solid var(--edge);
+    border-radius:10px;
+    overflow:hidden;
+    margin:0 0 4px;
+    background:#FFFFFF;
+    break-inside:avoid;
+    page-break-inside:avoid;
+    break-before:avoid;
+    page-break-before:avoid;
+  }
+  .term .bar{
+    background:var(--mist);
+    border-bottom:0.9pt solid var(--edge);
+    padding:4px 9px;
+    font-size:0;
+    line-height:0;
+  }
+  .term .bar i{
+    display:inline-block;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--sky);
+    margin-right:4px;
+  }
+  .term .bar i:nth-child(2){background:#A9CCF4;}
+  .term .bar i:nth-child(3){background:#C9DFF8;}
+  .term .scr{padding:8px 11px 9px;}
+  .term pre{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:9.2pt;
+    line-height:1.55;
+    margin:0;
+    white-space:pre-wrap;
+    color:var(--screen);
+  }
+  .term .u{color:var(--user);font-weight:700;}
+
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;
+    margin:8px 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+
+  /* no ligatures in the terminal text */
+  pre, .term .u, .legend b{
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0,"clig" 0,"calt" 0,"dlig" 0;
+  }
+
+</style>
+</head>
+<body>
+<h1>Ασκήσεις if / else</h1>
+<div class="rule"></div>
+
+<div class="legend">
+  <div class="k"><span class="sw s"></span>Ό,τι τυπώνει ο <b>υπολογιστής</b></div>
+  <div class="k"><span class="sw u"></span>Ό,τι πληκτρολογεί ο <b>χρήστης</b></div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>1</div></div>
+  <div class="body">
+    <p>Ένα ηλεκτρονικό κατάστημα προσφέρει δωρεάν μεταφορικά για παραγγελίες άνω των 50 ευρώ. Για μικρότερες παραγγελίες, τα μεταφορικά κοστίζουν 4 ευρώ. Γράψτε ένα πρόγραμμα που δέχεται το αρχικό κόστος των προϊόντων, υπολογίζει αν χρειάζονται μεταφορικά, και τυπώνει το τελικό ποσό πληρωμής.</p>
+
+    <p class="caption">Παράδειγμα εξόδου για μεγάλη παραγγελία:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>κόστος παραγγελίας:<span class="u">60</span>
+Τελικό κόστος 60</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για μικρή παραγγελία:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>κόστος παραγγελίας:<span class="u">40</span>
+Τελικό κόστος 44</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>2</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που δέχεται από τον χρήστη 2 αριθμούς. Αν είναι διαφορετικοί εμφανίζει το μήνυμα “Διαφορετικοί”. Αν είναι ίσοι δεν εμφανίζει τίποτα.</p>
+
+    <p class="caption">Παράδειγμα εξόδου αν οι αριθμοί είναι διαφορετικοί:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>πρώτος αριθμός:<span class="u">8</span>
+δεύτερος αριθμός:<span class="u">9</span>
+Διαφορετικοί</pre></div>
+    </div>
+
+    <div class="note">
+      <div class="m"><div>i</div></div>
+      <div class="t2"><p>Αν οι αριθμοί είναι ίδιοι δεν έχουμε έξοδο.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>3</div></div>
+  <div class="body">
+    <p>Ένας παπαγάλος επαναλαμβάνει μία φορά ό,τι λέξη ακούσει, εκτός από μια συγκεκριμένη λέξη, τη λέξη “κρα” γιατί παρασύρεται και αρχίζει να… κελαηδάει.</p>
+    <p>Φτιάξτε ένα πρόγραμμα που εμφανίζει ό,τι λέξη του δώσει ο χρήστης μία φορά, εκτός από την λέξη “κρα”, την οποία πρέπει να εμφανίζει δύο φορές.</p>
+
+    <p class="caption">Παράδειγμα εξόδου αν η είσοδος είναι “κρα”:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>λέξη:<span class="u">κρα</span>
+κρα
+κρα</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου σε κάθε άλλη περίπτωση:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>λέξη:<span class="u">γεια</span>
+γεια</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>4</div></div>
+  <div class="body">
+    <p>Ένα πρόγραμμα επαλήθευσης κωδικού PIN τεσσάρων ψηφίων έχει ένα μικρό πρόβλημα. Μπορεί να επαληθεύσει όλα τα PIN εκτός απο το “1234”, το οποίο το διαβάζει ως “1233”.</p>
+
+    <p class="caption">Παράδειγμα εξόδου για είσοδο 1234:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>Εισάγετε PIN:<span class="u">1234</span>
+Το PIN σας είναι 1233</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για οποιαδήποτε άλλη είσοδο:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>Εισάγετε PIN:<span class="u">7879</span>
+Το PIN σας είναι 7879</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>5</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που ζητά έναν αριθμό από τον χρήστη και εμφανίζει αν είναι άρτιος ή περιττός.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>αριθμός:<span class="u">67</span>
+περιττός αριθμός</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>6</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που ζητά από τον χρήστη έναν αριθμό και εμφανίζει αν είναι θετικός αρνητικός ή μηδέν.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>αριθμός:<span class="u">-66</span>
+αρνητικός αριθμός</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>7</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που ελέγχει αν τα επίπεδα βιταμίνης D στο αίμα ενός ανθρώπου είναι υγιή. Τα υγιή επίπεδα είναι από 20 εως 50 ng/ml. Θέλουμε το πρόγραμμα να δέχεται την τιμή της βιταμίνης D του ασθενή και να εμφανίζει “Καλή” αν είναι στα επιθυμητά επίπεδα και “Κακή” διαφορετικά.</p>
+
+    <p class="caption">Παράδειγμα εξόδου για “Κακή” τιμή:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>βιταμίνη D:<span class="u">10</span>
+Κακή</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για “Καλή” τιμή:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>βιταμίνη D:<span class="u">50</span>
+Καλή</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>8</div></div>
+  <div class="body">
+    <p>Γράψτε πρόγραμμα που προβλέπει αν θα έχει διακοπή ρεύματος. Διακοπή έχουμε αν υπάρχει τεχνικό πρόβλημα ή υπερφόρτωση του δικτύου. Πρέπει να ρωτάει τον χρήστη αν συμβαίνει κάθε ένα από αυτά τα ενδεχόμενα και να εμφανίζει αν θα έχουμε διακοπή ρεύματος ή όχι. Ο χρήστης θα πρέπει να απαντάει με “ναι” ή “όχι”.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>Τεχνικό πρόβλημα;<span class="u">ναι</span>
+Υπερφόρτωση δικτύου;<span class="u">όχι</span>
+ναι</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>9</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που αποφασίζει αν κάποιος μπορεί να επιβιβαστεί στο αεροπλάνο. Για να συμβεί αυτό, πρέπει να έχει φτάσει νωρίς στο αεροδρόμιο, να έχει εισιτήριο και να έχει ταυτότητα. Το πρόγραμμα θα ρωτάει τον χρήστη αν συμβαίνει κάθε ένα από αυτά τα ενδεχόμενα και να εμφανίζει αν ο ταξιδιώτης θα μπορέσει να επιβιβαστεί ή όχι. Ο χρήστης θα πρέπει να απαντάει με “ναι” ή “όχι”.</p>
+
+    <p class="caption">Παράδειγμα:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>νωρίς στο αεροδρόμιο;<span class="u">ναι</span>
+εισιτήριο;<span class="u">όχι</span>
+ταυτότητα;<span class="u">ναι</span>
+όχι</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>10</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που τυπώνει κατάλληλα μηνύματα ανάλογα με την τιμή της θερμοκρασίας. Αν η θερμοκρασία είναι:</p>
+    <ul class="dash">
+      <li>κάτω από 0 ➜“Πολύ κρύο”,</li>
+      <li>από 0 ως 20 ➜“Κρύο”,</li>
+      <li>από 21 ως 30 ➜“Ζέστη”,</li>
+      <li>πάνω από 30 ➜“Καύσωνας”.</li>
+    </ul>
+
+    <p class="caption">Παράδειγμα:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>θερμοκρασία:<span class="u">38</span>
+Καύσωνας</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>11</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα ελέγχου εισόδου σε σινεμά για ένα πολύ τρομακτικό θρίλερ. Πρώτα ρωτάει τον πελάτη αν είναι άνω των 18 ("ναι"/"όχι"). Αν δεν είναι, τυπώνει "Απαγορεύεται η είσοδος". Αν είναι, προχωράει και ρωτάει αν έχει φοιτητικό πάσο ("ναι"/"όχι"). Αν έχει πάσο, τυπώνει "Το εισιτήριο κοστίζει 5 ευρώ", αλλιώς τυπώνει "Το εισιτήριο κοστίζει 8 ευρώ".</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>Άνω των 18;<span class="u">ναι</span>
+Φοιτητικό πάσο;<span class="u">όχι</span>
+Το εισιτήριο κοστίζει 8 ευρώ</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>12</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που ελέγχει αν ένας αριθμός είναι πολλαπλάσιο του 6 ή του 7. Αν είναι, εμφανίζει το μήνυμα “Ο αριθμός ικανοποιεί τις προϋποθέσεις”. Διαφορετικά εμφανίζει το μήνυμα “Ο αριθμός δεν ικανοποιεί τις προϋποθέσεις”. Ένας αριθμός είναι πολλαπλάσιο του 6 αν είναι πολλαπλάσιο και του 3 και του 2.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>αριθμός:<span class="u">42</span>
+Ο αριθμός ικανοποιεί τις προϋποθέσεις</pre></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
