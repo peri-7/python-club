@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>JavaScript για όσους ξέρουν Python</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+    --marker:#BFDCFF;
+    --kw:#B5179E;
+    --str:#C0392B;
+    --num:#C2410C;
+    --com:#6B7F99;
+  }
+
+  @page{
+    size:A4;
+    margin:14mm 14mm 13mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;font-size:8.5pt;color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10.2pt;line-height:1.48;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:15pt;line-height:1.3;color:var(--navy);margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 14px;}
+
+  /* cards */
+  .card{
+    background:#ffffff;
+    border:1.6pt solid var(--edge);
+    border-radius:16px;
+    padding:11px 15px 13px;
+    margin:0 0 11px;
+  }
+  .card-head{display:table;width:100%;margin:0 0 8px;break-after:avoid;page-break-after:avoid;}
+  .card-head .badge{display:table-cell;width:34px;vertical-align:middle;}
+  .card-head .badge div{width:30px;height:30px;border-radius:10px;background:var(--blue);text-align:center;}
+  .card-head .badge img{width:18px;height:18px;margin-top:6px;}
+  .card-head h2{
+    display:table-cell;vertical-align:middle;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:12.6pt;
+    color:var(--navy);margin:0;line-height:1.25;padding-left:6px;
+  }
+
+  h3{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:10.4pt;
+    color:var(--blue);margin:11px 0 4px;
+    break-after:avoid;page-break-after:avoid;
+  }
+
+  p{margin:0 0 6px;}
+  p:last-child{margin-bottom:0;}
+  b,strong{font-weight:700;color:var(--navy);}
+  mark{background:var(--marker);color:var(--navy);font-weight:700;padding:0 2px;border-radius:3px;}
+
+  /* lists */
+  ul{list-style:none;margin:0 0 6px;padding:0;}
+  ul li{position:relative;padding-left:16px;margin:0 0 3px;}
+  ul.dash li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:2px;border-radius:1px;background:var(--sky);}
+  ul.dot li::before{content:"";position:absolute;left:1px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--blue);}
+  ul.tick li::before{content:"✓";position:absolute;left:0;top:0;color:var(--blue);font-weight:700;font-size:9.4pt;}
+  ul li .key{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-weight:700;color:var(--blue);
+  }
+
+  .caption{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-size:8.6pt;color:var(--muted);
+    margin:8px 0 3px;break-after:avoid;page-break-after:avoid;
+  }
+
+  /* code + output */
+  .code{
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--blue);
+    border-radius:4px 10px 10px 4px;
+    padding:7px 11px;margin:0 0 6px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .out{
+    background:#FFFFFF;
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--sky);
+    border-radius:4px 10px 10px 4px;
+    padding:7px 11px;margin:0 0 7px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .out .lbl{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8.4pt;
+    color:var(--muted);margin:0 0 3px;
+  }
+  pre{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.9pt;line-height:1.5;margin:0;white-space:pre-wrap;
+    color:#23405F;
+  }
+  .ann{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.4pt;color:var(--blue);font-weight:700;margin:0 0 1px;
+    white-space:pre-wrap;
+  }
+  .k{color:var(--kw);font-weight:700;}
+  .f{color:var(--blue);}
+  .s{color:var(--str);}
+  .n{color:var(--num);}
+  .c{color:var(--com);font-style:italic;}
+
+  /* syntax panel */
+  .syntax{
+    border:0.9pt solid var(--edge);border-radius:10px;overflow:hidden;
+    margin:4px 0 8px;break-inside:avoid;page-break-inside:avoid;
+  }
+  .syntax .head{
+    background:var(--mist-2);text-align:center;padding:2px 6px;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8.8pt;color:var(--navy);
+  }
+  .syntax .body{background:var(--mist);padding:7px 11px;text-align:center;}
+  .syntax pre{text-align:center;font-size:9.6pt;}
+
+  /* index maps */
+  .idx{margin:4px 0 7px;break-inside:avoid;page-break-inside:avoid;}
+  .idx table{border-collapse:collapse;margin:0 auto 3px;}
+  .idx td{
+    padding:1px 9px;text-align:center;
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;font-size:8.8pt;
+  }
+  .idx tr.ix td{color:var(--blue);font-weight:700;font-size:8.4pt;}
+  .idx tr.it td{color:#23405F;border:0.9pt solid var(--edge);background:var(--mist);border-radius:4px;}
+  .idx .lbl{
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:8pt;
+    color:var(--muted);text-align:center;margin:0 0 2px;
+  }
+  .idx .name{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;font-size:8.6pt;
+    color:var(--muted);text-align:center;margin:2px 0 0;
+  }
+
+  /* tables */
+  table.t{
+    width:100%;border-collapse:collapse;margin:4px 0 7px;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  table.t th,table.t td{
+    border:0.9pt solid var(--edge);padding:5px 9px;text-align:left;vertical-align:top;
+  }
+  table.t th{
+    background:var(--mist-2);
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:9.2pt;color:var(--navy);
+  }
+  table.t td.codecell{width:58%;background:#FBFDFF;}
+  table.t td.mono{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.9pt;color:var(--navy);white-space:pre-wrap;
+  }
+  table.t td pre{font-size:8.6pt;}
+
+  /* note */
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;margin:8px 0;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+  .note p + p{margin-top:5px;}
+
+  /* ---------- side-by-side Python | JS ---------- */
+  .cmp{
+    display:table;
+    width:100%;
+    break-before:avoid;
+    page-break-before:avoid;
+    border-collapse:separate;
+    border-spacing:8px 0;
+    margin:4px -8px 8px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .cmp .col{display:table-cell;width:50%;vertical-align:top;}
+  .cmp .lang{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:8.4pt;
+    letter-spacing:.3px;
+    padding:2px 9px;
+    border-radius:7px 7px 0 0;
+    display:block;
+  }
+  .cmp .py .lang{background:var(--navy);color:#ffffff;}
+  .cmp .js .lang{background:#B45309;color:#ffffff;}
+  .cmp .pane{
+    border:0.9pt solid var(--edge);
+    border-top:none;
+    border-radius:0 0 9px 9px;
+    padding:7px 10px 8px;
+    background:#FFFFFF;
+    min-height:100%;
+  }
+  .cmp .py .pane{border-color:#BFD4EE;background:#F7FAFF;}
+  .cmp .js .pane{border-color:#EFD9BC;background:#FFFCF7;}
+  .cmp pre{font-size:8.6pt;line-height:1.5;}
+
+  /* single wide code block, labelled */
+  .single{
+    margin:4px 0 8px;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .single .lang{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;font-size:8.4pt;letter-spacing:.3px;
+    padding:2px 9px;border-radius:7px 7px 0 0;display:inline-block;
+    background:#B45309;color:#ffffff;
+  }
+  .single.py .lang{background:var(--navy);}
+  .single .pane{
+    border:0.9pt solid #EFD9BC;border-top:none;
+    border-radius:0 9px 9px 9px;
+    padding:7px 11px 8px;background:#FFFCF7;
+  }
+  .single.py .pane{border-color:#BFD4EE;background:#F7FAFF;}
+
+  /* ---------- terminal / output ---------- */
+  .term{
+    border:0.9pt solid var(--edge);
+    border-radius:9px;
+    overflow:hidden;
+    margin:0 0 7px;
+    background:#FFFFFF;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .term .bar{
+    background:var(--mist);
+    border-bottom:0.9pt solid var(--edge);
+    padding:3px 8px;font-size:0;line-height:0;
+  }
+  .term .bar i{
+    display:inline-block;width:5.5px;height:5.5px;border-radius:50%;
+    background:var(--sky);margin-right:4px;
+  }
+  .term .bar i:nth-child(2){background:#A9CCF4;}
+  .term .bar i:nth-child(3){background:#C9DFF8;}
+  .term .scr{padding:7px 10px 8px;}
+  .term pre{font-size:8.8pt;line-height:1.5;color:#1E3756;}
+
+  /* inline bits */
+  code{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.8pt;
+    background:var(--mist);
+    border:0.8pt solid var(--edge);
+    border-radius:5px;
+    padding:0 4px;
+    color:var(--navy);
+  }
+  .warn{
+    display:table;width:100%;
+    background:#FFF7ED;
+    border:0.9pt solid #EFD9BC;
+    border-left:4.5pt solid #B45309;
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;margin:8px 0;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .warn .m{display:table-cell;width:24px;vertical-align:top;}
+  .warn .m div{
+    width:18px;height:18px;border-radius:6px;background:#B45309;
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .warn .t2{display:table-cell;vertical-align:top;}
+  .warn p{margin:0;}
+  .warn b{color:#8A3E07;}
+
+  /* thought cloud */
+  .cloud-wrap{margin:9px 0;break-inside:avoid;page-break-inside:avoid;}
+  .cloud{
+    display:table;
+    background:var(--mist);
+    border:1.4pt solid var(--sky);
+    border-radius:24px;
+    padding:8px 18px;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:9.6pt;color:var(--navy);line-height:1.35;
+  }
+  .tail{margin:0 0 0 24px;}
+  .tail i{display:block;border-radius:50%;background:var(--mist);border:1.2pt solid var(--sky);}
+  .tail i.a{width:9px;height:9px;margin:3px 0 0 7px;}
+  .tail i.b{width:5px;height:5px;margin:3px 0 0 0;}
+
+  /* no ligatures anywhere in code */
+  pre, code, .mono, table.t td.mono{
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0,"clig" 0,"calt" 0,"dlig" 0;
+  }
+
+  .i{white-space:nowrap;}
+  .single{break-before:avoid;page-break-before:avoid;}
+
+  .i{color:#B45309;font-weight:700;}
+
+</style>
+</head>
+<body>
+<h1>JavaScript Basics — για όσους ήδη ξέρουν Python</h1>
+<div class="rule"></div>
+
+<!-- 1 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjkiLz48cGF0aCBkPSJNMyAxMmgxOCIvPjxwYXRoIGQ9Ik0xMiAzYTE1IDE1IDAgMCAxIDAgMThhMTUgMTUgMCAwIDEgMC0xOCIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Πού τρέχει η JavaScript</h2>
+  </div>
+
+  <p>Η Python συνήθως τρέχει σε ένα παράθυρο τερματικού. Η JS τρέχει σε ένα web browser και αλλάζει την HTML (δηλαδή τον κώδικα της ιστοσελίδας) σε πραγματικό χρόνο.</p>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Γι' αυτό η JavaScript είναι η γλώσσα των ιστοσελίδων: ό,τι κουνιέται, αλλάζει ή απαντάει όταν πατάς κάτι σε μια σελίδα, συνήθως είναι JS.</p></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDloLjAxIi8+PHBhdGggZD0iTTkgMTVoLjAxIi8+PHBhdGggZD0iTTkgMTVjMCAxLjUtLjYgMi40LTEuNSAzIi8+PHBhdGggZD0iTTE0IDdsNCA1LTQgNSIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Τερματισμός εντολών</h2>
+  </div>
+
+  <p>Στην Python, μια εντολή ολοκληρώνεται όταν πατάμε “Enter” και μεταβαίνουμε στην κάτω γραμμή.</p>
+  <p>Στη JS, οι εντολές χωρίζονται μεταξύ τους με <code>;</code></p>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre>age = <span class="n">12</span>
+color = <span class="s">&quot;red&quot;</span></pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">let</span> age = <span class="n">12</span>;
+<span class="k">let</span> color = <span class="s">&quot;red&quot;</span>;</pre></div>
+    </div>
+  </div>
+
+  <p>Επειδή οι εντολές χωρίζονται με <code>;</code> και όχι με αλλαγή γραμμής, στη JS μπορούμε να γράψουμε και δύο εντολές στην ίδια γραμμή — αλλά είναι πιο ευανάγνωστο να μένει μία εντολή ανά γραμμή.</p>
+</section>
+
+<!-- 3 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDNIOGEyIDIgMCAwIDAtMiAydjRhMiAyIDAgMCAxLTIgMiAyIDIgMCAwIDEgMiAydjRhMiAyIDAgMCAwIDIgMmgxIi8+PHBhdGggZD0iTTE1IDNoMWEyIDIgMCAwIDEgMiAydjRhMiAyIDAgMCAwIDIgMiAyIDIgMCAwIDAtMiAydjRhMiAyIDAgMCAxLTIgMmgtMSIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Οργάνωση εντολών</h2>
+  </div>
+
+  <p>Για να ομαδοποιήσουμε εντολές στην Python (π.χ. τις εντολές που θέλουμε να επαναλαμβάνονται εντός ενός for loop) χρησιμοποιούμε indentation (enter + tab).</p>
+  <p>Στη JS, γράφουμε τον κώδικα εντός <code>{ }</code></p>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre><span class="k">if</span> score &gt; <span class="n">10</span>:
+    score = <span class="n">0</span>
+    <span class="k">print</span>(<span class="s">&quot;You won!&quot;</span>)</pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">if</span> (score &gt; <span class="n">10</span>) {
+    score = <span class="n">0</span>;
+    <span class="f">console</span>.<span class="f">log</span>(<span class="s">&quot;You won!&quot;</span>);
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Στη JS η συνθήκη μπαίνει πάντα μέσα σε παρενθέσεις <code>( )</code>, και δεν υπάρχει η άνω-κάτω τελεία <code>:</code> της Python. Η εσοχή δεν είναι υποχρεωτική — τη βάζουμε όμως για να διαβάζεται ο κώδικας.</p></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxMyIgcng9IjIiLz48cGF0aCBkPSJNMyAxMWgxOCIvPjxwYXRoIGQ9Ik04IDdWNWEyIDIgMCAwIDEgMi0yaDRhMiAyIDAgMCAxIDIgMnYyIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Ορισμός μεταβλητών</h2>
+  </div>
+
+  <p>Όταν ορίζουμε μια μεταβλητή στη JavaScript, πρέπει να δηλώνουμε αν σκοπεύουμε να μεταβάλουμε την τιμή της στη συνέχεια του προγράμματος.</p>
+
+  <table class="t">
+    <tr><th>Λέξη</th><th>Σημασία</th></tr>
+    <tr><td class="op">const</td><td>Η τιμή της μεταβλητής δεν πρέπει να αλλάξει.</td></tr>
+    <tr><td class="op">let</td><td>Επιτρέπονται νέες αναθέσεις.</td></tr>
+  </table>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="k">const</span> age = <span class="n">12</span>;
+age = <span class="n">13</span>;        <span class="c">// ERROR</span></pre></div>
+  </div>
+
+  <div class="warn">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>ΠΡΟΣΟΧΗ:</b> Αυτό που απαγορεύεται είναι η νέα ανάθεση. Αν έχουμε μια λίστα, επιτρέπεται να αλλάξουμε το περιεχόμενο της, με μεθόδους επεξεργασίας λιστών.</p></div>
+  </div>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="k">const</span> enemies = [<span class="s">&quot;goblin&quot;</span>, <span class="s">&quot;orc&quot;</span>];
+enemies.<span class="f">push</span>(<span class="s">&quot;troll&quot;</span>);    <span class="c">// επιτρέπεται: αλλάζουμε το περιεχόμενο</span>
+enemies = [<span class="s">&quot;dragon&quot;</span>];     <span class="c">// ERROR: νέα ανάθεση</span></pre></div>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Στην Python δεν δηλώνουμε τίποτα: γράφουμε απλώς <code>age = 12</code>. Στη JS πρέπει πάντα να διαλέξουμε <code>const</code> ή <code>let</code>. Κανόνας: ξεκίνα με <code>const</code> και βάλε <code>let</code> μόνο αν όντως χρειάζεται να αλλάξει η τιμή.</p></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxMyIgcng9IjIiLz48cGF0aCBkPSJNOCAyMWg4Ii8+PHBhdGggZD0iTTEyIDE3djQiLz48cGF0aCBkPSJNNiA4bDIuNSAyLjVMNiAxMyIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Έξοδος</h2>
+  </div>
+
+  <p>Για να εμφανίσουμε ένα μήνυμα στο τερματικό χρησιμοποιούμε την εντολή <code>console.log()</code> αντί για <code>print()</code></p>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre><span class="k">print</span>(<span class="s">&quot;hello world&quot;</span>)</pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="f">console</span>.<span class="f">log</span>(<span class="s">&quot;hello world&quot;</span>);</pre></div>
+    </div>
+  </div>
+
+  <p>Το τερματικό αλλάζει ανάλογα με την εφαρμογή. Αν τρέχουμε μια εφαρμογή στο browser, για να δούμε την έξοδο κάνουμε inspect και πηγαίνουμε στο tab console.</p>
+
+  <table class="t">
+    <tr><th>Λειτουργικό</th><th>Συντόμευση για inspect</th></tr>
+    <tr><td>Windows / Linux</td><td class="mono">Ctrl + Shift + I</td></tr>
+    <tr><td>Mac</td><td class="mono">Cmd + Option + I</td></tr>
+  </table>
+</section>
+
+<!-- 6 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDdWNWgxNnYyIi8+PHBhdGggZD0iTTEyIDV2MTQiLz48cGF0aCBkPSJNOSAxOWg2Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>String interpolation για “custom” prints</h2>
+  </div>
+
+  <p>Περικλείουμε το string σε backticks <code>`...`</code> και εισάγουμε τις μεταβλητές σε <code>${..}</code></p>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre>error = <span class="s">&quot;index error&quot;</span>
+message = f<span class="s">&quot;program exited with {error}&quot;</span></pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">const</span> error = <span class="s">&quot;index error&quot;</span>;
+<span class="k">const</span> message = <span class="s">`program exited with </span><span class="i">${error}</span><span class="s">`</span>;</pre></div>
+    </div>
+  </div>
+
+  <p class="caption">Και στις δύο γλώσσες το αποτέλεσμα είναι το ίδιο:</p>
+  <div class="term">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="scr"><pre>program exited with index error</pre></div>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Τα backticks <code>`</code> είναι διαφορετικό σύμβολο από τα απλά εισαγωγικά. Σε ελληνικό πληκτρολόγιο βρίσκονται συνήθως στο πλήκτρο αριστερά από το <code>1</code>.</p></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDhoMTYiLz48cGF0aCBkPSJNNCAxMmgxNiIvPjxwYXRoIGQ9Ik00IDE2aDE2Ii8+PC9zdmc+" alt=""></div></div>
+    <h2>Έλεγχος ισότητας</h2>
+  </div>
+
+  <p>Γενικά, γίνεται με <code>===</code> αντί για <code>==</code> όπως στην Python. Αντίστοιχα, το «διάφορο» γράφεται <code>!==</code> αντί για <code>!=</code></p>
+
+  <table class="t">
+    <tr><th>Σημασία</th><th>Python</th><th>JavaScript</th></tr>
+    <tr><td>ίσο με</td><td class="mono">==</td><td class="mono">===</td></tr>
+    <tr><td>διάφορο από</td><td class="mono">!=</td><td class="mono">!==</td></tr>
+  </table>
+
+  <p>Το <code>==</code> της JS κάνει αυτόματες μετατροπές τύπου (type casting) πριν συγκρίνει, που συχνά δεν είναι αυτές που περιμένουμε.</p>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="f">console</span>.<span class="f">log</span>(<span class="s">&quot;5&quot;</span> == <span class="n">5</span>);     <span class="c">// true  - μετατρέπει το &quot;5&quot; σε αριθμό</span>
+<span class="f">console</span>.<span class="f">log</span>(<span class="s">&quot;5&quot;</span> === <span class="n">5</span>);    <span class="c">// false - string και αριθμός δεν είναι το ίδιο</span></pre></div>
+  </div>
+
+  <div class="warn">
+    <div class="m"><div>!</div></div>
+    <div class="t2"><p><b>Κανόνας:</b> στη JavaScript χρησιμοποιούμε πάντα <code>===</code> και <code>!==</code></p></div>
+  </div>
+
+  <div class="cloud-wrap">
+    <div class="cloud">fun fact: Την πρώτη φορά που είδα === στην JS γραμμένο από συνεργάτη μου,<br>νόμιζα ότι ήταν bug και το άλλαξα σε == καταστρέφοντας το πρόγραμμα…</div>
+    <div class="tail"><i class="a"></i><i class="b"></i></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDVIN2EyIDIgMCAwIDAtMiAydjNhMiAyIDAgMCAxLTIgMiAyIDIgMCAwIDEgMiAydjNhMiAyIDAgMCAwIDIgMmgyIi8+PHBhdGggZD0iTTE1IDVoMmEyIDIgMCAwIDEgMiAydjNhMiAyIDAgMCAwIDIgMiAyIDIgMCAwIDAtMiAydjNhMiAyIDAgMCAxLTIgMmgtMiIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Συναρτήσεις</h2>
+  </div>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre><span class="k">def</span> <span class="f">add</span>(a, b):
+    <span class="k">return</span> a + b</pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">function</span> <span class="f">add</span>(a, b) {
+    <span class="k">return</span> a + b;
+}</pre></div>
+    </div>
+  </div>
+
+  <p>Η κλήση είναι ίδια και στις δύο γλώσσες:</p>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre>result = <span class="f">add</span>(<span class="n">3</span>, <span class="n">2</span>)</pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">const</span> result = <span class="f">add</span>(<span class="n">3</span>, <span class="n">2</span>);</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0zIDEyaDEzIi8+PHBhdGggZD0iTTEyIDdsNSA1LTUgNSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTIiIHI9IjEuNiIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Arrow Functions (ΠΡΟΧΩΡΗΜΕΝΟ!)</h2>
+  </div>
+
+  <p>Οι arrow functions είναι ένας πιο σύντομος τρόπος να γράψουμε μια συνάρτηση. Συνήθως τις αποθηκεύουμε σε μια <code>const</code> μεταβλητή, αλλά μπορούν να γραφτούν και κατευθείαν μέσα σε μια άλλη εντολή — θα το δούμε στους πίνακες παρακάτω. Οι AI coding agents τις χρησιμοποιούν συνέχεια…</p>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="k">const</span> <span class="f">multiply</span> = (a, b) =&gt; {
+    <span class="k">return</span> a * b;
+};</pre></div>
+  </div>
+
+  <p>ή αν έχουμε μόνο μια γραμμή κώδικα και δε χρειάζεται ομαδοποίηση:</p>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="k">const</span> <span class="f">multiply</span> = (a, b) =&gt; a * b;</pre></div>
+  </div>
+
+  <div class="cloud-wrap">
+    <div class="cloud">Σκεφτείτε την σαν τον ορισμό μιας συνάρτησης στα μαθηματικά.</div>
+    <div class="tail"><i class="a"></i><i class="b"></i></div>
+  </div>
+
+  <p>Καλείται κανονικά ως συνάρτηση:</p>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="k">const</span> result = <span class="f">multiply</span>(<span class="n">3</span>, <span class="n">2</span>);</pre></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjQiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxNiIgcng9IjMiLz48cGF0aCBkPSJNNyA5aDRNNyAxM2g0TTcgMTdoMiIvPjxwYXRoIGQ9Ik0xNSA5aDJNMTUgMTNoMiIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Δομή object (αντίστοιχη του python Dictionary)</h2>
+  </div>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre>person = {<span class="s">&quot;name&quot;</span>: <span class="s">&quot;Alex&quot;</span>, <span class="s">&quot;age&quot;</span>: <span class="n">50</span>}
+
+<span class="k">print</span>(person[<span class="s">&quot;age&quot;</span>])</pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">const</span> person = { name: <span class="s">&quot;Alex&quot;</span>, age: <span class="n">50</span> };
+
+<span class="f">console</span>.<span class="f">log</span>(person.age);</pre></div>
+    </div>
+  </div>
+
+  <div class="term">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="scr"><pre>50</pre></div>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Δύο διαφορές: στη JS τα ονόματα των κλειδιών γράφονται <b>χωρίς εισαγωγικά</b>, και τα διαβάζουμε με <b>τελεία</b> (<code>person.age</code>) αντί για αγκύλες.</p></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDEyYTggOCAwIDAgMSA4LTggOCA4IDAgMCAxIDcgNCIvPjxwYXRoIGQ9Ik0yMCAxMmE4IDggMCAwIDEtOCA4IDggOCAwIDAgMS03LTQiLz48cGF0aCBkPSJNMTkgNHY0aC00Ii8+PHBhdGggZD0iTTUgMjB2LTRoNCIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Επανάληψη σε πίνακες (for loops)</h2>
+  </div>
+
+  <p>Το ακριβές αντίστοιχο του <code>for x in lista:</code> της Python είναι το <code>for ... of</code> της JS.</p>
+
+  <div class="cmp">
+    <div class="col py">
+      <span class="lang">PYTHON</span>
+      <div class="pane"><pre>enemies = [<span class="s">&quot;goblin&quot;</span>, <span class="s">&quot;orc&quot;</span>, <span class="s">&quot;troll&quot;</span>]
+
+<span class="k">for</span> enemy <span class="k">in</span> enemies:
+    <span class="k">print</span>(enemy)</pre></div>
+    </div>
+    <div class="col js">
+      <span class="lang">JAVASCRIPT</span>
+      <div class="pane"><pre><span class="k">const</span> enemies = [<span class="s">&quot;goblin&quot;</span>, <span class="s">&quot;orc&quot;</span>, <span class="s">&quot;troll&quot;</span>];
+
+<span class="k">for</span> (<span class="k">const</span> enemy <span class="k">of</span> enemies) {
+    <span class="f">console</span>.<span class="f">log</span>(enemy);
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="term">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="scr"><pre>goblin
+orc
+troll</pre></div>
+  </div>
+
+  <h3>Μέθοδοι πίνακα: forEach</h3>
+
+  <p>Στη JS συναντάμε πολύ συχνά και έναν δεύτερο τρόπο: τη μέθοδο <code>forEach()</code>, στην οποία δίνουμε μια arrow function. Δεν είναι for loop — είναι μέθοδος του πίνακα — αλλά κάνει την ίδια δουλειά.</p>
+
+  <div class="single js">
+    <span class="lang">JAVASCRIPT</span>
+    <div class="pane"><pre><span class="k">const</span> enemies = [<span class="s">&quot;goblin&quot;</span>, <span class="s">&quot;orc&quot;</span>, <span class="s">&quot;troll&quot;</span>];
+
+enemies.<span class="f">forEach</span>(enemy =&gt; {
+    <span class="f">console</span>.<span class="f">log</span>(enemy);
+});</pre></div>
+  </div>
+
+  <div class="term">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="scr"><pre>goblin
+orc
+troll</pre></div>
+  </div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Εδώ βλέπουμε μια arrow function που <b>δεν</b> αποθηκεύεται σε μεταβλητή: γράφεται κατευθείαν μέσα στην <code>forEach</code>. Η μεταβλητή <code>enemy</code> παίρνει κάθε φορά το επόμενο στοιχείο του πίνακα, ακριβώς όπως στο <code>for ... of</code>.</p></div>
+  </div>
+</section>
+
+</body>
+</html>

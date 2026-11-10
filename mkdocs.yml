@@ -135,3 +135,5 @@ nav:
           - 'Μάθημα 1': advanced/exercises/lesson-01.md
           - 'Μάθημα 2': advanced/exercises/lesson-02.md
           - 'Μάθημα 3': advanced/exercises/lesson-03.md
+      - Επιπλέον υλικό:
+          - 'JavaScript vs Python': advanced/extra/javascript-vs-python.md
