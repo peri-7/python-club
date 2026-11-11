@@ -29,7 +29,11 @@
 ### Άσκηση 4
 
 Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά αριθμών (χωρισμένους με
-κενά) και εμφανίζει τον μέγιστο και τον ελάχιστο αριθμό της λίστας.
+κενά) και εμφανίζει τον μέγιστο και τον ελάχιστο αριθμό της λίστας, καθώς και τον
+μέσο όρο της. Να τυπώνει, επίσης, μια λίστα που περιέχει τους αριθμούς της αρχικής
+λίστας που είναι μεγαλύτεροι από τον μέσο όρο της. Τέλος, πρέπει να τυπώνει την
+αρχική λίστα, με τον αριθμό 3 να έχει προστεθεί ώστε να γίνει το 2ο στοιχείο της
+(index 1).
 
 ### Άσκηση 5
 
@@ -73,6 +77,13 @@
     | `"True".isupper()` | `False` |
     | `"true".isupper()` | `False` |
 
+### Άσκηση 8
+
+Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά τουλάχιστον 6 αριθμών,
+οι οποίοι αντιστοιχούν στη θερμοκρασία για κάθε ώρα της ημέρας, ξεκινώντας από
+τις 12 το βράδυ. Το πρόγραμμα πρέπει να δίνει ως έξοδο μια λίστα που περιέχει τη
+θερμοκρασία από τις 3 έως και τις 5 το πρωί.
+
 ## Δύσκολες ασκήσεις στις λίστες
 
 ### Άσκηση 1
@@ -87,9 +98,15 @@
 κενά) και τους ταξινομεί από τον μικρότερο στον μεγαλύτερο, προσπαθώντας να τους
 ταξινομήσει ανά διαδοχικά ζεύγη.
 
-[:material-youtube: Δες το βίντεο](https://www.youtube.com/watch?v=hahrx5WUeNI)
-
 ### Άσκηση 3
+
+*αναδρομή*
+
+Στις ασκήσεις 1 και 2 υλοποιήσατε αλγορίθμους ταξινόμησης. Τώρα, θα πρέπει να
+τους βάλετε σε μία συνάρτηση, για να μπορούν να τους χρησιμοποιήσουν και άλλοι
+προγραμματιστές.
+
+### Άσκηση 4
 
 Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά λέξεων (χωρισμένες με
 κενά) και τις ταξινομεί από αυτή με το μικρότερο μήκος σε αυτή με το μεγαλύτερο
@@ -98,5 +115,7 @@
 ??? tip "Ψάξε μόνος σου"
     - [docs.python.org — More on Lists](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists)
     - [docs.python.org — `str.split()`](https://docs.python.org/3/library/stdtypes.html#str.split)
-    - [docs.python.org — `min()`](https://docs.python.org/3/library/functions.html#min) και [`max()`](https://docs.python.org/3/library/functions.html#max)
+    - [docs.python.org — Lists (indexing και slicing)](https://docs.python.org/3/tutorial/introduction.html#lists)
+    - [docs.python.org — `min()`](https://docs.python.org/3/library/functions.html#min), [`max()`](https://docs.python.org/3/library/functions.html#max) και [`sum()`](https://docs.python.org/3/library/functions.html#sum)
     - [docs.python.org — `str.isdigit()`](https://docs.python.org/3/library/stdtypes.html#str.isdigit) και [`str.isupper()`](https://docs.python.org/3/library/stdtypes.html#str.isupper)
+    - [docs.python.org — Defining Functions](https://docs.python.org/3/tutorial/controlflow.html#defining-functions)

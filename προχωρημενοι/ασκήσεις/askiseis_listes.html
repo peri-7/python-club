@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Ασκήσεις σε Λίστες</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+  }
+
+  @page{
+    size:A4;
+    margin:15mm 15mm 14mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;
+      font-size:8.5pt;
+      color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10.3pt;
+    line-height:1.48;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:14pt;
+    line-height:1.3;
+    color:var(--navy);
+    margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 16px;}
+
+  /* ---------- section bands ---------- */
+  h2{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:11.4pt;
+    color:var(--navy);
+    margin:0 0 12px;
+    padding:0 0 5px;
+    border-bottom:1.4pt solid var(--edge);
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+  h2 + .ex{break-before:avoid;page-break-before:avoid;}
+  .band{margin:20px 0 0;}
+  .band:first-of-type{margin-top:0;}
+
+  /* ---------- exercises ---------- */
+  .ex{
+    display:table;
+    width:100%;
+    margin:0 0 13px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .ex .no{display:table-cell;width:34px;vertical-align:top;}
+  .ex .no div{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#ffffff;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:9.6pt;
+    line-height:24px;
+    text-align:center;
+  }
+  .ex .body{display:table-cell;vertical-align:top;}
+  .ex p{margin:0;}
+  .ex p + p{margin-top:6px;}
+
+  ul.dash{list-style:none;margin:6px 0 0;padding:0;}
+  ul.dash li{position:relative;padding-left:16px;margin:0 0 3px;}
+  ul.dash li::before{
+    content:"";position:absolute;left:0;top:8px;
+    width:8px;height:2px;border-radius:1px;background:var(--sky);
+  }
+
+  /* ---------- extra tip: τετράγωνο πλαίσιο ---------- */
+  .tip{
+    border:1.2pt solid var(--blue);
+    border-radius:0;
+    padding:10px 13px 11px;
+    margin:10px 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .tip .head{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:10pt;
+    color:var(--blue);
+    margin:0 0 6px;
+  }
+  .tip p{margin:0 0 5px;}
+  .tip p:last-child{margin-bottom:0;}
+  .tip .sig{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-weight:700;
+    color:var(--navy);
+  }
+
+  table.t{
+    width:auto;
+    border-collapse:collapse;
+    margin:5px 0 8px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  table.t th,table.t td{
+    border:0.9pt solid var(--edge);
+    padding:3px 11px;
+    text-align:left;
+  }
+  table.t th{
+    background:var(--mist-2);
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:8.8pt;
+    color:var(--navy);
+  }
+  table.t td.mono{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:9pt;
+    color:var(--navy);
+  }
+  table.t td.val{font-weight:700;color:var(--blue);}
+
+  code{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:9pt;
+    background:var(--mist);
+    border:0.8pt solid var(--edge);
+    border-radius:5px;
+    padding:0 4px;
+    color:var(--navy);
+  }
+
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;
+    margin:8px 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+
+  code, table.t td.mono, .tip .sig{
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0,"clig" 0,"calt" 0,"dlig" 0;
+  }
+
+  .chip{
+    display:inline-block;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;font-size:8.4pt;
+    color:var(--navy);background:var(--mist);
+    border:1pt solid var(--edge);border-radius:7px;
+    padding:1px 9px;margin:0 0 5px;
+  }
+
+</style>
+</head>
+<body>
+<h1>Ασκήσεις σε Λίστες</h1>
+<div class="rule"></div>
+
+<div class="band">
+<h2>Εύκολες Ασκήσεις στις Λίστες</h2>
+
+<div class="ex">
+  <div class="no"><div>1</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που ορίζει μια λίστα με τουλάχιστον 4 αριθμούς. Εμφάνισε τη στην οθόνη. Εμφάνισε το δεύτερο στοιχείο της. Εμφάνισε το δεύτερο στοιχείο από το τέλος.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>2</div></div>
+  <div class="body">
+    <p>Ζήτησε από τον χρήστη τη λίστα που έχει φτιάξει για το σουπερμάρκετ. Τα προϊόντα πρέπει να είναι χωρισμένα με κενά. Ρώτησε τον αν ξέχασε κάτι. Αν η τελική λίστα δεν περιέχει “cookies”, πρόσθεσε τα στο τέλος της λίστας. Αν η λίστα περιέχει “tomato”, πρέπει να αφαιρείται, καθώς έχουν εξαντληθεί. Εμφάνισε μια λίστα που περιέχει όλα τα προϊόντα (και τα ξεχασμένα).</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>3</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που περιέχει μια λίστα με 6 αριθμούς. Αύξησε κατά 1 την τιμή όλων των στοιχείων της λίστας και εμφάνισε τις νέες τιμές.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>4</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά αριθμών (χωρισμένους με κενά) και εμφανίζει τον μέγιστο και τον ελάχιστο αριθμό της λίστας, καθώς και τον μέσο όρο της. Να τυπώνει, επίσης μια λίστα που περιέχει τους αριθμούς της αρχικής λίστας που είναι μεγαλύτεροι από τον μέσο όρο της. Τέλος πρέπει να τυπώνει την αρχική λίστα, με τον αριθμό 3 να έχει προστεθεί ώστε να γίνει το 2ο στοιχείο της (index 1).</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>5</div></div>
+  <div class="body">
+    <p>Φτιάξε δύο λίστες με 5 αριθμούς. Φτιάξε μια νέα λίστα που το i-οστό στοιχείο της είναι το άθροισμα του i-οστού στοιχείου της πρώτης λίστας με το i-οστό από το τέλος της δεύτερης. Εμφάνισε τη λίστα και τον μέσο όρο των στοιχείων της. Εμφανίστε, μετά τις δύο αρχικές λίστες.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>6</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά αριθμών (χωρισμένους με κενα) και εμφανίζει τον τρίτο μικρότερο αριθμό της λίστας.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>7</div></div>
+  <div class="body">
+    <p>Ζήτα από τον χρήστη έναν κωδικό και έλεγξε αν:</p>
+    <ul class="dash">
+      <li>έχει πάνω από 8 χαρακτήρες</li>
+      <li>περιέχει τουλάχιστον ένα ψηφίο</li>
+      <li>περιέχει τουλάχιστον ένα κεφαλαίο γράμμα</li>
+      <li>δεν περιέχει κενά</li>
+      <li>δεν περιέχει απαγορευμένα σύμβολα (“, ‘, -, |, \, /)</li>
+    </ul>
+    <p style="margin-top:6px">Να εμφανίζει μήνυμα που λέει αν ο κωδικός είναι έγκυρος ή όχι.</p>
+
+    <div class="tip">
+      <p class="head">Extra tips:</p>
+      <p><span class="sig">ch.isdigit()</span>: Επιστρέφει True αν ο χαρακτήρας είναι ψηφίο (0–9).</p>
+      <table class="t">
+        <tr><th>Έκφραση</th><th>Τιμή</th></tr>
+        <tr><td class="mono">"5".isdigit()</td><td class="val">True</td></tr>
+        <tr><td class="mono">"a".isdigit()</td><td class="val">False</td></tr>
+        <tr><td class="mono">"!".isdigit()</td><td class="val">False</td></tr>
+      </table>
+      <p><span class="sig">ch.isupper()</span>: επιστρέφει True αν ο χαρακτήρας είναι κεφαλαίο γράμμα</p>
+      <table class="t">
+        <tr><th>Έκφραση</th><th>Τιμή</th></tr>
+        <tr><td class="mono">"FALSE".isupper()</td><td class="val">True</td></tr>
+        <tr><td class="mono">"A".isupper()</td><td class="val">True</td></tr>
+        <tr><td class="mono">"True".isupper()</td><td class="val">False</td></tr>
+        <tr><td class="mono">“true”.isupper()</td><td class="val">False</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>8</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά τουλάχιστον 6 αριθμών οι οποίοι αντιστοιχούν στη θερμοκρασία για κάθε ώρα της ημέρας, ξεκινώντας από τις 12 το βράδυ. Το πρόγραμμα πρέπει να δίνει ως έξοδο μια λίστα που περιέχει τη θερμοκρασία από τις 3 έως και τις 5 το πρωί.</p>
+  </div>
+</div>
+</div>
+
+<div class="band">
+<h2>Δύσκολες Ασκήσεις στις Λίστες</h2>
+
+<div class="ex">
+  <div class="no"><div>1</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά αριθμών (χωρισμένους με κενα) και τους ταξινομεί από τον μικρότερο στον μεγαλύτερο. Δεν επιτρέπεται να χρησιμοποιήσετε την έτοιμη μέθοδο <code>sort()</code>.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>2</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά αριθμών (χωρισμένους με κενα) και τους ταξινομεί από τον μικρότερο στον μεγαλύτερο, προσπαθώντας να τους ταξινομήσει ανά διαδοχικά ζεύγη.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>3</div></div>
+  <div class="body">
+    <p><span class="chip">αναδρομή</span></p>
+    <p>Στις ασκήσεις 1 και 2 υλοποιήσατε αλγορίθμους ταξινόμησης. Τώρα, θα πρέπει να τους βάλετε σε μία συνάρτηση για να μπορούν να τους χρησιμοποιήσουν και άλλοι προγραμματιστές.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>4</div></div>
+  <div class="body">
+    <p>Γράψε ένα πρόγραμμα που δέχεται από τον χρήστη μια σειρά λέξεων (χωρισμένες με κενα) και τους ταξινομεί από αυτή με το μικρότερο μήκος σε αυτή με το μεγαλύτερο μήκος.</p>
+  </div>
+</div>
+</div>
+
+</body>
+</html>
