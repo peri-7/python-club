@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Θεωρία: οι βιβλιοθήκες time και random</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+    --kw:#B5179E;
+    --str:#C0392B;
+    --num:#C2410C;
+    --com:#6B7F99;
+  }
+
+  @page{
+    size:A4;
+    margin:13mm 14mm 12mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;
+      font-size:8.5pt;
+      color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10pt;
+    line-height:1.45;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:14pt;
+    line-height:1.3;
+    color:var(--navy);
+    margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 14px;}
+
+  /* ---------- cards ---------- */
+  .card{
+    background:#ffffff;
+    border:1.6pt solid var(--edge);
+    border-radius:16px;
+    padding:10px 14px 12px;
+    margin:0 0 9px;
+  }
+  .card-head{display:table;width:100%;margin:0 0 7px;break-after:avoid;page-break-after:avoid;}
+  .card-head .badge{display:table-cell;width:34px;vertical-align:middle;}
+  .card-head .badge div{width:30px;height:30px;border-radius:10px;background:var(--blue);text-align:center;}
+  .card-head .badge img{width:18px;height:18px;margin-top:6px;}
+  .card-head h2{
+    display:table-cell;vertical-align:middle;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:13pt;
+    color:var(--navy);margin:0;line-height:1.25;padding-left:6px;
+  }
+
+  p{margin:0 0 5px;}
+  p:last-child{margin-bottom:0;}
+  b,strong{font-weight:700;color:var(--navy);}
+
+  /* ---------- numbered function entries ---------- */
+  .fn{
+    display:table;
+    width:100%;
+    margin:9px 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .fn .no{display:table-cell;width:32px;vertical-align:top;}
+  .fn .no div{
+    width:23px;height:23px;border-radius:50%;
+    background:var(--blue);color:#ffffff;
+    font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;font-size:9.4pt;
+    line-height:23px;text-align:center;
+  }
+  .fn .body{display:table-cell;vertical-align:top;}
+  .fn .sig{
+    display:inline-block;
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-weight:700;font-size:10pt;
+    color:var(--navy);
+    background:var(--mist);
+    border:1pt solid var(--edge);
+    border-radius:7px;
+    padding:1px 9px;
+    margin:0 0 5px;
+  }
+  .fn p{margin:0 0 5px;}
+  .fn p:last-child{margin-bottom:0;}
+
+  .caption{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-size:8.8pt;color:var(--muted);
+    margin:6px 0 2px;
+    break-after:avoid;page-break-after:avoid;
+  }
+
+  /* ---------- code ---------- */
+  .code{
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:2.6pt solid var(--blue);
+    border-radius:4px 10px 10px 4px;
+    padding:6px 10px;
+    margin:0 0 5px;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  pre{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:8.7pt;line-height:1.42;margin:0;white-space:pre-wrap;
+    color:#23405F;
+  }
+  .k{color:var(--kw);font-weight:700;}
+  .f{color:var(--blue);}
+  .s{color:var(--str);}
+  .n{color:var(--num);}
+  .c{color:var(--com);font-style:italic;}
+
+  code{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:9pt;
+    background:var(--mist);
+    border:0.8pt solid var(--edge);
+    border-radius:5px;
+    padding:0 4px;
+    color:var(--navy);
+  }
+
+  /* ---------- terminal output ---------- */
+  .term{
+    border:0.9pt solid var(--edge);
+    border-radius:9px;
+    overflow:hidden;
+    margin:0 0 6px;
+    background:#FFFFFF;
+    break-inside:avoid;page-break-inside:avoid;
+    break-before:avoid;page-break-before:avoid;
+  }
+  .term .bar{
+    background:var(--mist);
+    border-bottom:0.9pt solid var(--edge);
+    padding:3px 8px;font-size:0;line-height:0;
+  }
+  .term .bar i{
+    display:inline-block;width:5.5px;height:5.5px;border-radius:50%;
+    background:var(--sky);margin-right:4px;
+  }
+  .term .bar i:nth-child(2){background:#A9CCF4;}
+  .term .bar i:nth-child(3){background:#C9DFF8;}
+  .term .scr{padding:7px 10px 8px;}
+  .term pre{font-size:9pt;color:#1E3756;}
+
+  /* ---------- note ---------- */
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;
+    margin:8px 0 0;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+
+  pre, code{
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0,"clig" 0,"calt" 0,"dlig" 0;
+  }
+
+</style>
+</head>
+<body>
+<h1>Θεωρία: οι βιβλιοθήκες time και random</h1>
+<div class="rule"></div>
+
+<!-- 1 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDVhMiAyIDAgMCAxIDItMmgxMnYxOEg2YTIgMiAwIDAgMS0yLTJ6Ii8+PHBhdGggZD0iTTggM3YxOCIvPjwvc3ZnPg==" alt=""></div></div>
+    <h2>Βιβλιοθήκες</h2>
+  </div>
+
+  <p>Βιβλιοθήκη ονομάζεται μια συλλογή έτοιμου κώδικα (κυρίως συναρτήσεων) της python.</p>
+  <p>Για να τις εισάγουμε στα προγράμματα μας, γράφουμε <code>import</code> και μετά το όνομα της βιβλιοθήκης.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre><span class="k">import</span> <span class="f">time</span>
+<span class="k">import</span> <span class="f">random</span></pre></div>
+
+  <p>Για να χρησιμοποιήσουμε κάποια συνάρτηση μιας βιβλιοθήκης, γράφουμε πρώτα το όνομα της βιβλιοθήκης, βάζουμε μια τελεία και καλούμε τη συνάρτηση.</p>
+
+  <p class="caption">Παράδειγμα:</p>
+  <div class="code"><pre><span class="f">time</span>.<span class="f">sleep</span>()</pre></div>
+
+  <div class="note">
+    <div class="m"><div>i</div></div>
+    <div class="t2"><p>Το <code>import</code> το γράφουμε <b>μία φορά</b>, στην αρχή του προγράμματος.</p></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjkiLz48cGF0aCBkPSJNMTIgN3Y1bDMuNSAyIi8+PC9zdmc+" alt=""></div></div>
+    <h2>Η βιβλιοθήκη time</h2>
+  </div>
+
+  <p>Time ονομάζεται η βιβλιοθήκη που εισάγει χρόνο στα προγράμματα μας.</p>
+  <p>Έχει δύο βασικές συναρτήσεις.</p>
+
+  <div class="fn">
+    <div class="no"><div>1</div></div>
+    <div class="body">
+      <p><span class="sig">time.time()</span></p>
+      <p>Επιστρέφει τον αριθμό δευτερολέπτων που έχει περάσει από τις 12 τα μεσάνυχτα, την 1η Ιανουαρίου του 1970 ! (δεν κάνω πλάκα…)</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>start = <span class="f">time</span>.<span class="f">time</span>()
+
+<span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(<span class="n">10000000</span>):
+    x = <span class="n">5</span>
+    x = x + <span class="n">10</span>
+
+end = <span class="f">time</span>.<span class="f">time</span>()
+
+program_time_in_seconds = end - start</pre></div>
+
+      <p>Το παραπάνω πρόγραμμα μετράει τον αριθμό των δευτερολέπτων που χρειάστηκε το for loop.</p>
+    </div>
+  </div>
+
+  <div class="fn">
+    <div class="no"><div>2</div></div>
+    <div class="body">
+      <p><span class="sig">time.sleep()</span></p>
+      <p>Παγώνει το πρόγραμμα για τον αριθμό δευτερολέπτων που ζητήσαμε.</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>x = <span class="n">0</span>
+
+<span class="k">while</span> <span class="k">True</span>:
+    <span class="f">time</span>.<span class="f">sleep</span>(<span class="n">1</span>)
+    x = x + <span class="n">1</span>
+    <span class="k">if</span> x &gt;= <span class="n">100</span>:
+        <span class="k">break</span></pre></div>
+
+      <p>Το παραπάνω πρόγραμμα μετράει 100 δευτερόλεπτα και μετά τερματίζει.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card">
+  <div class="card-head">
+    <div class="badge"><div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjMiIHk9IjMiIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgcng9IjQiLz48Y2lyY2xlIGN4PSI4LjUiIGN5PSI4LjUiIHI9IjEuMyIvPjxjaXJjbGUgY3g9IjE1LjUiIGN5PSIxNS41IiByPSIxLjMiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxLjMiLz48L3N2Zz4=" alt=""></div></div>
+    <h2>Η βιβλιοθήκη random</h2>
+  </div>
+
+  <p>Random ονομάζεται η βιβλιοθήκη που εισάγει τυχαιότητα στα προγράμματα μας.</p>
+  <p>Ακολουθούν οι βασικότερες συναρτήσεις της.</p>
+
+  <div class="fn">
+    <div class="no"><div>1</div></div>
+    <div class="body">
+      <p><span class="sig">random.randint(a, b)</span></p>
+      <p>Επιστρέφει έναν τυχαίο ακέραιο από a ως b, με πιθανότητα 1/(b-a+1).</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>die = <span class="f">random</span>.<span class="f">randint</span>(<span class="n">1</span>, <span class="n">6</span>)   <span class="c">#ρίψη δίκαιου ζαριού</span></pre></div>
+    </div>
+  </div>
+
+  <div class="fn">
+    <div class="no"><div>2</div></div>
+    <div class="body">
+      <p><span class="sig">random.random()</span></p>
+      <p>Επιστρέφει έναν τυχαίο δεκαδικό αριθμό από το 0.0 έως το 1.0, αλλά όχι το 1.0</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>probability = <span class="f">random</span>.<span class="f">random</span>()
+
+<span class="k">if</span> (probability &lt; <span class="n">0.2</span>):
+    <span class="f">print</span>(<span class="s">&quot;low chance of happening&quot;</span>)</pre></div>
+    </div>
+  </div>
+
+  <div class="fn">
+    <div class="no"><div>3</div></div>
+    <div class="body">
+      <p><span class="sig">random.uniform(a, b)</span></p>
+      <p>Επιστρέφει έναν τυχαίο δεκαδικό αριθμό από το a ως το b.</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>probability = <span class="f">random</span>.<span class="f">uniform</span>(<span class="n">0.0</span>, <span class="n">1.0</span>)
+
+<span class="k">if</span> (probability == <span class="n">1.0</span>):
+    <span class="f">print</span>(<span class="s">&quot;It will definitely happen&quot;</span>)</pre></div>
+    </div>
+  </div>
+
+  <div class="fn">
+    <div class="no"><div>4</div></div>
+    <div class="body">
+      <p><span class="sig">random.choice()</span></p>
+      <p>Επιστρέφει ένα τυχαίο στοιχείο μιας λίστας.</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>coin = <span class="f">random</span>.<span class="f">choice</span>([<span class="s">&quot;heads&quot;</span>, <span class="s">&quot;tails&quot;</span>])</pre></div>
+    </div>
+  </div>
+
+  <div class="fn">
+    <div class="no"><div>5</div></div>
+    <div class="body">
+      <p><span class="sig">random.shuffle()</span></p>
+      <p>Ανακατεύει τυχαία τη σειρά των στοιχείων μιας λίστας.</p>
+
+      <p class="caption">Παράδειγμα:</p>
+      <div class="code"><pre>cards = [<span class="s">&quot;ace&quot;</span>, <span class="s">&quot;king&quot;</span>, <span class="s">&quot;queen&quot;</span>, <span class="s">&quot;jack&quot;</span>]
+
+<span class="f">random</span>.<span class="f">shuffle</span>(cards)
+<span class="f">print</span>(cards)</pre></div>
+
+      <p class="caption">Έξοδος:</p>
+      <div class="term">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <div class="scr"><pre>['queen', 'ace', 'king', 'jack']</pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

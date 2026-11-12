@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Ασκήσεις με πιθανότητες</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+  }
+
+  @page{
+    size:A4;
+    margin:15mm 15mm 14mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;
+      font-size:8.5pt;
+      color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10.4pt;
+    line-height:1.5;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:14pt;
+    line-height:1.3;
+    color:var(--navy);
+    margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 16px;}
+
+  /* ---------- exercises ---------- */
+  .ex{
+    display:table;
+    width:100%;
+    margin:0 0 14px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .ex .no{display:table-cell;width:34px;vertical-align:top;}
+  .ex .no div{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#ffffff;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:9.6pt;
+    line-height:24px;
+    text-align:center;
+  }
+  .ex .body{display:table-cell;vertical-align:top;}
+  .ex p{margin:0;}
+  .ex p + p{margin-top:6px;}
+
+  /* ---------- figure ---------- */
+  .figbox{
+    display:table;
+    border:0.9pt solid var(--edge);
+    border-radius:10px;
+    padding:8px;
+    margin:9px 0 0;
+    background:#ffffff;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .figbox img{display:block;width:142px;height:auto;}
+
+  /* ---------- note ---------- */
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;
+    margin:9px 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+
+  code{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:9pt;
+    background:var(--mist);
+    border:0.8pt solid var(--edge);
+    border-radius:5px;
+    padding:0 4px;
+    color:var(--navy);
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0,"clig" 0,"calt" 0,"dlig" 0;
+  }
+
+</style>
+</head>
+<body>
+<h1>Ασκήσεις με πιθανότητες</h1>
+<div class="rule"></div>
+
+<div class="ex">
+  <div class="no"><div>1</div></div>
+  <div class="body">
+    <p>Φτιάξε ένα ζάρι που ρίχνει 6 με πιθανότητα ½.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>2</div></div>
+  <div class="body">
+    <p>Φτιάξε ένα πρόγραμμα που ρίχνει ζάρια — εδώ δίκαια ζάρια, όχι το πειραγμένο της άσκησης 1. Το πρόγραμμα πρέπει να τερματίζει όταν έρθουν έξι εξάρια στη σειρά. Υπολόγισε πόσες ρίψεις χρειάστηκαν για να γίνει αυτό. Εκτύπωσε, επίσης, τον χρόνο που χρειάστηκε για να γίνει αυτό.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>3</div></div>
+  <div class="body">
+    <p>Μετέφερε το προηγούμενο πρόγραμμα σε μία συνάρτηση και κάνε 5000 πειράματα για να υπολογίσεις το μέσο αριθμό ρίψεων που χρειάζεται για να έρθουν 6 εξάρια στη σειρά.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>4</div></div>
+  <div class="body">
+    <p>Ρίχνουμε 10000 φορές ένα κέρμα. Στο τέλος του πειράματος υπολογίζουμε τα ποσοστά κορώνας και γραμμάτων. Επαναλαμβάνουμε το πείραμα 10000 φορές και υπολογίζουμε τον μέσο όρο των ποσοστών. Σκοπός του πειράματος είναι το τελικό αποτέλεσμα να αντικατοπτρίζει την πιθανότητα να τύχει κορώνα ή γράμματα.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>5</div></div>
+  <div class="body">
+    <p>Ένας άνθρωπος αποφασίζει να στοιχηματίσει 100 ευρώ σε κορώνα-γράμματα. Κάθε φορά που μαντεύει σωστά κερδίζει 1 ευρώ, ενώ όταν χάνει, χάνει 1 ευρώ. Θα σταματήσει είτε όταν χάσει όλα του τα χρήματα είτε όταν τα χρήματά του φτάσουν τα 200 ευρώ. Φτιάξτε ένα πρόγραμμα που προσομοιώνει το παιχνίδι του.</p>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>6</div></div>
+  <div class="body">
+    <p>Υπολόγισε πειραματικά το π. Φτιάξε ένα τετράγωνο που έχει εγγεγραμμένο κύκλο. Πετάμε βελάκια (τυχαία). Μετράμε πόσα βελάκια πέφτουν μέσα στον κύκλο. Υπολόγισε τον λόγο των βελακίων που πέφτουν μέσα στον κύκλο δια τον συνολικό αριθμό. Με τι είναι ίσος αυτός ο λόγος;</p>
+
+    <div class="figbox"><img src="data:image/png;base64,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" alt="Τετράγωνο με εγγεγραμμένο κύκλο: a η πλευρά, r = a/2 η ακτίνα"></div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>7</div></div>
+  <div class="body">
+    <p>Ποια είναι η πιθανότητα να τραβήξουμε 4 άσσους στη σειρά από μια ανακατεμένη τράπουλα; Υπολογίστε την πρώτα θεωρητικά. Έπειτα επιβεβαιώστε την πειραματικά: ανακατέψτε την τράπουλα 10000000 φορές και μετρήστε σε πόσες από αυτές έρχονται 4 άσσοι στη σειρά.</p>
+
+    <div class="note">
+      <div class="m"><div>i</div></div>
+      <div class="t2"><p>Το πρόγραμμα θα χρειαστεί περίπου ένα λεπτό για να τελειώσει. Μην ανησυχήσετε αν φαίνεται ότι «κόλλησε».</p></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

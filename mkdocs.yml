@@ -131,9 +131,11 @@ nav:
           - 'Cheatsheet': advanced/theory/cheatsheet.md
           - 'Μάθημα 2': advanced/theory/lesson-02.md
           - 'Μάθημα 3': advanced/theory/lesson-03.md
+          - 'Μάθημα 4': advanced/theory/lesson-04.md
       - Ασκήσεις:
           - 'Μάθημα 1': advanced/exercises/lesson-01.md
           - 'Μάθημα 2': advanced/exercises/lesson-02.md
           - 'Μάθημα 3': advanced/exercises/lesson-03.md
+          - 'Μάθημα 4': advanced/exercises/lesson-04.md
       - Επιπλέον υλικό:
           - 'JavaScript vs Python': advanced/extra/javascript-vs-python.md
