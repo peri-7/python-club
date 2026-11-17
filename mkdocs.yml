@@ -124,6 +124,7 @@ nav:
           - 'Μάθημα 1': beginners/exercises/lesson-01.md
           - 'Μάθημα 2': beginners/exercises/lesson-02.md
           - 'Μάθημα 3': beginners/exercises/lesson-03.md
+          - 'Μάθημα 3 · δύσκολες': beginners/exercises/lesson-03-hard.md
 
   - Προχωρημένοι:                              # <-- ΟΝΟΜΑ ΚΑΡΤΕΛΑΣ 2
       - advanced/index.md

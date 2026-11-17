@@ -2,6 +2,8 @@
 
 [:material-file-pdf-box: Εκτυπώσιμο PDF](lesson-03.pdf){ .md-button }
 
+![Μέθοδοι λίστας με γατούλες: append, clear, copy, count, index, insert, pop, remove, reverse](lesson-03-list-methods.jpg){ width="400" }
+
 ## Εισαγωγή στις λίστες
 
 Οι λίστες (lists) αποτελούν τύπο δεδομένων της Python. Αντιστοιχίζουν μια σειρά

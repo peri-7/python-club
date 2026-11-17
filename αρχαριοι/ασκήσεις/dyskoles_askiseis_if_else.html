@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<title>Δύσκολες ασκήσεις if / else</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17293F;
+    --navy:#143A6B;
+    --blue:#2B6CD9;
+    --sky:#7FB5F5;
+    --mist:#EDF4FF;
+    --mist-2:#D5E6FB;
+    --edge:#C5DAF7;
+    --muted:#63809F;
+    --user:#B45309;        /* τι πληκτρολογεί ο χρήστης */
+    --screen:#1E3756;      /* τι τυπώνει ο υπολογιστής */
+  }
+
+  @page{
+    size:A4;
+    margin:15mm 15mm 14mm;
+    @bottom-center{
+      content:counter(page) " / " counter(pages);
+      font-family:"Comfortaa","FreeSans",sans-serif;
+      font-size:8.5pt;
+      color:#9BB2CC;
+    }
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Nunito","Open Sans","FreeSans",sans-serif;
+    font-size:10.2pt;
+    line-height:1.46;
+  }
+
+  h1{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:14pt;
+    line-height:1.3;
+    color:var(--navy);
+    margin:0 0 3px;
+  }
+  .rule{height:2pt;background:var(--blue);width:46px;margin:0 0 12px;}
+
+  /* ---------- section headings ---------- */
+  h2{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:11pt;
+    color:var(--navy);
+    margin:4px 0 10px;
+    padding-bottom:4px;
+    border-bottom:0.9pt solid var(--edge);
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+  h2 span{
+    font-weight:500;
+    font-size:9.4pt;
+    color:var(--muted);
+    margin-left:6px;
+  }
+  h2.next{margin-top:20px;}
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:table;
+    width:100%;
+    border:0.9pt solid var(--edge);
+    border-radius:10px;
+    background:var(--mist);
+    padding:7px 12px;
+    margin:0 0 16px;
+  }
+  .legend .k{
+    display:table-cell;
+    width:50%;
+    vertical-align:middle;
+    font-size:9.2pt;
+  }
+  .legend .sw{
+    display:inline-block;
+    width:9px;height:9px;border-radius:3px;
+    margin-right:6px;vertical-align:0;
+  }
+  .legend .sw.s{background:var(--screen);}
+  .legend .sw.u{background:var(--user);}
+  .legend b{font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;font-size:8.8pt;}
+
+  /* ---------- exercises ---------- */
+  .ex{
+    display:table;
+    width:100%;
+    margin:0 0 12px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .ex .no{display:table-cell;width:34px;vertical-align:top;}
+  .ex .no div{
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--blue);
+    color:#ffffff;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:9.6pt;
+    line-height:24px;
+    text-align:center;
+  }
+  /* theory questions: outlined number */
+  .ex.th .no div{
+    background:#ffffff;
+    color:var(--blue);
+    border:1.3pt solid var(--blue);
+    line-height:21px;
+  }
+  .ex .body{display:table-cell;vertical-align:top;}
+  .ex p{margin:0;}
+  .ex p + p{margin-top:6px;}
+
+  ul.dash{list-style:none;margin:6px 0 0;padding:0;}
+  ul.dash li{position:relative;padding-left:16px;margin:0 0 3px;}
+  ul.dash li::before{
+    content:"";position:absolute;left:0;top:8px;
+    width:8px;height:2px;border-radius:1px;background:var(--sky);
+  }
+  ul.dash + p{margin-top:6px;}
+
+  .caption{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-size:8.8pt;
+    color:var(--muted);
+    margin:8px 0 3px !important;
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+
+  /* ---------- terminal box ---------- */
+  .term{
+    border:0.9pt solid var(--edge);
+    border-radius:10px;
+    overflow:hidden;
+    margin:0 0 4px;
+    background:#FFFFFF;
+    break-inside:avoid;
+    page-break-inside:avoid;
+    break-before:avoid;
+    page-break-before:avoid;
+  }
+  .term .bar{
+    background:var(--mist);
+    border-bottom:0.9pt solid var(--edge);
+    padding:4px 9px;
+    font-size:0;
+    line-height:0;
+  }
+  .term .bar i{
+    display:inline-block;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--sky);
+    margin-right:4px;
+  }
+  .term .bar i:nth-child(2){background:#A9CCF4;}
+  .term .bar i:nth-child(3){background:#C9DFF8;}
+  .term .scr{padding:8px 11px 9px;}
+  .term pre{
+    font-family:"JetBrains Mono","DejaVu Sans Mono","FreeMono",monospace;
+    font-size:9.2pt;
+    line-height:1.55;
+    margin:0;
+    white-space:pre-wrap;
+    color:var(--screen);
+  }
+  .term .u{color:var(--user);font-weight:700;}
+
+  /* ---------- code box (Python listings in the theory part) ---------- */
+  .term.code{background:#FBFDFF;margin:8px 0 4px;}
+  .term.code .bar{position:relative;}
+  .term.code .bar b{
+    position:absolute;right:10px;top:3px;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-weight:700;
+    font-size:7.4pt;line-height:9px;
+    color:var(--muted);
+    letter-spacing:0.4px;
+  }
+  .term.code pre{font-size:9pt;}
+  .kw{color:var(--blue);font-weight:700;}
+  .fn{color:#6A4BB0;}
+  .st{color:#2F7D57;}
+  .nm{color:#B23A48;}
+
+  /* two example runs side by side */
+  .pair{display:table;width:100%;table-layout:fixed;break-inside:avoid;page-break-inside:avoid;}
+  .pair > div{display:table-cell;vertical-align:top;}
+  .pair > div + div{padding-left:12px;}
+
+  /* ---------- chess board ---------- */
+  .board{
+    display:table;
+    width:100%;
+    margin:9px 0 2px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .board .pic{display:table-cell;vertical-align:middle;width:176px;}
+  .board .txt{
+    display:table-cell;vertical-align:middle;
+    padding-left:12px;
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-size:8.8pt;
+    color:var(--muted);
+  }
+  .board svg{display:block;}
+  .board .pic .cap{
+    font-family:"Comfortaa","FreeSans",sans-serif;
+    font-size:8.2pt;line-height:1.35;color:var(--muted);
+    margin:4px 0 0 4px;width:168px;
+  }
+  .board .runs{display:table-cell;vertical-align:top;padding-left:16px;}
+  .board .runs .caption:first-child{margin-top:0 !important;}
+
+  .note{
+    display:table;width:100%;
+    background:var(--mist);
+    border:0.9pt solid var(--edge);
+    border-left:4.5pt solid var(--blue);
+    border-radius:4px 12px 12px 4px;
+    padding:8px 11px;
+    margin:8px 0 0;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .note .m{display:table-cell;width:24px;vertical-align:top;}
+  .note .m div{
+    width:18px;height:18px;border-radius:6px;background:var(--blue);
+    color:#ffffff;font-family:"Comfortaa","FreeSans",sans-serif;font-weight:700;
+    font-size:8.5pt;line-height:18px;text-align:center;
+  }
+  .note .t2{display:table-cell;vertical-align:top;}
+  .note p{margin:0;}
+
+  /* no ligatures in the terminal text */
+  pre, .term .u, .legend b{
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0,"clig" 0,"calt" 0,"dlig" 0;
+  }
+
+</style>
+</head>
+<body>
+<h1>Δύσκολες ασκήσεις if / else</h1>
+<div class="rule"></div>
+
+<div class="legend">
+  <div class="k"><span class="sw s"></span>Ό,τι τυπώνει ο <b>υπολογιστής</b></div>
+  <div class="k"><span class="sw u"></span>Ό,τι πληκτρολογεί ο <b>χρήστης</b></div>
+</div>
+
+<!-- ======================= ΕΡΩΤΗΣΕΙΣ ΘΕΩΡΙΑΣ ======================= -->
+<h2>Ερωτήσεις θεωρίας<span>Βρείτε το λάθος</span></h2>
+
+<div class="ex th">
+  <div class="no"><div>1</div></div>
+  <div class="body">
+    <p>Ένα κατάστημα δίνει έκπτωση 5% για αγορές άνω των 50 ευρώ, 10% για αγορές άνω των 100 ευρώ και 20% για αγορές άνω των 200 ευρώ. Ο προγραμματιστής έγραψε τον παρακάτω κώδικα, αλλά οι πελάτες παραπονιούνται.</p>
+
+    <div class="term code">
+      <div class="bar"><i></i><i></i><i></i><b>PYTHON</b></div>
+      <div class="scr"><pre>amount = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"ποσό:"</span>))
+
+<span class="kw">if</span> amount &gt; <span class="nm">50</span>:
+    <span class="fn">print</span>(<span class="st">"Έκπτωση 5%"</span>)
+<span class="kw">elif</span> amount &gt; <span class="nm">100</span>:
+    <span class="fn">print</span>(<span class="st">"Έκπτωση 10%"</span>)
+<span class="kw">elif</span> amount &gt; <span class="nm">200</span>:
+    <span class="fn">print</span>(<span class="st">"Έκπτωση 20%"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Καμία έκπτωση"</span>)</pre></div>
+    </div>
+
+    <ul class="dash">
+      <li>Τι θα εμφανίσει το πρόγραμμα για ποσό 250; (Απαντήστε χωρίς υπολογιστή.)</li>
+      <li>Γιατί συμβαίνει αυτό; Ποια μηνύματα δεν θα εμφανιστούν <b>ποτέ</b>, ό,τι ποσό κι αν δώσουμε;</li>
+      <li>Διορθώστε το πρόγραμμα <b>χωρίς να αλλάξετε καμία συνθήκη</b>.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="ex th">
+  <div class="no"><div>2</div></div>
+  <div class="body">
+    <p>Το παρακάτω πρόγραμμα αφορά τη δυνατότητα συμμετοχής σε ένα ταξίδι για παιδιά γυμνασίου και λυκείου.</p>
+
+    <div class="term code">
+      <div class="bar"><i></i><i></i><i></i><b>PYTHON</b></div>
+      <div class="scr"><pre>age = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Ηλικία: "</span>))
+
+<span class="kw">if</span> age &gt;= <span class="nm">12</span> <span class="kw">or</span> age &lt;= <span class="nm">18</span>:
+    <span class="fn">print</span>(<span class="st">"Επιτρέπεται η συμμετοχή"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Δεν επιτρέπεται"</span>)</pre></div>
+    </div>
+
+    <ul class="dash">
+      <li>Τι λάθος έχει γίνει; Πώς θα το διορθώνατε;</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================ ΑΣΚΗΣΕΙΣ ============================ -->
+<h2 class="next">Ασκήσεις</h2>
+
+<div class="ex">
+  <div class="no"><div>1</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που δέχεται ως είσοδο τον αριθμό ενός μήνα και εμφανίζει σε ποια εποχή ανήκει (Χειμώνας, Άνοιξη, Καλοκαίρι, Φθινόπωρο). Αν ο αριθμός δεν αντιστοιχεί σε έγκυρο μήνα, τότε να εμφανίζεται το μήνυμα “άκυρος μήνας”.</p>
+
+    <p class="caption">Παράδειγμα εξόδου για έγκυρο μήνα:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>μήνας:<span class="u">4</span>
+Άνοιξη</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για άκυρο μήνα:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>μήνας:<span class="u">13</span>
+άκυρος μήνας</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>2</div></div>
+  <div class="body">
+    <p>Φτιάξτε μια αριθμομηχανή. Πρέπει να δέχεται δύο αριθμούς και το σύμβολο της επιθυμητής πράξης από τον χρήστη και να εμφανίζει το αποτέλεσμα. Για τον πολλαπλασιασμό, πρέπει να αναγνωρίζει τα σύμβολα “x” και “*”. Αν το σύμβολο είναι άκυρο ή η πράξη είναι απαγορευμένη, πρέπει να ενημερώνει τον χρήστη.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>πρώτος αριθμός:<span class="u">6</span>
+δεύτερος αριθμός:<span class="u">7</span>
+πράξη:<span class="u">x</span>
+42</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για άκυρο σύμβολο:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>πρώτος αριθμός:<span class="u">6</span>
+δεύτερος αριθμός:<span class="u">7</span>
+πράξη:<span class="u">#</span>
+Άκυρο σύμβολο</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>3</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που δέχεται τρεις λέξεις από τον χρήστη, με μικρά λατινικά γράμματα. Το πρόγραμμα πρέπει να τυπώνει τη λέξη που θα βρίσκαμε πρώτη σε ένα λεξικό.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>1η λέξη:<span class="u">pear</span>
+2η λέξη:<span class="u">apple</span>
+3η λέξη:<span class="u">mango</span>
+apple</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>4</div></div>
+  <div class="body">
+    <p>Δημιουργήθηκε μια εταιρεία που παρέχει απεριόριστη ζεστή σοκολάτα στη βρύση σας. Χρεώνει κλιμακωτά. Κάθε λογαριασμός έχει πάγιο κόστος 5 ευρώ και επιπλέον:</p>
+    <ul class="dash">
+      <li>τα πρώτα 100 λίτρα κοστίζουν 0.1 ευρώ το καθένα,</li>
+      <li>τα επόμενα 200 λίτρα (από 101 ως 300) κοστίζουν 0.2 ευρώ το καθένα,</li>
+      <li>όσα λίτρα ξεπερνούν τα 300 κοστίζουν 0.5 ευρώ το καθένα.</li>
+    </ul>
+    <p>Γράψτε πρόγραμμα που δέχεται την κατανάλωση και εμφανίζει τον λογαριασμό. Αν η κατανάλωση είναι αρνητική, εμφανίζει “Μη έγκυρη τιμή”.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>κατανάλωση (λίτρα):<span class="u">350</span>
+Λογαριασμός: 80.0 ευρώ</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>5</div></div>
+  <div class="body">
+    <p>Στο λούνα παρκ, στο “Τρενάκι του τρόμου” μπορεί να ανέβει κάποιος μόνο αν έχει ύψος τουλάχιστον 140 cm. Το πρόγραμμα ζητά το ύψος και την ηλικία του επισκέπτη. Αν είναι κάτω των 12 ετών, ρωτάει επιπλέον αν έχει συνοδό (“ναι”/“όχι”). Η ερώτηση αυτή γίνεται <b>μόνο</b> στα παιδιά κάτω των 12. Χωρίς συνοδό, το παιδί δεν μπορεί να ανέβει.</p>
+    <p>Αν επιτρέπεται να ανέβει, το εισιτήριο κοστίζει 5 ευρώ για όσους είναι κάτω των 12 ή από 65 ετών και πάνω, και 10 ευρώ για όλους τους άλλους. Αν δεν επιτρέπεται, εμφανίζει “Δεν μπορείς να ανέβεις”.</p>
+
+    <p class="caption">Παράδειγμα εξόδου για παιδί κάτω των 12:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>ύψος (cm):<span class="u">145</span>
+ηλικία:<span class="u">10</span>
+συνοδός;<span class="u">ναι</span>
+Το εισιτήριο κοστίζει 5 ευρώ</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για ενήλικα (δεν γίνεται η ερώτηση για συνοδό):</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>ύψος (cm):<span class="u">150</span>
+ηλικία:<span class="u">30</span>
+Το εισιτήριο κοστίζει 10 ευρώ</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>6</div></div>
+  <div class="body">
+    <p>Φτιάξτε ένα πρόγραμμα που δέχεται την αρχική και την τελική θέση ενός πύργου σε μια άδεια σκακιέρα (πριν και μετά από μια κίνηση). Η θέση περιγράφεται από τη στήλη (γράμμα a έως h) και τη γραμμή (αριθμός 1 έως 8). Πρέπει να ελέγχεται αν οι θέσεις είναι έγκυρες και αν η τελική θέση είναι σωστή. Ο πύργος κινείται είτε οριζόντια είτε κάθετα.</p>
+
+    <div class="board">
+      <div class="pic">
+        <svg width="176" height="176" viewBox="0 0 176 176" xmlns="http://www.w3.org/2000/svg">
+          <!-- 8x8 board, square = 18, origin (16,8) -->
+          <rect x="16" y="8" width="144" height="144" fill="#FFFFFF"/>
+          <!-- dark squares (a1 is dark): file f=0..7, rank r=1..8; dark if (f+r) even -->
+          <g fill="#D5E6FB">
+            <rect x="16" y="134" width="18" height="18"/><rect x="52" y="134" width="18" height="18"/><rect x="88" y="134" width="18" height="18"/><rect x="124" y="134" width="18" height="18"/>
+            <rect x="34" y="116" width="18" height="18"/><rect x="70" y="116" width="18" height="18"/><rect x="106" y="116" width="18" height="18"/><rect x="142" y="116" width="18" height="18"/>
+            <rect x="16" y="98" width="18" height="18"/><rect x="52" y="98" width="18" height="18"/><rect x="88" y="98" width="18" height="18"/><rect x="124" y="98" width="18" height="18"/>
+            <rect x="34" y="80" width="18" height="18"/><rect x="70" y="80" width="18" height="18"/><rect x="106" y="80" width="18" height="18"/><rect x="142" y="80" width="18" height="18"/>
+            <rect x="16" y="62" width="18" height="18"/><rect x="52" y="62" width="18" height="18"/><rect x="88" y="62" width="18" height="18"/><rect x="124" y="62" width="18" height="18"/>
+            <rect x="34" y="44" width="18" height="18"/><rect x="70" y="44" width="18" height="18"/><rect x="106" y="44" width="18" height="18"/><rect x="142" y="44" width="18" height="18"/>
+            <rect x="16" y="26" width="18" height="18"/><rect x="52" y="26" width="18" height="18"/><rect x="88" y="26" width="18" height="18"/><rect x="124" y="26" width="18" height="18"/>
+            <rect x="34" y="8" width="18" height="18"/><rect x="70" y="8" width="18" height="18"/><rect x="106" y="8" width="18" height="18"/><rect x="142" y="8" width="18" height="18"/>
+          </g>
+          <rect x="16" y="8" width="144" height="144" fill="none" stroke="#C5DAF7" stroke-width="1.2"/>
+          <!-- reachable squares from d4: column d (x centre 79) and row 4 (y centre 89) -->
+          <g fill="#2B6CD9">
+            <circle cx="79" cy="17" r="3.2"/><circle cx="79" cy="35" r="3.2"/><circle cx="79" cy="53" r="3.2"/><circle cx="79" cy="71" r="3.2"/>
+            <circle cx="79" cy="107" r="3.2"/><circle cx="79" cy="125" r="3.2"/><circle cx="79" cy="143" r="3.2"/>
+            <circle cx="25" cy="89" r="3.2"/><circle cx="43" cy="89" r="3.2"/><circle cx="61" cy="89" r="3.2"/>
+            <circle cx="97" cy="89" r="3.2"/><circle cx="115" cy="89" r="3.2"/><circle cx="133" cy="89" r="3.2"/><circle cx="151" cy="89" r="3.2"/>
+          </g>
+          <!-- rook on d4 (simple drawn shape) -->
+          <g fill="#143A6B">
+            <rect x="72" y="82" width="2.6" height="3"/><rect x="77.7" y="82" width="2.6" height="3"/><rect x="83.4" y="82" width="2.6" height="3"/>
+            <rect x="72" y="84.6" width="14" height="2.2"/>
+            <rect x="74.2" y="86.6" width="9.6" height="6.4"/>
+            <rect x="72.6" y="92.8" width="12.8" height="1.8"/>
+            <rect x="71" y="94.4" width="16" height="2.6" rx="0.6"/>
+          </g>
+          <!-- coordinates -->
+          <g font-family="JetBrains Mono, DejaVu Sans Mono, monospace" font-size="8.5" fill="#63809F" text-anchor="middle">
+            <text x="25" y="165">a</text><text x="43" y="165">b</text><text x="61" y="165">c</text><text x="79" y="165">d</text>
+            <text x="97" y="165">e</text><text x="115" y="165">f</text><text x="133" y="165">g</text><text x="151" y="165">h</text>
+            <text x="8" y="20">8</text><text x="8" y="38">7</text><text x="8" y="56">6</text><text x="8" y="74">5</text>
+            <text x="8" y="92">4</text><text x="8" y="110">3</text><text x="8" y="128">2</text><text x="8" y="146">1</text>
+          </g>
+        </svg>
+        <div class="cap">Ο πύργος στη θέση d4 μπορεί να μετακινηθεί σε όποιο τετράγωνο έχει κουκκίδα.</div>
+      </div>
+      <div class="runs">
+    <p class="caption">Παράδειγμα εξόδου για σωστή κίνηση:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>αρχική στήλη:<span class="u">d</span>
+αρχική γραμμή:<span class="u">4</span>
+τελική στήλη:<span class="u">d</span>
+τελική γραμμή:<span class="u">8</span>
+Σωστή κίνηση</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για λάθος κίνηση:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>αρχική στήλη:<span class="u">d</span>
+αρχική γραμμή:<span class="u">4</span>
+τελική στήλη:<span class="u">f</span>
+τελική γραμμή:<span class="u">6</span>
+Λάθος κίνηση</pre></div>
+    </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>7</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που δέχεται ως είσοδο μια ημερομηνία (μέρα, μήνα και έτος) και εμφανίζει αν είναι έγκυρη. Πρέπει να λαμβάνεται υπόψη το αν ένα έτος είναι δίσεκτο. Σε αυτή την περίπτωση, ο Φεβρουάριος έχει 29 ημέρες αντί για 28.</p>
+    <p>Ένα έτος είναι δίσεκτο αν διαιρείται με το 4 αλλά <b>όχι</b> με το 100. Υπάρχει όμως μια εξαίρεση: αν διαιρείται με το 400, είναι <b>πάντα</b> δίσεκτο. Για παράδειγμα, το 2000 ήταν δίσεκτο, ενώ το 1900 δεν ήταν.</p>
+
+    <p class="caption">Παράδειγμα εξόδου για έγκυρη ημερομηνία:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>μέρα:<span class="u">29</span>
+μήνας:<span class="u">2</span>
+έτος:<span class="u">2000</span>
+Έγκυρη ημερομηνία</pre></div>
+    </div>
+
+    <p class="caption">Παράδειγμα εξόδου για μη έγκυρη ημερομηνία:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>μέρα:<span class="u">29</span>
+μήνας:<span class="u">2</span>
+έτος:<span class="u">1900</span>
+Μη έγκυρη ημερομηνία</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>8</div></div>
+  <div class="body">
+    <p>Γράψτε πρόγραμμα που ζητά την ηλικία και αν ο χρήστης είναι φοιτητής (“ναι”/“όχι”) και εμφανίζει το κόστος του εισιτηρίου:</p>
+    <ul class="dash">
+      <li>κάτω από 18 ➜ 5€</li>
+      <li>από 18 ως 64 και φοιτητής ➜ 6€</li>
+      <li>από 18 ως 64 και όχι φοιτητής ➜ 10€</li>
+      <li>από 65 και πάνω ➜ 4€</li>
+    </ul>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>ηλικία:<span class="u">20</span>
+φοιτητής;<span class="u">ναι</span>
+Κόστος 6€</pre></div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>9</div></div>
+  <div class="body">
+    <p>Το πρόγραμμα ρωτάει τον χρήστη (“ναι”/“όχι”) αν είναι φωτογράφος, αν είναι καλός στα μαθηματικά και αν τον έχει τσιμπήσει δηλητηριώδης αράχνη, με αυτή τη σειρά. Μόλις μια απάντηση είναι “όχι”, <b>σταματά</b> τις ερωτήσεις και εμφανίζει το κατάλληλο μήνυμα:</p>
+    <ul class="dash">
+      <li>φωτογράφος: όχι ➜ “χρειάζεσαι κάμερα”</li>
+      <li>μαθηματικά: όχι ➜ “ο Spiderman διαβάζει περισσότερο”</li>
+      <li>αράχνη: όχι ➜ “ατύχησες”</li>
+      <li>αλλιώς ➜ “μπορεί να γίνεις ο Spiderman”</li>
+    </ul>
+
+    <div class="pair">
+      <div>
+    <p class="caption">Όταν μια συνθήκη δεν ικανοποιείται:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>φωτογράφος;<span class="u">ναι</span>
+καλός στα μαθηματικά;<span class="u">όχι</span>
+ο Spiderman διαβάζει περισσότερο</pre></div>
+    </div>
+      </div>
+      <div>
+    <p class="caption">Όταν ικανοποιούνται όλες οι συνθήκες:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>φωτογράφος;<span class="u">ναι</span>
+καλός στα μαθηματικά;<span class="u">ναι</span>
+σε τσίμπησε δηλητηριώδης αράχνη;<span class="u">ναι</span>
+μπορεί να γίνεις ο Spiderman</pre></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="ex">
+  <div class="no"><div>10</div></div>
+  <div class="body">
+    <p>Γράψτε ένα πρόγραμμα που αποφασίζει αν κάποιος μπορεί να συμμετάσχει σε ένα τουρνουά βιντεοπαιχνιδιών. Για να συμμετάσχει, πρέπει να ισχύουν <b>όλες</b> οι παρακάτω προϋποθέσεις:</p>
+    <ul class="dash">
+      <li>Να είναι τουλάχιστον 13 ετών <b>ή</b> να είναι τουλάχιστον 10 ετών και να συνοδεύεται από ενήλικα.</li>
+      <li>Να έχει εισιτήριο <b>ή</b> κάρτα μέλους.</li>
+      <li>Να <b>μην</b> έχει αποκλειστεί από το τουρνουά.</li>
+    </ul>
+    <p>Το πρόγραμμα ζητά την ηλικία του χρήστη και τις υπόλοιπες πληροφορίες με απαντήσεις “ναι” ή “όχι”. Στο τέλος εμφανίζει αν επιτρέπεται η συμμετοχή.</p>
+
+    <p class="caption">Παράδειγμα εξόδου:</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="scr"><pre>ηλικία:<span class="u">11</span>
+συνοδεύεσαι από ενήλικα;<span class="u">ναι</span>
+εισιτήριο;<span class="u">όχι</span>
+κάρτα μέλους;<span class="u">ναι</span>
+αποκλεισμένος;<span class="u">όχι</span>
+Επιτρέπεται η συμμετοχή</pre></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
